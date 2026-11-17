@@ -1,10 +1,11 @@
 import forex from '../assets/forex.jpg';
 import stocks from '../assets/stocks.avif';
 import indices from '../assets/indices.avif';
+import crypto from '../assets/crypto.avif';
 import { instruments, marketCategories, screenerRows, screenerTabs } from '../data.js';
 import { useEffect, useMemo, useState } from 'react';
 
-const imageMap = { forex, stocks, indices };
+const imageMap = { forex, stocks, indices, crypto };
 
 const categoryIcons = {
   swap: '⇄',

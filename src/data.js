@@ -31,7 +31,7 @@ export const instruments = [
   { title: 'Forex', text: '60+ currency pairs with institutional grade execution and liquidity.', image: 'forex' },
   { title: 'Stocks', text: 'Trade global giants like Apple, Tesla, and Meta with flexible leverage.', image: 'stocks' },
   { title: 'Indices', text: 'Speculate on NASDAQ, DAX, and S&P 500 — trade the pulse of global markets.', image: 'indices' },
-  { title: 'Crypto', text: '24/7 access to Bitcoin, Ethereum, and other digital assets with no expiry.', image: null },
+  { title: 'Crypto', text: '24/7 access to Bitcoin, Ethereum, and other digital assets with no expiry.', image: 'crypto' },
 ];
 
 export const marketCategories = [
