@@ -1,3 +1,4 @@
+import { ArrowRight, DollarSign, ShieldCheck, Zap } from 'lucide-react';
 import phones from '../assets/trade-phones.png';
 import { heroStats } from '../data.js';
 
@@ -8,9 +9,9 @@ export default function TradeClarity() {
         <div className="container split">
           <div className="split-copy">
             <div className="pill-row">
-              <span className="pill pill-light">⚡ Fast execution</span>
-              <span className="pill pill-light">$ Thin pricing</span>
-              <span className="pill pill-light">◉ Secure funding</span>
+              <span className="pill pill-light"><Zap /> Fast execution</span>
+              <span className="pill pill-light"><DollarSign /> Thin pricing</span>
+              <span className="pill pill-light"><ShieldCheck /> Secure funding</span>
             </div>
             <h2 className="h2 left">
               Trade with <span className="accent">clarity, speed</span> &amp; <span className="accent">control</span>
@@ -20,7 +21,7 @@ export default function TradeClarity() {
               indices, energies and crypto CFD products on reliable infrastructure designed for modern traders.
             </p>
             <div className="btn-row">
-              <a href="#create" className="btn btn-primary btn-lg">Open Live Account →</a>
+              <a href="#create" className="btn btn-primary btn-lg">Open Live Account <ArrowRight /></a>
               <a href="#demo" className="btn btn-outline btn-lg">Try Free Majesty Fx</a>
             </div>
             <p className="fine-print">Regulatory restrictions may apply in some regions. Check availability during onboarding.</p>

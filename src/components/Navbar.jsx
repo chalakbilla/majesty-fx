@@ -1,3 +1,5 @@
+import { ChevronDown, Menu, X } from 'lucide-react';
+import { kebabCase } from 'lodash-es';
 import { useState } from 'react';
 import logo from '../assets/logo.png';
 
@@ -17,9 +19,9 @@ export default function Navbar() {
 
         <nav className={`nav-links ${open ? 'open' : ''}`}>
           {links.map((l) => (
-            <a key={l} href={`#${l.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setOpen(false)}>
+            <a key={l} href={`#${kebabCase(l)}`} onClick={() => setOpen(false)}>
               {l}
-              {l === 'Account Types' && <span className="chev">▾</span>}
+              {l === 'Account Types' && <ChevronDown className="chev" />}
             </a>
           ))}
         </nav>
@@ -28,7 +30,7 @@ export default function Navbar() {
           <a href="#login" className="btn btn-ghost">Log in</a>
           <a href="#create" className="btn btn-primary">Create Account</a>
           <button className="burger" aria-label="Toggle menu" onClick={() => setOpen((v) => !v)}>
-            {open ? '✕' : '☰'}
+            {open ? <X /> : <Menu />}
           </button>
         </div>
       </div>

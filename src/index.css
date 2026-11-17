@@ -19,6 +19,18 @@
   padding: 0;
 }
 
+/* Icons inherit the surrounding text size and colour, like the glyphs they replace. */
+.lucide {
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  vertical-align: -0.125em;
+}
+
+.ticker-item .down .lucide {
+  rotate: 180deg;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -1257,9 +1269,9 @@ html {
     gap: 10px;
   }
 
-  .check-list li::first-letter {
+  .check-list li .lucide {
     color: var(--green);
-    font-weight: 900;
+    margin-top: 2px;
   }
 
   /* ---------- Calculator ---------- */
@@ -1698,8 +1710,9 @@ html {
   }
 
   .stars {
+    display: flex;
+    gap: 2px;
     color: #f59e0b;
-    letter-spacing: 2px;
     font-size: 14px;
   }
 

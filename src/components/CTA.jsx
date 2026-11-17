@@ -1,3 +1,4 @@
+import { ArrowRight, Lock, Zap } from 'lucide-react';
 export default function CTA() {
   return (
     <section className="section section-cta" id="demo">
@@ -12,12 +13,12 @@ export default function CTA() {
             and Tier-1 institutional liquidity with zero deposit fees.
           </p>
           <div className="btn-row center">
-            <a href="#create" className="btn btn-primary btn-lg">Open Live Account →</a>
+            <a href="#create" className="btn btn-primary btn-lg">Open Live Account <ArrowRight /></a>
             <a href="#demo" className="btn btn-outline btn-lg">Try Free $100K Demo</a>
           </div>
           <div className="trust-row">
-            <span>🔒 Tier-1 Segregated Accounts</span>
-            <span>⚡ Zero Deposit Charges</span>
+            <span><Lock /> Tier-1 Segregated Accounts</span>
+            <span><Zap /> Zero Deposit Charges</span>
           </div>
         </div>
       </div>

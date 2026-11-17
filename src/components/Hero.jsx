@@ -1,3 +1,4 @@
+import { ArrowRight, Globe, ShieldCheck, Zap } from 'lucide-react';
 import heroPhones from '../assets/hero-phones.png';
 import heroBg from '../assets/hero-bg.jpg';
 
@@ -8,9 +9,9 @@ export default function Hero() {
       <div className="container hero-grid">
         <div className="hero-copy">
           <div className="pill-row">
-            <span className="pill">⚡ Ultra-Fast Execution</span>
-            <span className="pill">◈ Global Liquidity</span>
-            <span className="pill">◉ Trusted Worldwide</span>
+            <span className="pill"><Zap /> Ultra-Fast Execution</span>
+            <span className="pill"><Globe /> Global Liquidity</span>
+            <span className="pill"><ShieldCheck /> Trusted Worldwide</span>
           </div>
           <h1>
             Trade the <span className="accent">World’s Markets</span>
@@ -22,7 +23,7 @@ export default function Hero() {
             transparent pricing, and cutting-edge technology meet for peak performance.
           </p>
           <div className="btn-row">
-            <a href="#create" className="btn btn-primary btn-lg">Open Live Account →</a>
+            <a href="#create" className="btn btn-primary btn-lg">Open Live Account <ArrowRight /></a>
             <a href="#demo" className="btn btn-outline btn-lg">Try Free Majesty Fx</a>
           </div>
         </div>

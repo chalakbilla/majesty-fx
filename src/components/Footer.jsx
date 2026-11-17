@@ -1,3 +1,4 @@
+import { ArrowUp } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { footerColumns } from '../data.js';
 
@@ -84,7 +85,7 @@ export default function Footer() {
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z" /></svg>
             Security: 256-Bit SSL Encrypted <span className="dot-sep">·</span> Tier-1 Segregated Custody
           </span>
-          <a href="#top" className="btn btn-dark btn-sm">Back to Top ↑</a>
+          <a href="#top" className="btn btn-dark btn-sm">Back to Top <ArrowUp /></a>
         </div>
       </div>
     </footer>

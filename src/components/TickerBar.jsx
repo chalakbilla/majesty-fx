@@ -1,3 +1,4 @@
+import { Triangle } from 'lucide-react';
 import { tickerItems } from '../data.js';
 
 // Two identical copies are rendered so the -50% translate loops seamlessly.
@@ -34,7 +35,7 @@ export default function TickerBar() {
               <span className="ticker-symbol">{t.symbol}</span>
               <span className="ticker-price">{t.price}</span>
               <span className={t.change >= 0 ? 'up' : 'down'}>
-                {t.change >= 0 ? '▲' : '▼'} {t.change >= 0 ? '+' : ''}
+                <Triangle fill="currentColor" /> {t.change >= 0 ? '+' : ''}
                 {t.change.toFixed(2)}%
               </span>
             </div>

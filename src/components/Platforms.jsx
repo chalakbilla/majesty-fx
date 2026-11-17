@@ -1,3 +1,4 @@
+import { Download, Globe, Smartphone } from 'lucide-react';
 import mt5 from '../assets/mt5.jpg';
 import webtrader from '../assets/webtrader.jpg';
 import mobile from '../assets/mobile-phones.png';
@@ -23,7 +24,7 @@ export default function Platforms() {
               iOS, and Android.
             </p>
             <div className="btn-row">
-              <a href="#download" className="btn btn-primary">⤓ Download</a>
+              <a href="#download" className="btn btn-primary"><Download /> Download</a>
               <a href="#learn" className="btn btn-outline">Learn More</a>
             </div>
           </div>
@@ -39,7 +40,7 @@ export default function Platforms() {
               real time — manage orders, analyze charts, and access your full trading history anywhere.
             </p>
             <div className="btn-row">
-              <a href="#webtrader" className="btn btn-primary">⊕ Launch WebTrader</a>
+              <a href="#webtrader" className="btn btn-primary"><Globe /> Launch WebTrader</a>
               <a href="#tour" className="btn btn-outline">Platform Tour</a>
             </div>
           </div>
@@ -53,8 +54,8 @@ export default function Platforms() {
               iOS and Android — the full trading experience in your pocket.
             </p>
             <div className="btn-row">
-              <a href="#ios" className="btn btn-primary">▯ iOS</a>
-              <a href="#android" className="btn btn-outline">▯ Android</a>
+              <a href="#ios" className="btn btn-primary"><Smartphone /> iOS</a>
+              <a href="#android" className="btn btn-outline"><Smartphone /> Android</a>
             </div>
           </div>
           <div className="mobile-visual">
