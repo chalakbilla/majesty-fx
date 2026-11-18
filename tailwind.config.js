@@ -22,6 +22,7 @@ export default {
         montserrat: ['Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
         inter: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'Menlo', 'monospace'],
+        sans: ['Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
       },
       screens: {
         xs: '480px',

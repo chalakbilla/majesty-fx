@@ -11,21 +11,54 @@ export function Accent({ text }) {
 
 export function PageHero({ crumbs, icon: Icon, badge, title, sub }) {
   return (
-    <section className="rp-hero">
-      <div className="container">
-        <nav className="rp-crumbs flex flex-wrap items-center gap-2" aria-label="Breadcrumb">
-          <House />
-          <Link to="/">Home</Link>
+    <section className="relative overflow-hidden w-full py-8 md:py-10 text-white border-b border-white/10 bg-gradient-to-b from-[#04060a] to-[#080c14]">
+      {/* Radial orange ambient glow */}
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[100px] pointer-events-none"
+        style={{
+          background: 'radial-gradient(60% 80px at 50% 0%, rgba(249, 115, 22, 0.15) 0%, transparent 100%)',
+        }}
+      />
+      <div className="container relative z-10">
+        {/* Breadcrumb */}
+        <nav
+          className="flex items-center justify-center gap-1.5 text-xs text-slate-400 mb-3 flex-wrap"
+          aria-label="Breadcrumb"
+        >
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1 text-slate-300 hover:text-white font-medium transition-colors"
+          >
+            <House className="w-3 h-3" />
+            <span>Home</span>
+          </Link>
           {crumbs.map((c, i) => (
             <Fragment key={c}>
-              <ChevronRight />
-              <span className={i === crumbs.length - 1 ? 'is-current' : undefined}>{c}</span>
+              <ChevronRight className="w-3 h-3 text-slate-500" />
+              <span className={i === crumbs.length - 1 ? 'text-slate-200 font-semibold' : 'text-slate-400'}>
+                {c}
+              </span>
             </Fragment>
           ))}
         </nav>
-        <span className="rp-badge rp-badge-dark"><Icon /> {badge}</span>
-        <h1><Accent text={title} /></h1>
-        <p>{sub}</p>
+
+        {/* Hero Title & Description */}
+        <div className="max-w-[720px] mx-auto text-center flex flex-col items-center">
+          {badge && (
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/25 text-[#ff5a0a] text-[11px] font-sora font-bold tracking-wider uppercase mb-2.5">
+              {Icon && <Icon className="w-3.5 h-3.5 text-[#ff5a0a]" />}
+              <span>{badge}</span>
+            </div>
+          )}
+          <h1 className="font-sora text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight leading-tight mb-2">
+            <Accent text={title} />
+          </h1>
+          {sub && (
+            <p className="font-montserrat text-xs sm:text-sm md:text-[15px] text-slate-300 leading-relaxed max-w-[620px]">
+              {sub}
+            </p>
+          )}
+        </div>
       </div>
     </section>
   );
@@ -33,10 +66,21 @@ export function PageHero({ crumbs, icon: Icon, badge, title, sub }) {
 
 export function SectionHead({ icon: Icon, tag, title, sub }) {
   return (
-    <div className="rp-head">
-      {tag && <span className="eyebrow">{Icon && <Icon />} {tag}</span>}
-      <h2 className="h2"><Accent text={title} /></h2>
-      {sub && <p className="section-sub">{sub}</p>}
+    <div className="text-center max-w-[780px] mx-auto mb-8 sm:mb-12">
+      {tag && (
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-[#ff5a0a] text-xs font-sora font-bold tracking-wider uppercase mb-3">
+          {Icon && <Icon className="w-3.5 h-3.5 text-[#ff5a0a]" />}
+          <span>{tag}</span>
+        </div>
+      )}
+      <h2 className="font-montserrat text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b192c] tracking-tight leading-tight mb-2.5">
+        <Accent text={title} />
+      </h2>
+      {sub && (
+        <p className="font-montserrat text-sm sm:text-base text-slate-600 leading-relaxed">
+          {sub}
+        </p>
+      )}
     </div>
   );
 }
