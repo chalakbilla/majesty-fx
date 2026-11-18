@@ -58,7 +58,7 @@ export default function Register() {
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
       {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
       <div
-        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-center px-10 xl:px-16 py-12 shrink-0 text-white"
+        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-start px-10 xl:px-16 pt-10 xl:pt-14 pb-8 shrink-0 text-white"
         style={{
           background:
             'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
@@ -79,31 +79,31 @@ export default function Register() {
         />
 
         <div className="max-w-[520px] relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-7 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-5 backdrop-blur-md">
             <Zap className="w-3.5 h-3.5 text-white" />
             <span>Majesty FX Institutional Infrastructure</span>
           </div>
 
-          <h1 className="text-[clamp(1.9rem,2.7vw,2.6rem)] font-extrabold leading-[1.18] tracking-tight text-white mb-5 font-sora">
+          <h1 className="text-[clamp(1.75rem,2.4vw,2.35rem)] font-extrabold leading-[1.18] tracking-tight text-white mb-4 font-sora">
             Instant Institutional Onboarding. Secure Client Infrastructure.
           </h1>
 
-          <p className="text-base leading-relaxed text-white/90 mb-8">
+          <p className="text-[0.95rem] leading-relaxed text-white/90 mb-6">
             Create your verified Majesty FX client cabinet in under 60 seconds with institutional security and automated multi-tier rebate capabilities.
           </p>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3.5">
             {bullets.map((b) => (
               <div key={b} className="flex items-center gap-3">
                 <div className="w-6 h-6 rounded-full bg-white/[0.22] flex items-center justify-center shrink-0">
                   <CircleCheck className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-[0.94rem] text-white font-medium">{b}</span>
+                <span className="text-[0.92rem] text-white font-medium">{b}</span>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 pt-7 border-t border-white/[0.22] flex items-center gap-4">
+          <div className="mt-7 pt-5 border-t border-white/[0.22] flex items-center gap-4">
             <ShieldCheck className="w-7 h-7 text-white opacity-90 shrink-0" />
             <div className="text-[0.82rem] text-white/[0.88] leading-snug">
               <strong className="block font-bold">Tier-1 Regulated Custody &amp; Liquidity</strong>
