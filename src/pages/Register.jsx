@@ -54,8 +54,8 @@ export default function Register() {
       <AuthLeftPanel portal={portal} />
 
       {/* Right Form Card Section */}
-      <div className="w-full flex-1 lg:w-1/2 min-h-screen lg:h-screen flex flex-col items-center justify-center p-3.5 sm:p-6 md:p-10 bg-[#f8fafc] overflow-y-auto box-border">
-        <div className="w-full max-w-[560px] bg-white rounded-2xl p-5 sm:p-8 md:p-10 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06),0_2px_6px_-1px_rgba(15,23,42,0.04)] border border-slate-200 my-auto">
+      <div className="w-full flex-1 lg:w-1/2 min-h-screen lg:h-screen flex flex-col items-center py-6 sm:py-8 md:py-12 px-3.5 sm:px-6 md:px-10 bg-[#f8fafc] overflow-y-auto box-border">
+        <div className="w-full max-w-[560px] bg-white rounded-2xl p-5 sm:p-8 md:p-10 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06),0_2px_6px_-1px_rgba(15,23,42,0.04)] border border-slate-200">
           {/* Logo & Client Portal Header */}
           <div className="flex items-center justify-between mb-5 gap-3">
             <Link to="/" className="inline-flex items-center gap-2 shrink-0">
