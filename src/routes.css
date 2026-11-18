@@ -155,6 +155,7 @@
 .rp-filters button { font: 700 14px var(--montserrat); background: #fff; border: 1px solid var(--line); color: var(--ink); padding: 10px 22px; border-radius: 999px; cursor: pointer; transition: all .15s; }
 .rp-filters button:hover { border-color: var(--orange); }
 .rp-filters button.is-active { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 8px 18px -8px rgba(255, 90, 10, 0.7); }
+.rp-filters button.is-active:hover { background: #ea580c; border-color: #ea580c; color: #fff; }
 
 .rp-ribbon { background: #fff7f1; border-bottom: 1px solid var(--peach-line); overflow: hidden; padding: 14px 0; }
 .rp-ribbon .marquee-track { gap: 36px; animation: marquee-left 40s linear infinite; }

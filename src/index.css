@@ -4,7 +4,8 @@
 
 :root {
   --orange: #ff5a0a;
-  --orange-hover: #e65500;
+  --orange-hover: #ea580c;
+  --orange-dark: #ea580c;
   --orange-light: #fff7ed;
   --orange-border: #fed7aa;
   --desk: #ea580c;
@@ -377,12 +378,26 @@ h5 {
 
 .btn-primary {
   background: var(--orange);
-  color: #fff;
+  color: #fff !important;
   box-shadow: 0 8px 20px -8px rgba(255, 90, 10, .6);
 }
 
-.btn-primary:hover {
-  background: var(--orange-dark);
+.btn-primary:hover,
+a.btn-primary:hover,
+button.btn-primary:hover,
+.btn-primary:focus-visible,
+a.btn-primary:focus-visible,
+button.btn-primary:focus-visible {
+  background: #ea580c !important;
+  color: #fff !important;
+  box-shadow: 0 10px 24px -8px rgba(234, 88, 12, 0.7);
+}
+
+.btn-primary:active,
+a.btn-primary:active,
+button.btn-primary:active {
+  background: #c2410c !important;
+  color: #fff !important;
 }
 
 .btn-outline {

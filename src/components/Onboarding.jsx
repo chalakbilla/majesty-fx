@@ -75,7 +75,7 @@ export default function Onboarding() {
                       </p>
                       <Link
                         to={ctaLinks[s.title] || '#'}
-                        className="btn btn-primary inline-flex items-center text-sm font-semibold py-2.5 px-5 rounded-lg shadow-sm"
+                        className="btn btn-primary hover:bg-[#ea580c] hover:text-white transition-all inline-flex items-center text-sm font-semibold py-2.5 px-5 rounded-lg shadow-sm"
                       >
                         {s.cta}
                       </Link>
@@ -129,7 +129,7 @@ export default function Onboarding() {
                       </p>
                       <Link
                         to={ctaLinks[s.title] || '#'}
-                        className="btn btn-primary inline-flex items-center text-sm font-semibold py-2.5 px-5 rounded-lg shadow-sm"
+                        className="btn btn-primary hover:bg-[#ea580c] hover:text-white transition-all inline-flex items-center text-sm font-semibold py-2.5 px-5 rounded-lg shadow-sm"
                       >
                         {s.cta}
                       </Link>

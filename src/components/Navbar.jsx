@@ -84,7 +84,7 @@ export default function Navbar() {
         <div className="nav-actions flex items-center gap-2 sm:gap-3">
           <div className="hidden lg:flex items-center gap-3">
             <Link to="/login" className="btn btn-ghost">Log in</Link>
-            <Link to="/register" className="btn btn-primary">Create Account</Link>
+            <Link to="/register" className="btn btn-primary hover:bg-[#ea580c] hover:text-white transition-all">Create Account</Link>
           </div>
           <button
             type="button"
