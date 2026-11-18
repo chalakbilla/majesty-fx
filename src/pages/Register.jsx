@@ -33,6 +33,49 @@ const portalOptions = [
   { value: 'ib3', label: 'Partner 003' },
 ];
 
+const portalThemes = {
+  client: {
+    label: 'Referral',
+    badge: 'Referral',
+    clientBadge: 'Client Portal',
+    themeColor: '#ea580c',
+    badgeBg: '#fff7ed',
+    badgeColor: '#ea580c',
+    badgeBorder: '#fed7aa',
+    gradient: 'linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
+  },
+  ib1: {
+    label: 'Partner 001',
+    badge: 'Partner 001',
+    clientBadge: 'PARTNER 001',
+    themeColor: '#2563eb',
+    badgeBg: '#eff6ff',
+    badgeColor: '#2563eb',
+    badgeBorder: '#bfdbfe',
+    gradient: 'linear-gradient(145deg, #3b82f6 0%, #2563eb 45%, #1d4ed8 100%)',
+  },
+  ib2: {
+    label: 'Partner 002',
+    badge: 'Partner 002',
+    clientBadge: 'PARTNER 002',
+    themeColor: '#7c3aed',
+    badgeBg: '#faf5ff',
+    badgeColor: '#7c3aed',
+    badgeBorder: '#e9d5ff',
+    gradient: 'linear-gradient(145deg, #8b5cf6 0%, #7c3aed 45%, #5b21b6 100%)',
+  },
+  ib3: {
+    label: 'Partner 003',
+    badge: 'Partner 003',
+    clientBadge: 'PARTNER 003',
+    themeColor: '#059669',
+    badgeBg: '#ecfdf5',
+    badgeColor: '#059669',
+    badgeBorder: '#a7f3d0',
+    gradient: 'linear-gradient(145deg, #10b981 0%, #059669 45%, #064e3b 100%)',
+  },
+};
+
 const countries = [
   'United Kingdom',
   'United Arab Emirates',
@@ -50,6 +93,8 @@ export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showReferral, setShowReferral] = useState(false);
 
+  const currentTheme = portalThemes[portal] || portalThemes.client;
+
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -58,10 +103,9 @@ export default function Register() {
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
       {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
       <div
-        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-center px-10 xl:px-16 shrink-0 text-white"
+        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-center px-10 xl:px-16 shrink-0 text-white transition-all duration-500"
         style={{
-          background:
-            'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
+          background: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, ${currentTheme.gradient}`,
           padding: 'clamp(2.5rem, 4vw, 4.5rem)',
         }}
       >

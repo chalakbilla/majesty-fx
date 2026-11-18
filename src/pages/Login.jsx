@@ -30,10 +30,55 @@ const portalOptions = [
   { value: 'ib3', label: 'Partner 003' },
 ];
 
+const portalThemes = {
+  client: {
+    label: 'Referral',
+    badge: 'Referral',
+    clientBadge: 'Client Portal',
+    themeColor: '#ea580c',
+    badgeBg: '#fff7ed',
+    badgeColor: '#ea580c',
+    badgeBorder: '#fed7aa',
+    gradient: 'linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
+  },
+  ib1: {
+    label: 'Partner 001',
+    badge: 'Partner 001',
+    clientBadge: 'PARTNER 001',
+    themeColor: '#2563eb',
+    badgeBg: '#eff6ff',
+    badgeColor: '#2563eb',
+    badgeBorder: '#bfdbfe',
+    gradient: 'linear-gradient(145deg, #3b82f6 0%, #2563eb 45%, #1d4ed8 100%)',
+  },
+  ib2: {
+    label: 'Partner 002',
+    badge: 'Partner 002',
+    clientBadge: 'PARTNER 002',
+    themeColor: '#7c3aed',
+    badgeBg: '#faf5ff',
+    badgeColor: '#7c3aed',
+    badgeBorder: '#e9d5ff',
+    gradient: 'linear-gradient(145deg, #8b5cf6 0%, #7c3aed 45%, #5b21b6 100%)',
+  },
+  ib3: {
+    label: 'Partner 003',
+    badge: 'Partner 003',
+    clientBadge: 'PARTNER 003',
+    themeColor: '#059669',
+    badgeBg: '#ecfdf5',
+    badgeColor: '#059669',
+    badgeBorder: '#a7f3d0',
+    gradient: 'linear-gradient(145deg, #10b981 0%, #059669 45%, #064e3b 100%)',
+  },
+};
+
 export default function Login() {
   const [portal, setPortal] = useState('client');
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(true);
+
+  const currentTheme = portalThemes[portal] || portalThemes.client;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -43,10 +88,9 @@ export default function Login() {
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
       {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
       <div
-        className="hidden lg:flex lg:w-1/2 min-h-screen text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border"
+        className="hidden lg:flex lg:w-1/2 min-h-screen text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border transition-all duration-500"
         style={{
-          background:
-            'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
+          background: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, ${currentTheme.gradient}`,
         }}
       >
         <div className="max-w-[560px] w-full mx-auto">
@@ -99,9 +143,18 @@ export default function Login() {
 
             <div className="flex items-center gap-2 shrink-0">
               <LanguageSelector />
-              <span className="inline-flex items-center gap-1.5 bg-[#fff7ed] border border-[#fed7aa] text-[#ea580c] px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap">
-                <Users className="w-3 h-3 text-[#ea580c]" />
-                Client Portal
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider whitespace-nowrap transition-colors"
+                style={{
+                  backgroundColor: currentTheme.badgeBg,
+                  borderColor: currentTheme.badgeBorder,
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  color: currentTheme.badgeColor,
+                }}
+              >
+                <Users className="w-3 h-3" style={{ color: currentTheme.badgeColor }} />
+                {currentTheme.clientBadge}
               </span>
             </div>
           </div>
@@ -111,7 +164,9 @@ export default function Login() {
             Sign in to your account
           </h1>
           <p className="text-xs sm:text-sm text-slate-500 mb-6">
-            Access your live trading cabinet, deposits &amp; execution analytics
+            {portal !== 'client'
+              ? `Access your ${currentTheme.badge} partner network, multi-tier rebates & volume reports`
+              : 'Access your live trading cabinet, deposits & execution analytics'}
           </p>
 
           {/* Login Form */}
@@ -206,7 +261,13 @@ export default function Login() {
               type="submit"
               className="w-full bg-[#ff5a0a] hover:bg-[#e04800] text-white font-sora font-bold py-3.5 px-4 rounded-lg shadow-[0_4px_14px_rgba(255,90,10,0.3)] hover:shadow-[0_6px_20px_rgba(255,90,10,0.4)] transition-all flex items-center justify-center gap-2 text-sm sm:text-base mt-2"
             >
-              <span>Sign In</span>
+              <span>
+                {portal === 'ib1'
+                  ? 'Sign In (Partner 001)'
+                  : portal === 'ib2'
+                  ? 'Sign In (Partner 002)'
+                  : 'Sign In'}
+              </span>
               <ArrowRight className="w-4 h-4" />
             </button>
 

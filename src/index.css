@@ -1624,94 +1624,7 @@ td .btn-outline {
   margin-top: 22px;
 }
 
-/* ---------- Onboarding ---------- */
-.timeline {
-  position: relative;
-  margin-top: 56px;
-  max-width: 920px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.timeline-line {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: #16a34a;
-  transform: translateX(-50%);
-  border-radius: 3px;
-}
-
-.timeline-row {
-  display: grid;
-  grid-template-columns: 1fr 64px 1fr;
-  align-items: center;
-  gap: 24px;
-  margin-bottom: 48px;
-  position: relative;
-}
-
-.timeline-row:last-child {
-  margin-bottom: 0;
-}
-
-.timeline-card {
-  background: #fff;
-  border-radius: 16px;
-  padding: 26px;
-  box-shadow: 0 16px 36px -24px rgba(15, 23, 42, .3);
-  grid-column: 1;
-}
-
-.timeline-row.flip .timeline-card {
-  grid-column: 3;
-}
-
-.timeline-card h3 {
-  font-size: 20px;
-  font-weight: 800;
-  color: #065f46;
-  margin-bottom: 8px;
-}
-
-.timeline-card p {
-  color: var(--muted);
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.timeline-dot {
-  grid-column: 2;
-  justify-self: center;
-  z-index: 1;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #10b981;
-  color: #fff;
-  display: grid;
-  place-items: center;
-  font-weight: 800;
-  box-shadow: 0 0 0 6px #eefbf4;
-}
-
-.timeline-icon {
-  grid-column: 3;
-  justify-self: start;
-}
-
-.timeline-row.flip .timeline-icon {
-  grid-column: 1;
-  justify-self: end;
-}
-
-.timeline-icon img {
-  width: 130px;
-  height: 130px;
-  object-fit: contain;
-}
+/* ---------- Onboarding (Tailwind in Onboarding.jsx) ---------- */
 
 /* ---------- Education ---------- */
 .edu-grid {
@@ -2509,38 +2422,6 @@ td .btn-outline {
 
   .faq-intro {
     position: static;
-  }
-
-  .timeline-line {
-    left: 18px;
-    transform: none;
-  }
-
-  .timeline-row,
-  .timeline-row.flip {
-    grid-template-columns: 36px 1fr;
-  }
-
-  .timeline-dot {
-    grid-column: 1;
-    grid-row: 1;
-  }
-
-  .timeline-card,
-  .timeline-row.flip .timeline-card {
-    grid-column: 2;
-    grid-row: 1;
-  }
-
-  .timeline-icon,
-  .timeline-row.flip .timeline-icon {
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: start;
-  }
-
-  .timeline-row {
-    grid-template-columns: 36px 1fr;
   }
 }
 
