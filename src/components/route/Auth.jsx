@@ -92,8 +92,8 @@ export function LanguageSelector() {
 
 export function AuthPanel({ title, text, bullets, children }) {
   return (
-    <aside className="auth-panel hidden lg:flex flex-col justify-start pt-10 xl:pt-14 pb-8">
-      <span className="auth-badge"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
+    <aside className="auth-panel hidden lg:flex flex-col justify-start pt-20 xl:pt-[86px] pb-12">
+      <span className="auth-badge mb-6"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
       <h1>{title}</h1>
       <p>{text}</p>
       <ul>

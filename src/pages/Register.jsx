@@ -58,7 +58,7 @@ export default function Register() {
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
       {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
       <div
-        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-start px-10 xl:px-16 pt-10 xl:pt-14 pb-8 shrink-0 text-white"
+        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-start px-10 xl:px-16 pt-20 xl:pt-[86px] pb-12 shrink-0 text-white"
         style={{
           background:
             'linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
@@ -79,7 +79,7 @@ export default function Register() {
         />
 
         <div className="max-w-[520px] relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-5 backdrop-blur-md">
+          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-6 backdrop-blur-md">
             <Zap className="w-3.5 h-3.5 text-white" />
             <span>Majesty FX Institutional Infrastructure</span>
           </div>
@@ -103,7 +103,7 @@ export default function Register() {
             ))}
           </div>
 
-          <div className="mt-7 pt-5 border-t border-white/[0.22] flex items-center gap-4">
+          <div className="mt-8 pt-6 border-t border-white/[0.22] flex items-center gap-4">
             <ShieldCheck className="w-7 h-7 text-white opacity-90 shrink-0" />
             <div className="text-[0.82rem] text-white/[0.88] leading-snug">
               <strong className="block font-bold">Tier-1 Regulated Custody &amp; Liquidity</strong>
