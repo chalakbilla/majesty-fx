@@ -1,5 +1,6 @@
 import { ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 // Fixed to the right edge of the viewport so it stays visible while scrolling.
 export default function FloatingDock() {
@@ -10,16 +11,11 @@ export default function FloatingDock() {
         <div className="dock-pill">
           <span className="dot-green" />
           <span>Raw Spreads from 0.0 Pips</span>
-          <a href="#raw" className="dock-claim">Claim <ArrowRight /></a>
+          <Link to="/register" className="dock-claim">Claim <ArrowRight /></Link>
           <button aria-label="Dismiss" onClick={() => setPillOpen(false)}><X /></button>
         </div>
       )}
-      <a href="#create" className="btn btn-primary dock-cta">Create Account</a>
-      <a href="#top" className="dock-top" aria-label="Back to top">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 19V5M5 12l7-7 7 7" />
-        </svg>
-      </a>
+      <Link to="/register" className="btn btn-primary dock-cta">Create Account</Link>
     </div>
   );
 }

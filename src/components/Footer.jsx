@@ -1,4 +1,4 @@
-import { ArrowUp } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { footerColumns } from '../data.js';
 
@@ -56,7 +56,7 @@ export default function Footer() {
           <div>
             <h5>CORPORATE ENTITY &amp; LICENSING INFORMATION</h5>
             <p>
-              <strong>Majesty FX</strong> (<strong>majestyfx.com</strong>) is operated by <strong>MajestyFX Ltd</strong> (Company Registration No. <strong>202500773</strong>), registered under the International Business Companies (IBC) Act in Saint Lucia. Registered Office: Rodney Bayside Building, Rodney Bay, Gros Islet, Saint Lucia. Associated operations and clearing services are provided in affiliation with <strong>Majesty Financial Services Ltd</strong> (Registration No. <strong>26824 BC 2022</strong>. Registered Office: Suite 305, Griffith Corporate Centre, Beachmont, Kingstown, St. Vincent and the Grenadines) with European representative presence at B1 359, 28 October Avenue, Trust Re Building, Limassol 3107, Cyprus.
+              <strong>Majesty FX</strong> (<strong>majestyfx.com</strong>) is operated by <strong>MajestyFX Ltd</strong> (Company Registration No. <strong>202500773</strong>), registered under the International Business Companies (IBC) Act in Saint Lucia. Registered Office: Rodney Bayside Building, Rodney Bay, Gros Islet, Saint Lucia. Associated operations and clearing services are provided in affiliation with <strong>Majesty Financial Services Ltd</strong> (Registration No. <strong>26824 BC 2022</strong>, Registered Office: Suite 305, Griffith Corporate Centre, Beachmont, Kingstown, St. Vincent and the Grenadines) with European representative presence at B1 359, 28 October Avenue, Trust Re Building, Limassol 3107, Cyprus.
             </p>
           </div>
           <div>
@@ -80,12 +80,11 @@ export default function Footer() {
         </div>
 
         <div className="footer-bottom">
-          <span>© 2026 <strong>Majesty FX</strong> — All rights reserved. Sovereign Institutional Trading Infrastructure.</span>
+          <span className="footer-copy">© 2026 <strong>Majesty FX</strong> — All rights reserved. Sovereign Institutional Trading Infrastructure.</span>
           <span className="security">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z" /></svg>
+            <ShieldCheck className="sec-icon" />
             Security: 256-Bit SSL Encrypted <span className="dot-sep">·</span> Tier-1 Segregated Custody
           </span>
-          <a href="#top" className="btn btn-dark btn-sm">Back to Top <ArrowUp /></a>
         </div>
       </div>
     </footer>
