@@ -5,40 +5,81 @@ import { accounts } from '../data.js';
 export function AccountTypes() {
   return (
     <section className="section section-warm" id="pricing">
-      <div className="container">
-        <div className="center-stack">
-          <span className="eyebrow">Transparent trading conditions</span>
-          <h2 className="h2">
+      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="center-stack text-center max-w-[780px] mx-auto mb-10 sm:mb-14">
+          <span className="eyebrow mb-3">Transparent trading conditions</span>
+          <h2 className="h2 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b192c] tracking-tight leading-tight">
             Choose an Account <span className="accent">Engineered for</span>
             <br />
             Your <span className="accent">Trading Style</span>
           </h2>
-          <p className="section-sub">From zero-commission standard setups to ultra-low raw interbank latency, trade with complete clarity and no hidden fees.</p>
+          <p className="section-sub text-sm sm:text-base text-slate-600 mt-3">
+            From zero-commission standard setups to ultra-low raw interbank latency, trade with complete clarity and no hidden fees.
+          </p>
         </div>
 
-        <div className="account-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+        <div className="account-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
           {accounts.map((a) => (
-            <article key={a.name} className={`account-card ${a.popular ? 'popular' : ''}`}>
+            <article
+              key={a.name}
+              className={`account-card flex flex-col justify-between ${
+                a.popular ? 'popular border-2 border-[#ff5a0a] shadow-lg shadow-[#ff5a0a]/10' : ''
+              }`}
+            >
               {a.popular && <span className="popular-badge">MOST POPULAR</span>}
-              <h3>{a.name}</h3>
-              <p className="account-desc">{a.desc}</p>
-              <div className="spec-box">
-                <div className="spec-row"><span>Spreads From</span><strong className="big">{a.spreads}</strong></div>
-                <div className="spec-row"><span>Commission</span><span className={a.commissionGood ? 'good' : 'orange-text'}>{a.commission}</span></div>
-                <div className="spec-row"><span>Leverage</span><span>{a.leverage}</span></div>
-                <div className="spec-row"><span>Min Deposit</span><span className="orange-text">{a.minDeposit}</span></div>
+              <div>
+                <h3 className="font-sora text-xl font-bold text-[#0f172a] mb-2">{a.name}</h3>
+                <p className="account-desc text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">{a.desc}</p>
+                <div className="spec-box bg-[#f8fafc] rounded-xl p-4 border border-slate-100 mb-5 space-y-2.5">
+                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
+                    <span className="text-slate-500 font-medium">Spreads From</span>
+                    <strong className="big font-sora font-extrabold text-base text-[#0f172a]">{a.spreads}</strong>
+                  </div>
+                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
+                    <span className="text-slate-500 font-medium">Commission</span>
+                    <span className={a.commissionGood ? 'text-[#16a34a] font-semibold' : 'text-[#ff5a0a] font-semibold'}>
+                      {a.commission}
+                    </span>
+                  </div>
+                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
+                    <span className="text-slate-500 font-medium">Leverage</span>
+                    <span className="font-semibold text-[#0f172a]">{a.leverage}</span>
+                  </div>
+                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
+                    <span className="text-slate-500 font-medium">Min Deposit</span>
+                    <span className="font-sora font-bold text-[#ff5a0a]">{a.minDeposit}</span>
+                  </div>
+                </div>
+                <p className="features-title text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+                  Features
+                </p>
+                <ul className="check-list space-y-2 mb-6">
+                  {a.features.map((f) => (
+                    <li key={f} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-600 leading-snug">
+                      <Check className="w-4 h-4 text-[#16a34a] shrink-0 mt-0.5" />
+                      <span>{f}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <p className="features-title">Features</p>
-              <ul className="check-list">
-                {a.features.map((f) => (
-                  <li key={f}><Check /> {f}</li>
-                ))}
-              </ul>
-              <a href="#create" className={`btn btn-block ${a.popular ? 'btn-primary' : 'btn-outline'}`}>{a.cta} <ArrowRight /></a>
+              <a
+                href="#create"
+                className={`btn btn-block w-full py-3 px-4 rounded-lg font-sora font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all mt-auto ${
+                  a.popular
+                    ? 'btn-primary bg-[#ff5a0a] hover:bg-[#e04800] text-white shadow-md shadow-[#ff5a0a]/30'
+                    : 'btn-outline border border-slate-200 hover:border-[#ff5a0a] hover:text-[#ff5a0a] text-[#0f172a] bg-white'
+                }`}
+              >
+                <span>{a.cta}</span> <ArrowRight className="w-4 h-4" />
+              </a>
             </article>
           ))}
         </div>
-        <p className="center-link"><a href="#compare">Need a custom liquidity setup or corporate account? View detailed spread comparison table <ArrowRight /></a></p>
+        <p className="center-link text-center mt-10 text-xs sm:text-sm text-slate-500">
+          <a href="#compare" className="text-[#ff5a0a] hover:underline font-semibold inline-flex items-center gap-1">
+            Need a custom liquidity setup or corporate account? View detailed spread comparison table <ArrowRight className="w-3.5 h-3.5" />
+          </a>
+        </p>
       </div>
     </section>
   );

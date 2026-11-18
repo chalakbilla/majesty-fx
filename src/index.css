@@ -1311,11 +1311,7 @@ td .btn-outline {
 
 /* ---------- Accounts ---------- */
 .account-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
   margin-top: 52px;
-  align-items: stretch;
 }
 
 .account-card {
@@ -2440,10 +2436,6 @@ td .btn-outline {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .account-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .account-card.popular {
     transform: none;
   }
@@ -2576,7 +2568,6 @@ td .btn-outline {
 
   .instrument-grid,
   .category-grid,
-  .account-grid,
   .stats-grid {
     grid-template-columns: 1fr;
   }
