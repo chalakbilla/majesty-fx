@@ -74,8 +74,8 @@ export const accounts = [
       'Zero commission on all asset classes',
       'No minimum deposit requirement',
       'Swap-free Islamic option available',
-      'Negative balance protection',
       'Full EA (Expert Advisor) support',
+      'Negative balance protection',
       'Free multilingual live support',
     ],
     cta: 'Open Standard',
@@ -91,6 +91,7 @@ export const accounts = [
     features: [
       'Institutional raw spreads from 0.0 pips',
       'Deep liquidity from Tier-1 global banks',
+      'Ideal for scalping, hedging & EAs',
       'Ultra-low order latency in Equinix LD4',
       'Zero markup on market depth',
       'Comprehensive level 2 market data',
@@ -125,7 +126,7 @@ export const accounts = [
     features: [
       'Direct FIX 4.4 API protocol integration',
       'Custom liquidity aggregation profiles',
-      'Dedicated 24/7 senior trading desk',
+      'Dedicated 24/7 senior trading desk dealer',
       'Free high-spec cross-connected VPS',
       'Custom swap rates & rebate program',
       'Invitations to exclusive global VIP summits',

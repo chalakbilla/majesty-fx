@@ -5,9 +5,11 @@ import { accounts } from '../data.js';
 export function AccountTypes() {
   return (
     <section className="section section-warm" id="pricing">
-      <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="center-stack text-center max-w-[780px] mx-auto mb-10 sm:mb-14">
-          <span className="eyebrow mb-3">Transparent trading conditions</span>
+          <div className="badge-pill mb-3">
+            <span>TRANSPARENT TRADING CONDITIONS</span>
+          </div>
           <h2 className="h2 text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#0b192c] tracking-tight leading-tight">
             Choose an Account <span className="accent">Engineered for</span>
             <br />
@@ -18,66 +20,100 @@ export function AccountTypes() {
           </p>
         </div>
 
-        <div className="account-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 lg:gap-6 items-stretch">
           {accounts.map((a) => (
             <article
               key={a.name}
-              className={`account-card flex flex-col justify-between ${
-                a.popular ? 'popular border-2 border-[#ff5a0a] shadow-lg shadow-[#ff5a0a]/10' : ''
+              className={`rounded-xl p-5 sm:p-6 lg:p-7 flex flex-col justify-between relative transition-all ${
+                a.popular
+                  ? 'bg-[#fffaf5] border-2 border-[#ff5a0a] shadow-[0_12px_28px_-6px_rgba(255,102,0,0.14)] hover:shadow-[0_20px_40px_-8px_rgba(255,102,0,0.22)] -translate-y-1'
+                  : 'bg-white border border-slate-200 shadow-sm hover:border-[#ff5a0a]/50 hover:shadow-md hover:-translate-y-1'
               }`}
             >
-              {a.popular && <span className="popular-badge">MOST POPULAR</span>}
+              {a.popular && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#ff5a0a] text-white text-[11px] font-sora font-bold px-3.5 py-0.5 rounded-full uppercase tracking-wider shadow-sm whitespace-nowrap">
+                  MOST POPULAR
+                </div>
+              )}
               <div>
-                <h3 className="font-sora text-xl font-bold text-[#0f172a] mb-2">{a.name}</h3>
-                <p className="account-desc text-xs sm:text-sm text-slate-600 mb-5 leading-relaxed">{a.desc}</p>
-                <div className="spec-box bg-[#f8fafc] rounded-xl p-4 border border-slate-100 mb-5 space-y-2.5">
-                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
-                    <span className="text-slate-500 font-medium">Spreads From</span>
-                    <strong className="big font-sora font-extrabold text-base text-[#0f172a]">{a.spreads}</strong>
+                <h3 className="font-sora text-xl font-bold text-[#0f172a] mb-1.5">{a.name}</h3>
+                <p className="font-montserrat text-xs text-slate-500 leading-relaxed min-h-[38px] mb-5">
+                  {a.desc}
+                </p>
+
+                {/* Spec Box */}
+                <div className="bg-white rounded-lg p-4 border border-slate-200/80 mb-5 space-y-2.5">
+                  <div className="flex justify-between items-baseline">
+                    <span className="text-xs text-slate-500 font-medium">Spreads From</span>
+                    <strong className="font-sora font-extrabold text-xl text-[#0f172a]">{a.spreads}</strong>
                   </div>
-                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
-                    <span className="text-slate-500 font-medium">Commission</span>
-                    <span className={a.commissionGood ? 'text-[#16a34a] font-semibold' : 'text-[#ff5a0a] font-semibold'}>
+                  <div className="flex justify-between items-center text-xs sm:text-[13px]">
+                    <span className="text-slate-600 font-medium">Commission</span>
+                    <span
+                      className={`font-semibold ${
+                        a.commissionGood ? 'text-[#16a34a]' : 'text-[#0f172a]'
+                      }`}
+                    >
                       {a.commission}
                     </span>
                   </div>
-                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
-                    <span className="text-slate-500 font-medium">Leverage</span>
+                  <div className="flex justify-between items-center text-xs sm:text-[13px]">
+                    <span className="text-slate-600 font-medium">Leverage</span>
                     <span className="font-semibold text-[#0f172a]">{a.leverage}</span>
                   </div>
-                  <div className="spec-row flex justify-between items-center text-xs sm:text-sm">
-                    <span className="text-slate-500 font-medium">Min Deposit</span>
+                  <div className="flex justify-between items-center text-xs sm:text-[13px]">
+                    <span className="text-slate-600 font-medium">Min Deposit</span>
                     <span className="font-sora font-bold text-[#ff5a0a]">{a.minDeposit}</span>
                   </div>
                 </div>
-                <p className="features-title text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+
+                {/* Features Heading & List */}
+                <div className="font-sora text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3">
                   Features
-                </p>
-                <ul className="check-list space-y-2 mb-6">
+                </div>
+                <ul className="space-y-2.5 mb-6">
                   {a.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-xs sm:text-[13px] text-slate-600 leading-snug">
-                      <Check className="w-4 h-4 text-[#16a34a] shrink-0 mt-0.5" />
+                    <li key={f} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-[#334155] leading-snug">
+                      <div
+                        className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 p-0.5 mt-0.5 ${
+                          a.popular ? 'bg-[#fff7ed]' : 'bg-[#f0fdf4]'
+                        }`}
+                      >
+                        <Check
+                          className={`w-3 h-3 ${
+                            a.popular ? 'text-[#ff5a0a]' : 'text-[#16a34a]'
+                          }`}
+                        />
+                      </div>
                       <span>{f}</span>
                     </li>
                   ))}
                 </ul>
               </div>
+
+              {/* Action Button */}
               <a
                 href="#create"
-                className={`btn btn-block w-full py-3 px-4 rounded-lg font-sora font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all mt-auto ${
+                className={`w-full py-3 px-4 rounded-lg font-sora font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all mt-auto ${
                   a.popular
-                    ? 'btn-primary bg-[#ff5a0a] hover:bg-[#e04800] text-white shadow-md shadow-[#ff5a0a]/30'
-                    : 'btn-outline border border-slate-200 hover:border-[#ff5a0a] hover:text-[#ff5a0a] text-[#0f172a] bg-white'
+                    ? 'bg-[#ff5a0a] hover:bg-[#e04800] text-white shadow-[0_4px_14px_rgba(255,90,10,0.3)]'
+                    : 'border border-slate-200 hover:border-[#ff5a0a] hover:bg-[#fff7ed] hover:text-[#ff5a0a] text-[#0f172a] bg-white'
                 }`}
               >
-                <span>{a.cta}</span> <ArrowRight className="w-4 h-4" />
+                <span>{a.cta}</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </a>
             </article>
           ))}
         </div>
-        <p className="center-link text-center mt-10 text-xs sm:text-sm text-slate-500">
-          <a href="#compare" className="text-[#ff5a0a] hover:underline font-semibold inline-flex items-center gap-1">
-            Need a custom liquidity setup or corporate account? View detailed spread comparison table <ArrowRight className="w-3.5 h-3.5" />
+
+        <p className="text-center mt-10 text-xs sm:text-sm text-slate-600">
+          <a
+            href="#compare"
+            className="hover:text-[#ff5a0a] font-medium inline-flex items-center gap-1.5 transition-colors"
+          >
+            <span>Need a custom liquidity setup or corporate account? View detailed spread comparison table</span>
+            <ArrowRight className="w-3.5 h-3.5 text-[#ff5a0a]" />
           </a>
         </p>
       </div>
