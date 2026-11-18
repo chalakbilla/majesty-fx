@@ -18,10 +18,15 @@
   --mono-font: 'JetBrains Mono', ui-monospace, Menlo, monospace;
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
 }
 
 /* Icons inherit the surrounding text size and colour, like the glyphs they replace. */
@@ -2412,8 +2417,10 @@ td .btn-outline {
     display: flex;
   }
 
-  .nav-actions .btn-ghost {
-    display: none;
+  .nav-actions .btn,
+  .nav-actions .btn-ghost,
+  .nav-actions .btn-primary {
+    display: none !important;
   }
 
   .burger {

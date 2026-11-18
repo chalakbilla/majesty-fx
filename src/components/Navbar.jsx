@@ -80,10 +80,12 @@ export default function Navbar() {
           </NavLink>
         </nav>
 
-        {/* Action Buttons & Burger Button */}
+        {/* Action Buttons (Desktop Only) & Burger Button */}
         <div className="nav-actions flex items-center gap-2 sm:gap-3">
-          <Link to="/login" className="btn btn-ghost hidden lg:inline-flex">Log in</Link>
-          <Link to="/register" className="btn btn-primary hidden lg:inline-flex">Create Account</Link>
+          <div className="hidden lg:flex items-center gap-3">
+            <Link to="/login" className="btn btn-ghost">Log in</Link>
+            <Link to="/register" className="btn btn-primary">Create Account</Link>
+          </div>
           <button
             type="button"
             className="lg:hidden flex items-center justify-center p-2 rounded-lg border border-slate-200 bg-white text-slate-800 shadow-sm hover:bg-slate-50 transition-colors focus:outline-none"
@@ -98,17 +100,18 @@ export default function Navbar() {
       {/* Mobile Drawer (matches reference screenshot) */}
       {open && (
         <div className="lg:hidden absolute top-full left-0 right-0 w-full bg-white border-t border-slate-100 border-b border-slate-200 shadow-xl z-50 max-h-[calc(100vh-72px)] overflow-y-auto">
-          <div className="container py-2 flex flex-col">
+          <div className="container px-5 sm:px-6 py-2 flex flex-col">
             {mobileNavLinks.map(([label, to]) => (
               <NavLink
                 key={to}
                 to={to}
                 onClick={close}
                 className={({ isActive }) =>
-                  `block py-3.5 text-[17px] font-bold border-b border-slate-100 transition-colors ${
+                  `block py-4 text-[17px] font-bold transition-colors ${
                     isActive ? 'text-[#ff5a0a]' : 'text-[#0f172a] hover:text-[#ff5a0a]'
                   }`
                 }
+                style={{ borderBottom: '1px solid #f1f5f9' }}
               >
                 {label}
               </NavLink>
@@ -118,7 +121,8 @@ export default function Navbar() {
               <Link
                 to="/login"
                 onClick={close}
-                className="flex-1 py-3 px-4 text-center font-bold text-[15px] text-[#0f172a] bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+                className="flex-1 py-3 px-4 text-center font-bold text-[15px] text-[#0f172a] bg-white rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+                style={{ border: '1px solid #cbd5e1' }}
               >
                 Log in
               </Link>
