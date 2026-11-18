@@ -2480,14 +2480,20 @@ td .btn-outline {
   }
 
   .hero .btn-row {
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
     width: 100%;
-    align-items: stretch;
+    gap: 10px;
   }
 
   .hero .btn-row .btn {
-    width: 100%;
+    width: auto;
     justify-content: center;
+  }
+
+  .hero-visual {
+    min-height: auto;
   }
 
   .instrument-grid,

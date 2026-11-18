@@ -92,7 +92,7 @@ export function LanguageSelector() {
 
 export function AuthPanel({ title, text, bullets, children }) {
   return (
-    <aside className="auth-panel">
+    <aside className="auth-panel hidden lg:flex flex-col">
       <span className="auth-badge"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
       <h1>{title}</h1>
       <p>{text}</p>
@@ -106,15 +106,39 @@ export function AuthPanel({ title, text, bullets, children }) {
   );
 }
 
-export function Brand({ children }) {
+export function Brand({ showLanguage = false }) {
   return (
-    <div className="auth-brand flex flex-wrap items-center justify-between gap-3 w-full">
-      <Link to="/" className="brand flex items-center shrink-0">
-        <img src={logo} alt="Majesty FX logo" className="brand-logo" />
-        <span className="brand-text whitespace-nowrap">Majesty&nbsp;<span className="accent">FX</span></span>
-      </Link>
-      {children !== undefined ? children : <LanguageSelector />}
-      <span className="auth-portal shrink-0"><Users /> CLIENT PORTAL</span>
+    <div className="auth-brand w-full mb-6">
+      {showLanguage ? (
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 w-full">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="brand flex items-center shrink-0">
+              <img src={logo} alt="Majesty FX logo" className="brand-logo" />
+              <span className="brand-text whitespace-nowrap">
+                Majesty&nbsp;<span className="accent">FX</span>
+              </span>
+            </Link>
+          </div>
+          <div className="flex items-center justify-between lg:justify-end gap-3 w-full lg:w-auto">
+            <LanguageSelector />
+            <span className="auth-portal shrink-0">
+              <Users /> CLIENT PORTAL
+            </span>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center justify-between w-full">
+          <Link to="/" className="brand flex items-center shrink-0">
+            <img src={logo} alt="Majesty FX logo" className="brand-logo" />
+            <span className="brand-text whitespace-nowrap">
+              Majesty&nbsp;<span className="accent">FX</span>
+            </span>
+          </Link>
+          <span className="auth-portal shrink-0">
+            <Users /> CLIENT PORTAL
+          </span>
+        </div>
+      )}
     </div>
   );
 }

@@ -493,13 +493,15 @@
   .rp-lead, .rp-split-card p { max-width: none; }
   .rp-figure { height: 300px; }
   .auth, .auth-login, .auth-register { grid-template-columns: 1fr; }
-  .auth-panel, .auth-login .auth-panel, .auth-register .auth-panel { padding: 40px 24px; }
-  .auth-panel h1, .auth-login .auth-panel h1, .auth-register .auth-panel h1 { font-size: 30px; }
-  .auth-main, .auth-login .auth-main { padding: 40px 24px; }
+  .auth-panel, .auth-login .auth-panel, .auth-register .auth-panel { display: none !important; }
+  .auth-main, .auth-login .auth-main { padding: 32px 16px; width: 100%; max-width: 560px; margin: 0 auto; }
+  .auth-register .auth-main { padding: 24px 12px; width: 100%; max-width: 620px; margin: 0 auto; }
+  .auth-register .auth-main > .auth-card { max-width: 100%; padding: 28px 20px; }
 }
 @media (max-width: 600px) {
   .rp-cols-2, .rp-cols-4, .rp-cols-5 { grid-template-columns: 1fr; }
-  .rp-row, .auth-row, .auth-row.is-uneven { grid-template-columns: 1fr; }
+  .rp-row { grid-template-columns: 1fr; }
+  .auth-row, .auth-row.is-uneven { grid-template-columns: 1fr 1fr; gap: 10px; }
   .rp-section { padding: 52px 0; }
   .rp-roadmap { margin-left: 28px; }
   .rp-trio img { width: 80px; }
@@ -631,8 +633,9 @@
 
 @media (max-width: 900px) {
   .auth-login, .auth-register { grid-template-columns: 1fr; }
-  .auth-login .auth-panel, .auth-register .auth-panel { padding: 32px 20px; }
-  .auth-login .auth-main, .auth-register .auth-main { padding: 32px 20px; }
+  .auth-login .auth-panel, .auth-register .auth-panel { display: none !important; }
+  .auth-login .auth-main { padding: 32px 16px; width: 100%; max-width: 560px; margin: 0 auto; }
+  .auth-register .auth-main { padding: 24px 12px; width: 100%; max-width: 620px; margin: 0 auto; }
   .auth-login .auth-main > * { max-width: 100%; }
 }
 

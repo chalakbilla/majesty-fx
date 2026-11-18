@@ -11,6 +11,16 @@ const links = [
   ['IB', '/ib'],
 ];
 
+const mobileNavLinks = [
+  ['Markets', '/markets'],
+  ['Trading', '/trading'],
+  ['Platforms', '/platform'],
+  ['Pricing', '/pricing'],
+  ['IB', '/ib'],
+  ['Account Types', '/account-type'],
+  ['Help Desk', '/help-desk'],
+];
+
 const accountLinks = [
   ['Forex Accounts', '60+ pairs, 0.0 pip spreads', '/forex', TrendingUp],
   ['Metals Accounts', 'Spot Gold & Silver', '/metals', Coins],
@@ -20,10 +30,8 @@ const accountLinks = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const [mobileAcctOpen, setMobileAcctOpen] = useState(false);
   const close = () => {
     setOpen(false);
-    setMobileAcctOpen(false);
   };
 
   return (
@@ -36,7 +44,8 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <nav className={`nav-links ${open ? 'open' : ''}`}>
+        {/* Desktop Navigation */}
+        <nav className="nav-links hidden lg:flex items-center gap-7">
           {links.map(([label, to]) => (
             <NavLink key={to} to={to} onClick={close}>
               {label}
@@ -44,7 +53,7 @@ export default function Navbar() {
           ))}
 
           {/* Desktop Dropdown */}
-          <div className="acct-menu hidden lg:flex">
+          <div className="acct-menu flex items-center">
             <NavLink to="/account-type" onClick={close}>
               Account Types <ChevronDown className="chev" />
             </NavLink>
@@ -66,57 +75,64 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile Accordion */}
-          <div className="w-full lg:hidden flex flex-col">
-            <button
-              type="button"
-              className="flex items-center justify-between w-full py-2 text-left font-semibold text-slate-800"
-              onClick={() => setMobileAcctOpen((v) => !v)}
-            >
-              <span>Account Types</span>
-              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${mobileAcctOpen ? 'rotate-180 text-orange' : ''}`} />
-            </button>
-            {mobileAcctOpen && (
-              <div className="flex flex-col gap-2 pl-3 py-2 border-l-2 border-orange/40 my-1 bg-slate-50/60 rounded-r-lg">
-                {accountLinks.map(([label, sub, to, Icon]) => (
-                  <Link key={to} to={to} onClick={close} className="flex items-center gap-3 py-1.5 text-sm text-slate-700 hover:text-orange">
-                    <Icon className="w-4 h-4 text-orange shrink-0" />
-                    <span>
-                      <strong className="block text-xs font-bold">{label}</strong>
-                      <span className="block text-[11px] text-slate-500">{sub}</span>
-                    </span>
-                  </Link>
-                ))}
-                <Link to="/account-type" className="text-xs font-bold text-orange flex items-center gap-1.5 pt-1" onClick={close}>
-                  Compare All Account Types <ArrowRight className="w-3 h-3" />
-                </Link>
-              </div>
-            )}
-          </div>
-
           <NavLink to="/help-desk" onClick={close}>
             Help Desk
           </NavLink>
-
-          {/* Mobile Auth Actions */}
-          <div className="pt-3 border-t border-slate-100 flex flex-col gap-2 w-full lg:hidden mt-2">
-            <Link to="/login" className="btn btn-outline text-center w-full py-2.5 text-sm font-semibold" onClick={close}>
-              Log in
-            </Link>
-            <Link to="/register" className="btn btn-primary text-center w-full py-2.5 text-sm font-bold" onClick={close}>
-              Create Account
-            </Link>
-          </div>
         </nav>
 
+        {/* Action Buttons & Burger Button */}
         <div className="nav-actions flex items-center gap-2 sm:gap-3">
-          <Link to="/login" className="btn btn-ghost hidden sm:inline-flex">Log in</Link>
-          <Link to="/register" className="btn btn-primary text-xs sm:text-sm px-3 py-1.5 sm:px-4 sm:py-2">Create Account</Link>
-          <button className="burger block lg:hidden p-1.5 text-slate-800" aria-label="Toggle menu" onClick={() => setOpen((v) => !v)}>
-            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <Link to="/login" className="btn btn-ghost hidden lg:inline-flex">Log in</Link>
+          <Link to="/register" className="btn btn-primary hidden lg:inline-flex">Create Account</Link>
+          <button
+            type="button"
+            className="lg:hidden flex items-center justify-center p-2 rounded-lg border border-slate-200 bg-white text-slate-800 shadow-sm hover:bg-slate-50 transition-colors focus:outline-none"
+            aria-label="Toggle menu"
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X className="w-5 h-5 text-slate-800" strokeWidth={2} /> : <Menu className="w-5 h-5 text-slate-800" strokeWidth={2} />}
           </button>
         </div>
       </div>
+
+      {/* Mobile Drawer (matches reference screenshot) */}
+      {open && (
+        <div className="lg:hidden absolute top-full left-0 right-0 w-full bg-white border-t border-slate-100 border-b border-slate-200 shadow-xl z-50 max-h-[calc(100vh-72px)] overflow-y-auto">
+          <div className="container py-2 flex flex-col">
+            {mobileNavLinks.map(([label, to]) => (
+              <NavLink
+                key={to}
+                to={to}
+                onClick={close}
+                className={({ isActive }) =>
+                  `block py-3.5 text-[17px] font-bold border-b border-slate-100 transition-colors ${
+                    isActive ? 'text-[#ff5a0a]' : 'text-[#0f172a] hover:text-[#ff5a0a]'
+                  }`
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+
+            <div className="flex items-center gap-3 pt-6 pb-6 w-full">
+              <Link
+                to="/login"
+                onClick={close}
+                className="flex-1 py-3 px-4 text-center font-bold text-[15px] text-[#0f172a] bg-white border border-slate-200 rounded-lg shadow-sm hover:bg-slate-50 transition-colors"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/register"
+                onClick={close}
+                className="flex-1 py-3 px-4 text-center font-bold text-[15px] text-white bg-[#ff5a0a] rounded-lg shadow-md hover:bg-[#ea580c] transition-colors"
+              >
+                Create Account
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
