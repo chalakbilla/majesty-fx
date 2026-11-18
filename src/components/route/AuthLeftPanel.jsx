@@ -67,7 +67,7 @@ export default function AuthLeftPanel({
     <div
       className={`hidden lg:flex lg:w-1/2 min-h-screen text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border transition-all duration-500 ${className}`}
       style={{
-        background: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, ${currentTheme.gradient}`,
+        background: currentTheme.gradient,
       }}
     >
       <div className="max-w-[560px] w-full mx-auto">
