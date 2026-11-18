@@ -33,12 +33,12 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc] lg:h-screen lg:overflow-hidden">
       {/* Reusable Left Institutional Infrastructure Panel */}
       <AuthLeftPanel portal={portal} />
 
       {/* Right Form Panel (Clean, expanded, exactly matching original UI & mobile reference) */}
-      <div className="w-full lg:w-1/2 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12 overflow-y-auto box-border bg-white lg:bg-[#f8fafc]">
+      <div className="w-full lg:w-1/2 min-h-screen lg:h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12 overflow-y-auto box-border bg-white lg:bg-[#f8fafc]">
         <div className="w-full max-w-[440px] my-auto">
           {/* Top Logo & Portal/Language Header */}
           <div className="flex items-center justify-between gap-3 mb-6">

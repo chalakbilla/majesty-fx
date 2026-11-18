@@ -65,7 +65,7 @@ export default function AuthLeftPanel({
 
   return (
     <div
-      className={`hidden lg:flex lg:w-1/2 min-h-screen text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border transition-all duration-500 ${className}`}
+      className={`hidden lg:flex lg:w-1/2 h-full lg:h-screen lg:sticky lg:top-0 text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border transition-all duration-500 shrink-0 ${className}`}
       style={{
         background: currentTheme.gradient,
       }}

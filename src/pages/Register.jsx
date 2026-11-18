@@ -49,12 +49,12 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc] lg:h-screen lg:overflow-hidden">
       {/* Reusable Left Institutional Infrastructure Panel */}
       <AuthLeftPanel portal={portal} />
 
       {/* Right Form Card Section */}
-      <div className="w-full flex-1 min-h-screen flex flex-col items-center justify-center p-3.5 sm:p-6 md:p-10 bg-[#f8fafc] overflow-y-auto box-border">
+      <div className="w-full flex-1 lg:w-1/2 min-h-screen lg:h-screen flex flex-col items-center justify-center p-3.5 sm:p-6 md:p-10 bg-[#f8fafc] overflow-y-auto box-border">
         <div className="w-full max-w-[560px] bg-white rounded-2xl p-5 sm:p-8 md:p-10 shadow-[0_4px_20px_-2px_rgba(15,23,42,0.06),0_2px_6px_-1px_rgba(15,23,42,0.04)] border border-slate-200 my-auto">
           {/* Logo & Client Portal Header */}
           <div className="flex items-center justify-between mb-5 gap-3">
