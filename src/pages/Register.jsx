@@ -78,32 +78,35 @@ export default function Register() {
           }}
         />
 
-        <div className="max-w-[520px] relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-6 backdrop-blur-md">
-            <Zap className="w-3.5 h-3.5 text-white" />
-            <span>Majesty FX Institutional Infrastructure</span>
-          </div>
+        <div className="max-w-[520px] w-full relative z-10 flex flex-col flex-1 justify-between">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-6 backdrop-blur-md">
+              <Zap className="w-3.5 h-3.5 text-white" />
+              <span>Majesty FX Institutional Infrastructure</span>
+            </div>
 
-          <h1 className="text-[clamp(1.75rem,2.4vw,2.35rem)] font-extrabold leading-[1.18] tracking-tight text-white mb-4 font-sora">
-            Instant Institutional Onboarding. Secure Client Infrastructure.
-          </h1>
+            <h1 className="text-[clamp(1.75rem,2.4vw,2.35rem)] font-extrabold leading-[1.18] tracking-tight text-white mb-4 font-sora">
+              Instant Institutional Onboarding. Secure Client Infrastructure.
+            </h1>
 
-          <p className="text-[0.95rem] leading-relaxed text-white/90 mb-6">
-            Create your verified Majesty FX client cabinet in under 60 seconds with institutional security and automated multi-tier rebate capabilities.
-          </p>
+            <p className="text-[0.95rem] leading-relaxed text-white/90 mb-6">
+              Create your verified Majesty FX client cabinet in under 60 seconds with institutional security and automated multi-tier rebate capabilities.
+            </p>
 
-          <div className="flex flex-col gap-3.5">
-            {bullets.map((b) => (
-              <div key={b} className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-white/[0.22] flex items-center justify-center shrink-0">
-                  <CircleCheck className="w-4 h-4 text-white" />
+            <div className="flex flex-col gap-3.5">
+              {bullets.map((b) => (
+                <div key={b} className="flex items-center gap-3">
+                  <div className="w-6 h-6 rounded-full bg-white/[0.22] flex items-center justify-center shrink-0">
+                    <CircleCheck className="w-4 h-4 text-white" />
+                  </div>
+                  <span className="text-[0.92rem] text-white font-medium">{b}</span>
                 </div>
-                <span className="text-[0.92rem] text-white font-medium">{b}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/[0.22] flex items-center gap-4">
+          {/* Lower Custody Card (pushed to the bottom) */}
+          <div className="mt-auto pt-6 border-t border-white/[0.22] flex items-center gap-4">
             <ShieldCheck className="w-7 h-7 text-white opacity-90 shrink-0" />
             <div className="text-[0.82rem] text-white/[0.88] leading-snug">
               <strong className="block font-bold">Tier-1 Regulated Custody &amp; Liquidity</strong>

@@ -92,16 +92,18 @@ export function LanguageSelector() {
 
 export function AuthPanel({ title, text, bullets, children }) {
   return (
-    <aside className="auth-panel hidden lg:flex flex-col justify-start pt-20 xl:pt-[86px] pb-12">
-      <span className="auth-badge mb-6"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
-      <h1>{title}</h1>
-      <p>{text}</p>
-      <ul>
-        {bullets.map((b) => (
-          <li key={b}><CircleCheck /> {b}</li>
-        ))}
-      </ul>
-      {children}
+    <aside className="auth-panel hidden lg:flex flex-col justify-between pt-20 xl:pt-[86px] pb-12">
+      <div>
+        <span className="auth-badge mb-6"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
+        <h1>{title}</h1>
+        <p>{text}</p>
+        <ul>
+          {bullets.map((b) => (
+            <li key={b}><CircleCheck /> {b}</li>
+          ))}
+        </ul>
+      </div>
+      {children && <div className="mt-auto">{children}</div>}
     </aside>
   );
 }
