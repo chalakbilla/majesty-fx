@@ -23,7 +23,7 @@ export function InstrumentCards() {
           Explore Our <span className="accent">Market Instruments</span>
         </h2>
         <p className="section-sub">Trade across major asset classes — each with unique volatility, liquidity, and opportunities.</p>
-        <div className="instrument-grid">
+        <div className="instrument-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {instruments.map((ins) => {
             const Icon = instrumentIcons[ins.title];
             return (
@@ -56,7 +56,7 @@ export function MarketCategories() {
           Markets You Can <span className="accent">Trade</span>
         </h2>
         <p className="section-sub">Diversify across asset classes and tailor your portfolio to changing market conditions.</p>
-        <div className="category-grid">
+        <div className="category-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {marketCategories.map((c) => {
             const Icon = categoryIcons[c.icon];
             return (
@@ -111,27 +111,27 @@ export function MarketScreener() {
           <p className="section-sub">Trade across 200+ liquid CFDs with zero markup on raw interbank pricing. Real-time indicative quotes updated live.</p>
         </div>
 
-        <div className="screener">
-          <div className="screener-toolbar">
-            <div className="tabs">
+        <div className="screener w-full">
+          <div className="screener-toolbar flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 mb-6">
+            <div className="tabs flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none w-full md:w-auto">
               {screenerTabs.map((t, i) => (
-                <button key={t} className={`tab ${tab === i ? 'active' : ''}`} onClick={() => setTab(i)}>
+                <button key={t} className={`tab whitespace-nowrap shrink-0 ${tab === i ? 'active' : ''}`} onClick={() => setTab(i)}>
                   {t}
-                  <span className="tab-count">
+                  <span className="tab-count ml-1.5">
                     {i === 0 ? rows.length : rows.filter((r) => r.category === filterMap[i]).length}
                   </span>
                 </button>
               ))}
             </div>
             <input
-              className="search"
+              className="search w-full md:w-72"
               placeholder="Search symbol (e.g. Gold, EUR)"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
             />
           </div>
 
-          <div className="table-wrap">
+          <div className="table-wrap w-full overflow-x-auto -mx-2 sm:mx-0 px-2 sm:px-0">
             <table className="screener-table">
               <thead>
                 <tr>

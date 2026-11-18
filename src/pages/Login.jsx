@@ -11,14 +11,14 @@ const bullets = [
 
 export default function Login() {
   return (
-    <div className="auth auth-login">
+    <div className="auth auth-login grid grid-cols-1 lg:grid-cols-[46%_54%] min-h-screen w-full">
       <AuthPanel
         title="Institutional Trading Operations. Settled with absolute precision."
         text="Unified command center for multi-asset trading, automated KYC compliance, MT4/MT5 bridge liquidity, and instant treasury settlements."
         bullets={bullets}
       />
 
-      <section className="auth-main">
+      <section className="auth-main flex flex-col justify-center px-4 py-8 sm:px-8 lg:px-12 w-full">
         <Brand>
           <LanguageSelector />
         </Brand>
@@ -47,9 +47,9 @@ export default function Login() {
         <p className="auth-switch">
           Don’t have an account? <Link to="/register" className="auth-link">Create an Account</Link>
         </p>
-        <footer className="auth-foot">
-          <Link to="/"><ArrowLeft /> Back to platform</Link>
-          <span><ShieldCheck /> Tier-1 Segregated • 256-Bit SSL Encrypted</span>
+        <footer className="auth-foot flex flex-col sm:flex-row justify-between items-center gap-3 pt-6 border-t border-slate-100">
+          <Link to="/" className="inline-flex items-center gap-2"><ArrowLeft /> Back to platform</Link>
+          <span className="text-xs sm:text-sm text-center sm:text-right"><ShieldCheck /> Tier-1 Segregated • 256-Bit SSL Encrypted</span>
         </footer>
       </section>
     </div>

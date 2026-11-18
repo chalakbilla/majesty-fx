@@ -613,24 +613,34 @@
 }
 
 /* ============ Login: match reference ============ */
-.auth-login { grid-template-columns: 46% 54%; }
-.auth-login .auth-panel { padding: 56px 56px 48px; display: flex; flex-direction: column; justify-content: center; }
-.auth-login .auth-main { padding: 48px 6%; justify-content: center; }
-.auth-login .auth-main > * { max-width: 580px; }
+@media (min-width: 901px) {
+  .auth-login { grid-template-columns: 46% 54%; }
+  .auth-login .auth-panel { padding: 56px 56px 48px; display: flex; flex-direction: column; justify-content: center; }
+  .auth-login .auth-main { padding: 48px 6%; justify-content: center; }
+  .auth-login .auth-main > * { max-width: 580px; }
+  .auth-register { grid-template-columns: 46% 54%; }
+  .auth-register .auth-panel { padding: 48px 56px 44px; display: flex; flex-direction: column; }
+  .auth-register .auth-panel h1 { font-size: 46px; line-height: 1.12; margin: 26px 0 20px; max-width: 540px; }
+  .auth-register .auth-panel > p { font-size: 17px; max-width: 520px; }
+  .auth-register .auth-panel ul { margin-top: 30px; gap: 16px; }
+  .auth-register .auth-panel li { font-size: 16px; font-weight: 600; }
+  .auth-register .auth-assurance { margin-top: auto; max-width: 520px; }
+  .auth-register .auth-main { padding: 40px 6%; }
+  .auth-register .auth-main > .auth-card { max-width: 700px; padding: 40px 48px 34px; border-radius: 16px; }
+}
+
+@media (max-width: 900px) {
+  .auth-login, .auth-register { grid-template-columns: 1fr; }
+  .auth-login .auth-panel, .auth-register .auth-panel { padding: 32px 20px; }
+  .auth-login .auth-main, .auth-register .auth-main { padding: 32px 20px; }
+  .auth-login .auth-main > * { max-width: 100%; }
+}
+
 .auth-login .auth-brand { margin-bottom: 28px; }
 .auth-login .auth-main h2 { font-size: 30px; font-weight: 700; letter-spacing: -0.03em; }
 .auth-login .auth-sub { font-size: 14.5px; margin: 8px 0 26px; }
 
 /* ============ Register: match reference ============ */
-.auth-register { grid-template-columns: 46% 54%; }
-.auth-register .auth-panel { padding: 48px 56px 44px; display: flex; flex-direction: column; }
-.auth-register .auth-panel h1 { font-size: 46px; line-height: 1.12; margin: 26px 0 20px; max-width: 540px; }
-.auth-register .auth-panel > p { font-size: 17px; max-width: 520px; }
-.auth-register .auth-panel ul { margin-top: 30px; gap: 16px; }
-.auth-register .auth-panel li { font-size: 16px; font-weight: 600; }
-.auth-register .auth-assurance { margin-top: auto; max-width: 520px; }
-.auth-register .auth-main { padding: 40px 6%; }
-.auth-register .auth-main > .auth-card { max-width: 700px; padding: 40px 48px 34px; border-radius: 16px; }
 .auth-register .auth-brand { margin-bottom: 30px; }
 .auth-register .auth-brand .brand-text { font-size: 24px; }
 .auth-register .auth-main h2 { font-size: 36px; font-weight: 600; letter-spacing: -0.02em; }

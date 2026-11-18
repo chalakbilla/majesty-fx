@@ -108,13 +108,13 @@ export function AuthPanel({ title, text, bullets, children }) {
 
 export function Brand({ children }) {
   return (
-    <div className="auth-brand">
-      <Link to="/" className="brand">
+    <div className="auth-brand flex flex-wrap items-center justify-between gap-3 w-full">
+      <Link to="/" className="brand flex items-center shrink-0">
         <img src={logo} alt="Majesty FX logo" className="brand-logo" />
-        <span className="brand-text">Majesty&nbsp;<span className="accent">FX</span></span>
+        <span className="brand-text whitespace-nowrap">Majesty&nbsp;<span className="accent">FX</span></span>
       </Link>
       {children !== undefined ? children : <LanguageSelector />}
-      <span className="auth-portal"><Users /> CLIENT PORTAL</span>
+      <span className="auth-portal shrink-0"><Users /> CLIENT PORTAL</span>
     </div>
   );
 }

@@ -71,7 +71,7 @@ export default function IB() {
       />
 
       <section className="rp-stats is-peach">
-        <div className="container stats-grid">
+        <div className="container stats-grid grid grid-cols-2 lg:grid-cols-4 gap-4">
           {stats.map(([icon, value, label]) => (
             <div key={label} className="rp-stat">
               <Tile icon={icon} tone="solid" />
@@ -83,7 +83,7 @@ export default function IB() {
 
       <Section>
         <SectionHead icon={Users} tag="PARTNERSHIP BENEFITS" title="Why Partner with [Majesty FX?]" sub="Join a network built for serious affiliates, educators, and community leaders. Earn more with transparency, technology, and trust." />
-        <div className="rp-grid rp-cols-4">
+        <div className="rp-grid rp-cols-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {benefits.map(([Icon, src, title, text]) => (
             <article key={title} className="rp-card rp-photo-card is-left">
               <img src={src} alt={title} />
@@ -102,7 +102,7 @@ export default function IB() {
 
       <Section>
         <SectionHead icon={CircleCheck} tag="3 SIMPLE STEPS" title="Simple Onboarding, [Long-Term Growth]" sub="Start earning in just three easy steps — zero setup cost, zero delay." />
-        <div className="rp-grid rp-cols-3">
+        <div className="rp-grid rp-cols-3 grid grid-cols-1 md:grid-cols-3 gap-6">
           {steps.map(([icon, title, text]) => (
             <article key={title} className="rp-card rp-feature">
               <Tile icon={icon} tone="solid" round />

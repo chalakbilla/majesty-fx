@@ -60,22 +60,22 @@ export default function Pricing() {
       />
 
       <Section>
-        <div className="rp-split">
+        <div className="rp-split grid grid-cols-1 lg:grid-cols-[1.15fr_0.85fr] gap-8 lg:gap-12 items-center">
           <div className="rp-split-copy">
-            <div className="rp-pills">
+            <div className="rp-pills flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full">
               {[[Zap, 'Low Spreads'], [ShieldCheck, 'Zero Hidden Fees'], [Clock, 'Instant Execution']].map(([Icon, label]) => (
-                <span key={label} className="rp-badge"><Icon /> {label}</span>
+                <span key={label} className="rp-badge shrink-0 whitespace-nowrap"><Icon /> {label}</span>
               ))}
             </div>
             <h2 className="rp-h2">Transparent <span className="accent">pricing</span> built for traders</h2>
             <p className="rp-lead">With Majesty FX, you get institutional-grade pricing with no markup games — just clear, fair, and competitive trading costs from the world’s top tier-1 liquidity providers.</p>
-            <div className="btn-row">
-              <Link to="/register" className="btn btn-primary btn-lg">Start Trading <ArrowRight /></Link>
-              <Link to="/account-type" className="btn btn-outline btn-lg">Compare Accounts</Link>
+            <div className="btn-row flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
+              <Link to="/register" className="btn btn-primary btn-lg flex items-center justify-center gap-2 w-full sm:w-auto text-center">Start Trading <ArrowRight /></Link>
+              <Link to="/account-type" className="btn btn-outline btn-lg flex items-center justify-center w-full sm:w-auto text-center">Compare Accounts</Link>
             </div>
           </div>
-          <figure className="rp-figure">
-            <img src={phoneLaptop} alt="Trading on a phone" />
+          <figure className="rp-figure w-full max-w-[500px] mx-auto">
+            <img src={phoneLaptop} alt="Trading on a phone" className="w-full h-auto object-cover rounded-xl" />
             <figcaption>
               <span><BarChart3 /> Raw ECN Direct Market Access</span>
               <em>Sub-30ms Latency</em>
@@ -86,7 +86,7 @@ export default function Pricing() {
 
       <Section tone="soft">
         <SectionHead icon={Layers} tag="ACCOUNT TIERS" title="Account Plans [Overview]" sub="Choose the plan that matches your experience and strategy." />
-        <div className="rp-grid rp-cols-3">
+        <div className="rp-grid rp-cols-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {plans.map((p) => (
             <article key={p.name} className={`rp-card rp-plan${p.popular ? ' is-popular' : ''}`}>
               {p.popular && <span className="rp-ribbon-tag">MOST POPULAR</span>}

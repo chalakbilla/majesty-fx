@@ -73,12 +73,12 @@ export default function Markets() {
 
       <Section tone="soft">
         <SectionHead icon={BarChart3} tag="MARKET CATEGORIES" title="Explore Global [Market Categories]" sub="Discover global trading opportunities — filter asset type and explore live markets." />
-        <div className="rp-filters">
+        <div className="rp-filters flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none w-full mb-6">
           {filters.map((f) => (
-            <button key={f} className={f === group ? 'is-active' : undefined} onClick={() => setGroup(f)}>{f}</button>
+            <button key={f} className={`shrink-0 whitespace-nowrap ${f === group ? 'is-active' : ''}`} onClick={() => setGroup(f)}>{f}</button>
           ))}
         </div>
-        <div className="rp-grid rp-cols-5">
+        <div className="rp-grid rp-cols-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {visible.map(({ symbol, icon, tone, text, spread }) => (
             <article key={symbol} className="rp-card rp-asset">
               <Tile icon={icon} tone={`solid-${tone}`} />
@@ -92,7 +92,7 @@ export default function Markets() {
 
       <Section>
         <SectionHead icon={ShieldCheck} tag="CONTRACT DETAILS" title="Instrument [Specifications]" sub="Each asset class offers unique margin, leverage, and contract conditions." />
-        <div className="rp-grid rp-cols-4">
+        <div className="rp-grid rp-cols-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {contracts.map(({ icon, symbol, rows }) => (
             <article key={symbol} className="rp-card rp-contract">
               <Tile icon={icon} tone="solid" />

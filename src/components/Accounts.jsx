@@ -16,7 +16,7 @@ export function AccountTypes() {
           <p className="section-sub">From zero-commission standard setups to ultra-low raw interbank latency, trade with complete clarity and no hidden fees.</p>
         </div>
 
-        <div className="account-grid">
+        <div className="account-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {accounts.map((a) => (
             <article key={a.name} className={`account-card ${a.popular ? 'popular' : ''}`}>
               {a.popular && <span className="popular-badge">MOST POPULAR</span>}
@@ -87,12 +87,12 @@ export function Calculator() {
           <p className="section-sub">Simulate margin requirements, pip values, and expected profit before opening your live order ticket.</p>
         </div>
 
-        <div className="calc-grid">
+        <div className="calc-grid grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
           <div className="calc-card">
             <h4><Settings /> Position Parameters</h4>
 
             <label className="field-label">Tradable Asset</label>
-            <div className="chip-group">
+            <div className="chip-group flex flex-wrap gap-2">
               {ASSETS.map((a, i) => (
                 <button key={a.label} className={`seg ${assetIdx === i ? 'active' : ''}`} onClick={() => setAssetIdx(i)}>
                   {a.label}
@@ -101,7 +101,7 @@ export function Calculator() {
             </div>
 
             <label className="field-label">Order Direction</label>
-            <div className="dir-group">
+            <div className="dir-group grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button className={`dir buy ${direction === 'buy' ? 'active' : ''}`} onClick={() => setDirection('buy')}><ArrowUpRight /> BUY (Long)</button>
               <button className={`dir sell ${direction === 'sell' ? 'active' : ''}`} onClick={() => setDirection('sell')}><ArrowDownRight /> SELL (Short)</button>
             </div>
@@ -116,13 +116,13 @@ export function Calculator() {
               <label className="field-label">Leverage</label>
               <span className="mono">{leverage}</span>
             </div>
-            <div className="chip-group">
+            <div className="chip-group flex flex-wrap gap-2">
               {LEVERAGES.map((l) => (
                 <button key={l} className={`seg ${leverage === l ? 'active' : ''}`} onClick={() => setLeverage(l)}>{l}</button>
               ))}
             </div>
 
-            <div className="two-col">
+            <div className="two-col grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="field-label">Entry Price</label>
                 <input className="input" value={entry} onChange={(e) => setEntry(e.target.value)} />

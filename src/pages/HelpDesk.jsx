@@ -76,7 +76,7 @@ export default function HelpDesk() {
       </Section>
 
       <Section>
-        <div className="rp-split">
+        <div className="rp-split grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           <div className="rp-split-copy">
             <span className="rp-badge"><ShieldCheck /> BANK-GRADE CLIENT PROTECTION</span>
             <h2 className="rp-h2 rp-mt">Safe. Regulated. <span className="accent">Compliant.</span></h2>
@@ -99,7 +99,7 @@ export default function HelpDesk() {
       <Section tone="soft">
         <SectionHead icon={MessageSquare} tag="SUPPORT DESK" title="Submit a Support [Ticket]" sub="Our dedicated technical and treasury support team responds to all inquiries within 1 hour." />
         <form className="rp-form rp-card rp-ticket" onSubmit={(e) => e.preventDefault()}>
-          <div className="rp-row">
+          <div className="rp-row grid grid-cols-1 sm:grid-cols-2 gap-4">
             <label>Your Full Name *<input required placeholder="e.g. Michael Smith" /></label>
             <label>Email Address *<input required type="email" placeholder="michael@example.com" /></label>
           </div>

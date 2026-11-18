@@ -16,7 +16,7 @@ export default function Register() {
   const [referral, setReferral] = useState(false);
 
   return (
-    <div className="auth auth-register">
+    <div className="auth auth-register grid grid-cols-1 lg:grid-cols-[46%_54%] min-h-screen w-full">
       <AuthPanel
         title="Instant Institutional Onboarding. Secure Client Infrastructure."
         text="Create your verified Majesty FX client cabinet in under 60 seconds with institutional security and automated multi-tier rebate capabilities."
@@ -31,23 +31,23 @@ export default function Register() {
         </div>
       </AuthPanel>
 
-      <section className="auth-main">
-        <div className="auth-card">
+      <section className="auth-main flex flex-col justify-center px-4 py-8 sm:px-8 lg:px-12 w-full">
+        <div className="auth-card w-full max-w-[700px] mx-auto">
           <Brand />
           <h2>Create a New Account</h2>
           <p className="auth-sub">Access your secure Majesty FX portal and client dashboard</p>
 
           <form onSubmit={(e) => e.preventDefault()}>
             <SelectField label="Portal / Referral Type" options={portals} />
-            <div className="auth-row">
+            <div className="auth-row grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <Field label="First Name" icon={User} placeholder="e.g. Alexander" required />
               <Field label="Last Name" placeholder="e.g. Vance" required />
             </div>
-            <div className="auth-row is-uneven">
+            <div className="auth-row is-uneven grid grid-cols-1 sm:grid-cols-[1.15fr_1fr] gap-3 sm:gap-4">
               <Field label="Email Address" icon={Mail} type="email" placeholder="name@domain.com" required />
               <Field label="Phone Number" icon={Phone} type="tel" placeholder="+44 7000 000000" />
             </div>
-            <div className="auth-row">
+            <div className="auth-row grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <Field label="Date of Birth" icon={Calendar} type="date" required />
               <SelectField label="Country of Residence" icon={Globe} options={countries} />
             </div>
@@ -73,9 +73,9 @@ export default function Register() {
           <p className="auth-switch">
             Already registered with Majesty FX? <Link to="/login" className="auth-link">Sign in here</Link>
           </p>
-          <footer className="auth-foot">
-            <Link to="/"><ArrowLeft /> Back to home</Link>
-            <span><ShieldCheck /> 256-Bit SSL Encrypted</span>
+          <footer className="auth-foot flex flex-col sm:flex-row justify-between items-center gap-3 pt-6 border-t border-slate-100">
+            <Link to="/" className="inline-flex items-center gap-2"><ArrowLeft /> Back to home</Link>
+            <span className="text-xs sm:text-sm text-center sm:text-right"><ShieldCheck /> 256-Bit SSL Encrypted</span>
           </footer>
         </div>
       </section>

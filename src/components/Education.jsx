@@ -25,7 +25,7 @@ export default function Education() {
           <p className="section-sub">We equip every trader with institutional-grade knowledge, technical discipline, and real-time analytical tools to trade smarter.</p>
         </div>
 
-        <div className="edu-grid">
+        <div className="edu-grid grid grid-cols-1 lg:grid-cols-2 gap-6">
           <article className="edu-card" style={{ backgroundImage: `url(${mt5})` }}>
             <div className="edu-overlay" />
             <div className="edu-body">

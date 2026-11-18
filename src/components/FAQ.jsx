@@ -16,7 +16,7 @@ export default function FAQ() {
 
   return (
     <section className="section section-faq" id="help">
-      <div className="container faq-grid">
+      <div className="container faq-grid grid grid-cols-1 lg:grid-cols-[1fr_1.8fr] gap-8 lg:gap-12 items-start">
         <div className="faq-side">
           <span className="faq-badge">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
@@ -31,7 +31,7 @@ export default function FAQ() {
             Got questions about trading conditions, funding, sub-20ms execution, or regulatory fund safety? Here are the facts.
           </p>
 
-          <ul className="faq-cats">
+          <ul className="faq-cats flex flex-wrap lg:flex-col gap-2">
             {categories.map((c) => (
               <li key={c}>
                 <button

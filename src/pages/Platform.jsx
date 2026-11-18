@@ -106,9 +106,9 @@ export default function Platform() {
 
       <Section>
         {showcases.map(({ image, imageFirst, framed, plain, badge: [BadgeIcon, badgeText], title, text, features, actions }) => (
-          <div key={title} className={`rp-showcase${imageFirst ? ' is-reverse' : ''}`}>
-            <figure className={`rp-shot${framed ? ' is-framed' : ''}${plain ? ' is-plain' : ''}`}>
-              <img src={image} alt="" />
+          <div key={title} className={`rp-showcase${imageFirst ? ' is-reverse' : ''} grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center`}>
+            <figure className={`rp-shot${framed ? ' is-framed' : ''}${plain ? ' is-plain' : ''} w-full max-w-[500px] mx-auto`}>
+              <img src={image} alt="" className="w-full h-auto object-cover rounded-xl" />
             </figure>
             <div className="rp-split-copy">
               <span className="rp-badge"><BadgeIcon /> {badgeText}</span>
@@ -125,9 +125,9 @@ export default function Platform() {
                   </li>
                 ))}
               </ul>
-              <div className="btn-row">
+              <div className="btn-row flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
                 {actions.map(([Icon, label], i) => (
-                  <Link key={label} to="/register" className={`btn btn-lg ${i === 0 ? 'btn-primary' : 'btn-outline'}`}>
+                  <Link key={label} to="/register" className={`btn btn-lg flex items-center justify-center gap-2 ${i === 0 ? 'btn-primary' : 'btn-outline'}`}>
                     {Icon && <Icon />} {label}
                   </Link>
                 ))}
@@ -144,7 +144,7 @@ export default function Platform() {
 
       <Section>
         <SectionHead icon={Server} tag="GLOBAL LIQUIDITY CROSS-CONNECT" title="Ultra-Low Latency [Infrastructure]" sub="Majesty FX trading servers are directly co-located inside Equinix financial data centers in London, New York, and Tokyo, achieving sub-20ms execution with zero intervention." />
-        <div className="rp-grid rp-cols-3">
+        <div className="rp-grid rp-cols-3 grid grid-cols-1 md:grid-cols-3 gap-6">
           {servers.map(([name, role, text]) => (
             <article key={name} className="rp-card rp-feature">
               <Tile icon={Server} tone="ring" round />
@@ -163,7 +163,7 @@ export default function Platform() {
 
       <Section tone="warm">
         <SectionHead icon={Download} tag="INSTALLATION PACKAGES" title="Download Majesty FX [Platform Suites]" sub="Trade from anywhere — across high-performance desktop machines, mobile tablets, and modern web browsers." />
-        <div className="rp-grid rp-cols-4 is-narrow">
+        <div className="rp-grid rp-cols-4 is-narrow grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {downloads.map(([icon, tone, name, sub, cta, dl]) => (
             <article key={name} className="rp-card rp-feature">
               <Tile icon={icon} tone={tone} />

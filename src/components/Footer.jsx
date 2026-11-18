@@ -20,7 +20,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="footer-top">
+        <div className="footer-top grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8">
           <div className="footer-brand">
             <div className="brand">
               <img src={logo} alt="" className="brand-logo" />
@@ -79,7 +79,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="footer-bottom">
+        <div className="footer-bottom flex flex-col sm:flex-row justify-between items-center gap-4 text-center sm:text-left">
           <span className="footer-copy">© 2026 <strong>Majesty FX</strong> — All rights reserved. Sovereign Institutional Trading Infrastructure.</span>
           <span className="security">
             <ShieldCheck className="sec-icon" />

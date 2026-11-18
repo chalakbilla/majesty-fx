@@ -85,7 +85,7 @@ export default function Trading() {
 
       <Section tone="white">
         <SectionHead icon={Zap} tag="EXECUTION SPECIFICATIONS" title="Transparent Trading [Conditions]" sub="Fair pricing, institutional grade execution, and absolutely no hidden fees." />
-        <div className="rp-grid rp-cols-4">
+        <div className="rp-grid rp-cols-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {conditions.map(({ icon, title, rows }) => (
             <article key={title} className="rp-card rp-contract">
               <Tile icon={icon} tone="solid" />
@@ -108,7 +108,7 @@ export default function Trading() {
 
       <Section tone="soft">
         <SectionHead icon={Monitor} tag="MULTI-DEVICE ACCESS" title="Trade Anywhere, [Anytime]" sub="Access markets through our powerful platforms across all devices." />
-        <div className="rp-grid rp-cols-3">
+        <div className="rp-grid rp-cols-3 grid grid-cols-1 md:grid-cols-3 gap-6">
           {devices.map(([src, title, text]) => (
             <article key={title} className="rp-card rp-photo-card">
               <img src={src} alt={title} />

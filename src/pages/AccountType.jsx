@@ -95,7 +95,7 @@ export default function AccountType() {
 
       <Section tone="white">
         <SectionHead icon={Award} tag="ACCOUNT PLANS" title="Featured Trading [Accounts]" sub="Compare our accounts below and pick the optimal execution model for your capital and style." />
-        <div className="rp-grid rp-cols-3">
+        <div className="rp-grid rp-cols-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {plans.map((p) => (
             <article key={p.name} className={`rp-card rp-plan is-left${p.recommended ? ' is-popular' : ''}`}>
               {p.recommended && <span className="rp-ribbon-tag is-right">RECOMMENDED</span>}
@@ -150,7 +150,7 @@ export default function AccountType() {
 
       <Section tone="white">
         <SectionHead icon={Sparkles} tag="LIVE TELEMETRY" title="Trusted by Traders [Worldwide]" sub="Real data. Real execution. Real trust — powering thousands of active accounts every day." />
-        <div className="rp-grid rp-cols-4">
+        <div className="rp-grid rp-cols-4 grid grid-cols-2 lg:grid-cols-4 gap-4">
           {telemetry.map(([value, label, fill]) => (
             <article key={label} className="rp-card rp-telemetry">
               <b>{value}</b>
