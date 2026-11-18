@@ -1,3 +1,4 @@
+import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, Settings } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { accounts } from '../data.js';
 
@@ -30,14 +31,14 @@ export function AccountTypes() {
               <p className="features-title">Features</p>
               <ul className="check-list">
                 {a.features.map((f) => (
-                  <li key={f}>✓ {f}</li>
+                  <li key={f}><Check /> {f}</li>
                 ))}
               </ul>
-              <a href="#create" className={`btn btn-block ${a.popular ? 'btn-primary' : 'btn-outline'}`}>{a.cta} →</a>
+              <a href="#create" className={`btn btn-block ${a.popular ? 'btn-primary' : 'btn-outline'}`}>{a.cta} <ArrowRight /></a>
             </article>
           ))}
         </div>
-        <p className="center-link"><a href="#compare">Need a custom liquidity setup or corporate account? View detailed spread comparison table →</a></p>
+        <p className="center-link"><a href="#compare">Need a custom liquidity setup or corporate account? View detailed spread comparison table <ArrowRight /></a></p>
       </div>
     </section>
   );
@@ -88,7 +89,7 @@ export function Calculator() {
 
         <div className="calc-grid">
           <div className="calc-card">
-            <h4>⚙ Position Parameters</h4>
+            <h4><Settings /> Position Parameters</h4>
 
             <label className="field-label">Tradable Asset</label>
             <div className="chip-group">
@@ -101,8 +102,8 @@ export function Calculator() {
 
             <label className="field-label">Order Direction</label>
             <div className="dir-group">
-              <button className={`dir buy ${direction === 'buy' ? 'active' : ''}`} onClick={() => setDirection('buy')}>↗ BUY (Long)</button>
-              <button className={`dir sell ${direction === 'sell' ? 'active' : ''}`} onClick={() => setDirection('sell')}>↘ SELL (Short)</button>
+              <button className={`dir buy ${direction === 'buy' ? 'active' : ''}`} onClick={() => setDirection('buy')}><ArrowUpRight /> BUY (Long)</button>
+              <button className={`dir sell ${direction === 'sell' ? 'active' : ''}`} onClick={() => setDirection('sell')}><ArrowDownRight /> SELL (Short)</button>
             </div>
 
             <div className="range-head">
@@ -148,7 +149,7 @@ export function Calculator() {
             <div className="result-row"><span>Margin Required</span><strong>${result.margin.toFixed(2)} USD</strong></div>
             <div className="result-row"><span>Pip Value</span><strong className="orange-text">${result.pipValue.toFixed(2)} USD / pip</strong></div>
             <div className="result-row"><span>Broker Markup Fee</span><strong className="good">$0.00 (Raw Interbank)</strong></div>
-            <a href="#create" className="btn btn-primary btn-block btn-lg">Trade This Strategy Live →</a>
+            <a href="#create" className="btn btn-primary btn-block btn-lg">Trade This Strategy Live <ArrowRight /></a>
           </div>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { ArrowRight } from 'lucide-react';
 import mt5 from '../assets/mt5.jpg';
 import indices from '../assets/indices.avif';
 
@@ -35,7 +36,7 @@ export default function Education() {
                   <li key={t}><strong>{t}</strong> {d}</li>
                 ))}
               </ul>
-              <a href="#academy" className="btn btn-primary">Go to Academy →</a>
+              <a href="#academy" className="btn btn-primary">Go to Academy <ArrowRight /></a>
             </div>
           </article>
           <article className="edu-card" style={{ backgroundImage: `url(${indices})` }}>
@@ -48,7 +49,7 @@ export default function Education() {
                   <li key={t}><strong>{t}</strong> {d}</li>
                 ))}
               </ul>
-              <a href="#tools" className="btn btn-outline-light">Explore Tools →</a>
+              <a href="#tools" className="btn btn-outline-light">Explore Tools <ArrowRight /></a>
             </div>
           </article>
         </div>

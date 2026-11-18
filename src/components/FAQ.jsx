@@ -1,17 +1,14 @@
-import { useMemo, useState } from 'react';
+import { ArrowRight, ChevronDown, ChevronUp } from 'lucide-react';
+import { countBy } from 'lodash-es';
+import { useState } from 'react';
 import { faqs } from '../data.js';
 
 const categories = ['All Topics', 'Funding', 'Trading', 'Platforms', 'Accounts', 'Security', 'Partners'];
+const counts = { 'All Topics': faqs.length, ...countBy(faqs, 'tag') };
 
 export default function FAQ() {
   const [active, setActive] = useState('All Topics');
   const [open, setOpen] = useState(-1);
-
-  const counts = useMemo(() => {
-    const c = { 'All Topics': faqs.length };
-    faqs.forEach((f) => { c[f.tag] = (c[f.tag] || 0) + 1; });
-    return c;
-  }, []);
 
   const visible = faqs
     .map((f, i) => ({ ...f, index: i }))
@@ -61,7 +58,7 @@ export default function FAQ() {
               </div>
             </div>
             <p>Our senior support desk and liquidity engineers are available around the clock via live chat and tickets.</p>
-            <a href="#support" className="btn btn-primary">Contact Help Desk →</a>
+            <a href="#support" className="btn btn-primary">Contact Help Desk <ArrowRight /></a>
           </div>
         </div>
 
@@ -74,7 +71,7 @@ export default function FAQ() {
                   <span>{f.q}</span>
                   <span className="faq-meta">
                     <span className="faq-tag">{f.tag.toUpperCase()}</span>
-                    <span className="faq-chev">{isOpen ? '▴' : '▾'}</span>
+                    <span className="faq-chev">{isOpen ? <ChevronUp /> : <ChevronDown />}</span>
                   </span>
                 </button>
                 {isOpen && <div className="faq-a">{f.a}</div>}

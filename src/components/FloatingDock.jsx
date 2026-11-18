@@ -1,3 +1,4 @@
+import { ArrowRight, X } from 'lucide-react';
 import { useState } from 'react';
 
 // Fixed to the right edge of the viewport so it stays visible while scrolling.
@@ -9,8 +10,8 @@ export default function FloatingDock() {
         <div className="dock-pill">
           <span className="dot-green" />
           <span>Raw Spreads from 0.0 Pips</span>
-          <a href="#raw" className="dock-claim">Claim →</a>
-          <button aria-label="Dismiss" onClick={() => setPillOpen(false)}>✕</button>
+          <a href="#raw" className="dock-claim">Claim <ArrowRight /></a>
+          <button aria-label="Dismiss" onClick={() => setPillOpen(false)}><X /></button>
         </div>
       )}
       <a href="#create" className="btn btn-primary dock-cta">Create Account</a>

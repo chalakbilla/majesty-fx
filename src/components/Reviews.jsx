@@ -1,10 +1,14 @@
+import { BadgeCheck, Star } from 'lucide-react';
+import { times } from 'lodash-es';
 import { reviewsTop, reviewsBottom } from '../data.js';
 
 function Card({ r }) {
   return (
     <article className="review-card">
       <div className="review-top">
-        <div className="stars">★★★★★</div>
+        <div className="stars">
+          {times(5, (i) => <Star key={i} fill="currentColor" strokeWidth={0} />)}
+        </div>
         <span className="review-badge">{r.badge}</span>
       </div>
       <p className="review-text">“{r.text}”</p>
@@ -12,7 +16,7 @@ function Card({ r }) {
         <img src={r.avatar} alt={r.name} />
         <div>
           <strong>
-            {r.name} <span className="verified">✔</span>
+            {r.name} <BadgeCheck className="verified" />
           </strong>
           <small>{r.role}</small>
         </div>

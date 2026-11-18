@@ -3,16 +3,17 @@ import stocks from '../assets/stocks.avif';
 import indices from '../assets/indices.avif';
 import crypto from '../assets/crypto.avif';
 import { instruments, marketCategories, screenerRows, screenerTabs } from '../data.js';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { ArrowDownRight, ArrowLeftRight, ArrowRight, ArrowUpRight, BarChart3, Bitcoin, LineChart, Medal, TrendingUp, Zap } from 'lucide-react';
+import { line } from 'd3-shape';
+import { clamp, range } from 'lodash-es';
+import seedrandom from 'seedrandom';
+import { useInterval } from 'usehooks-ts';
 
 const imageMap = { forex, stocks, indices, crypto };
 
-const categoryIcons = {
-  swap: '⇄',
-  medal: '✪',
-  trend: '↗',
-  bolt: '⚡',
-};
+const instrumentIcons = { Forex: ArrowLeftRight, Stocks: BarChart3, Indices: LineChart, Crypto: Bitcoin };
+const categoryIcons = { swap: ArrowLeftRight, medal: Medal, trend: TrendingUp, bolt: Zap };
 
 export function InstrumentCards() {
   return (
@@ -23,7 +24,9 @@ export function InstrumentCards() {
         </h2>
         <p className="section-sub">Trade across major asset classes — each with unique volatility, liquidity, and opportunities.</p>
         <div className="instrument-grid">
-          {instruments.map((ins) => (
+          {instruments.map((ins) => {
+            const Icon = instrumentIcons[ins.title];
+            return (
             <article key={ins.title} className="instrument-card">
               {ins.image ? (
                 <img src={imageMap[ins.image]} alt={ins.title} className="instrument-img" />
@@ -32,12 +35,13 @@ export function InstrumentCards() {
               )}
               <div className="instrument-overlay" />
               <div className="instrument-body">
-                <span className="instrument-icon">{ins.title === 'Crypto' ? '₿' : ins.title === 'Stocks' ? '▥' : ins.title === 'Indices' ? '▤' : '⇄'}</span>
+                <span className="instrument-icon"><Icon /></span>
                 <h3>{ins.title}</h3>
                 <p>{ins.text}</p>
               </div>
             </article>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
@@ -53,22 +57,21 @@ export function MarketCategories() {
         </h2>
         <p className="section-sub">Diversify across asset classes and tailor your portfolio to changing market conditions.</p>
         <div className="category-grid">
-          {marketCategories.map((c) => (
+          {marketCategories.map((c) => {
+            const Icon = categoryIcons[c.icon];
+            return (
             <div key={c.title} className="category-card">
-              <div className={`category-icon tone-${c.color}`}>{categoryIcons[c.icon]}</div>
+              <div className={`category-icon tone-${c.color}`}><Icon /></div>
               <h3>{c.title}</h3>
               <p>{c.text}</p>
               <span className="chip">{c.pairs}</span>
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
   );
-}
-
-function fmt(value, dp) {
-  return value.toFixed(dp);
 }
 
 export function MarketScreener() {
@@ -77,19 +80,14 @@ export function MarketScreener() {
   const [rows, setRows] = useState(screenerRows);
 
   // Light live-quote simulation so bid/ask tick like a real screener.
-  useEffect(() => {
-    const id = setInterval(() => {
-      setRows((prev) =>
-        prev.map((r) => {
-          const drift = (Math.random() - 0.5) * 0.0008;
-          const bid = r.bid * (1 + drift);
-          const spreadAbs = r.ask - r.bid;
-          return { ...r, bid, ask: bid + spreadAbs };
-        })
-      );
-    }, 1500);
-    return () => clearInterval(id);
-  }, []);
+  useInterval(() => {
+    setRows((prev) =>
+      prev.map((r) => {
+        const bid = r.bid * (1 + (Math.random() - 0.5) * 0.0008);
+        return { ...r, bid, ask: bid + (r.ask - r.bid) };
+      })
+    );
+  }, 1500);
 
   const filterMap = { 1: 'Forex', 2: 'Metals', 3: 'Indices', 4: 'Crypto', 5: 'Energies' };
   const visible = useMemo(() => {
@@ -151,6 +149,7 @@ export function MarketScreener() {
               <tbody>
                 {visible.map((r) => {
                   const pct = ((r.bid - r.range[0]) / (r.range[1] - r.range[0] || 1)) * 100;
+                  const Arrow = r.change >= 0 ? ArrowUpRight : ArrowDownRight;
                   return (
                     <tr key={r.symbol}>
                       <td>
@@ -158,12 +157,12 @@ export function MarketScreener() {
                         <div className="sym-name">{r.name}</div>
                       </td>
                       <td><span className="chip chip-grey">{r.category}</span></td>
-                      <td className="mono">{fmt(r.bid, r.dp)}</td>
-                      <td className="mono">{fmt(r.ask, r.dp)}</td>
+                      <td className="mono">{r.bid.toFixed(r.dp)}</td>
+                      <td className="mono">{r.ask.toFixed(r.dp)}</td>
                       <td><span className="chip chip-orange">{r.spread}</span></td>
                       <td>
                         <span className={`chip ${r.change >= 0 ? 'chip-up' : 'chip-down'}`}>
-                          {r.change >= 0 ? '↗ +' : '↘ '}
+                          <Arrow /> {r.change >= 0 ? '+' : ''}
                           {r.change.toFixed(2)}%
                         </span>
                       </td>
@@ -173,20 +172,20 @@ export function MarketScreener() {
                           <span>{r.range[1]}</span>
                         </div>
                         <div className="range-bar">
-                          <div style={{ width: `${Math.min(100, Math.max(5, pct))}%` }} />
+                          <div style={{ width: `${clamp(pct, 5, 100)}%` }} />
                         </div>
                       </td>
                       <td>
                         <svg className="spark" viewBox="0 0 80 28" preserveAspectRatio="none">
-                          <polyline
+                          <path
                             fill="none"
                             strokeWidth="2"
                             stroke={r.change >= 0 ? '#16a34a' : '#dc2626'}
-                            points={sparkPoints(r.symbol, r.change)}
+                            d={sparkPath(r.symbol, r.change)}
                           />
                         </svg>
                       </td>
-                      <td className="right"><button className="btn btn-outline btn-sm">Trade →</button></td>
+                      <td className="right"><button className="btn btn-outline btn-sm">Trade <ArrowRight /></button></td>
                     </tr>
                   );
                 })}
@@ -194,7 +193,7 @@ export function MarketScreener() {
             </table>
           </div>
           <div className="table-footer">
-            <a href="#directory">View All 200+ Tradable Symbols in Complete Asset Directory →</a>
+            <a href="#directory">View All 200+ Tradable Symbols in Complete Asset Directory <ArrowRight /></a>
           </div>
         </div>
       </div>
@@ -202,17 +201,14 @@ export function MarketScreener() {
   );
 }
 
-// Deterministic pseudo-random sparkline per symbol so it doesn't jitter on each tick.
-function sparkPoints(seed, change) {
-  let h = 0;
-  for (const c of seed) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  const pts = [];
+// Deterministic per-symbol sparkline: seeding by symbol keeps it from jittering on each tick.
+function sparkPath(seed, change) {
+  const random = seedrandom(seed);
+  const drift = change >= 0 ? -0.6 : 0.6;
   let y = 14;
-  for (let x = 0; x <= 80; x += 8) {
-    h = (h * 1103515245 + 12345) >>> 0;
-    const noise = ((h >> 8) % 100) / 100 - 0.5;
-    y = Math.min(24, Math.max(4, y - (change >= 0 ? 0.6 : -0.6) + noise * 8));
-    pts.push(`${x},${y.toFixed(1)}`);
-  }
-  return pts.join(' ');
+  const points = range(0, 81, 8).map((x) => {
+    y = clamp(y + drift + (random() - 0.5) * 8, 4, 24);
+    return [x, y];
+  });
+  return line()(points);
 }
