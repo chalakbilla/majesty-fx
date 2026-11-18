@@ -576,45 +576,56 @@ h5 {
 }
 
 .hero h1 {
+  font-family: var(--sora);
   color: #fff;
-  font-size: clamp(36px, 4.6vw, 58px);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  margin: 22px 0 22px;
+  font-size: clamp(42px, 5.2vw, 68px);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+  margin: 24px 0 22px;
 }
 
 .hero .accent {
   color: var(--orange);
-  white-space: nowrap;
 }
 
 .lead {
-  color: #cbd5e1;
+  color: #94a3b8;
   font-size: 17px;
-  max-width: 540px;
+  line-height: 1.65;
+  max-width: 580px;
 }
 
 .lead strong {
   color: #fff;
+  font-weight: 700;
 }
 
 .pill-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, .06);
-  border: 1px solid rgba(255, 255, 255, .14);
-  color: #e2e8f0;
-  font-size: 13px;
+  gap: 8px;
+  background: rgba(255, 255, 255, .05);
+  border: 1px solid rgba(255, 255, 255, .15);
+  color: #ffffff;
+  font-size: 13.5px;
   font-weight: 600;
-  padding: 7px 14px;
+  padding: 8px 18px;
   border-radius: 999px;
+  white-space: nowrap;
+}
+
+.pill svg {
+  color: var(--orange);
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
 }
 
 .pill-light {
@@ -627,8 +638,59 @@ h5 {
   margin-top: 0;
 }
 
+.hero .btn-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.hero .btn-primary {
+  background: #ff5a0a;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px -8px rgba(255, 90, 10, .7);
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .15s, background .15s, box-shadow .15s;
+}
+
+.hero .btn-primary:hover {
+  background: #ea580c;
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px -8px rgba(255, 90, 10, .85);
+}
+
+.hero .btn-primary svg {
+  width: 18px;
+  height: 18px;
+}
+
 .hero .btn-outline {
-  background: #fff;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .15s, background .15s, box-shadow .15s;
+}
+
+.hero .btn-outline:hover {
+  background: #f8fafc;
+  color: #0f172a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .hero-visual {

@@ -1,4 +1,5 @@
-import { ArrowRight, Globe, ShieldCheck, Zap } from 'lucide-react';
+import { ArrowRight, Shield, Sparkles, Zap } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import heroPhones from '../assets/hero-phones.png';
 import heroBg from '../assets/hero-bg.jpg';
 
@@ -10,11 +11,13 @@ export default function Hero() {
         <div className="hero-copy">
           <div className="pill-row">
             <span className="pill"><Zap /> Ultra-Fast Execution</span>
-            <span className="pill"><Globe /> Global Liquidity</span>
-            <span className="pill"><ShieldCheck /> Trusted Worldwide</span>
+            <span className="pill"><Sparkles /> Global Liquidity</span>
+            <span className="pill"><Shield /> Trusted Worldwide</span>
           </div>
           <h1>
-            Trade the <span className="accent">World’s Markets</span>
+            Trade the <span className="accent">World’s</span>
+            <br />
+            <span className="accent">Markets</span>
             <br />
             with Clarity &amp; Speed
           </h1>
@@ -23,8 +26,8 @@ export default function Hero() {
             transparent pricing, and cutting-edge technology meet for peak performance.
           </p>
           <div className="btn-row">
-            <a href="#create" className="btn btn-primary btn-lg">Open Live Account <ArrowRight /></a>
-            <a href="#demo" className="btn btn-outline btn-lg">Try Free Majesty Fx</a>
+            <Link to="/register" className="btn btn-primary btn-lg">Open Live Account <ArrowRight /></Link>
+            <Link to="/register" className="btn btn-outline btn-lg">Try Free Majesty Fx</Link>
           </div>
         </div>
 
