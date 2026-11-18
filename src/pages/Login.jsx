@@ -55,7 +55,7 @@ export default function Login() {
             <span>Majesty FX Institutional Infrastructure</span>
           </div>
 
-          <h1 className="font-sora text-3xl xl:text-4xl 2xl:text-[44px] font-extrabold leading-[1.18] tracking-tight mb-5">
+          <h1 className="font-sora text-3xl xl:text-4xl 2xl:text-[44px] font-extrabold leading-[1.18] tracking-tight text-white mb-5">
             Institutional Trading Operations. Settled with absolute precision.
           </h1>
 

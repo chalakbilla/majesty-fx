@@ -95,7 +95,7 @@ export function AuthPanel({ title, text, bullets, children }) {
     <aside className="auth-panel hidden lg:flex flex-col justify-center">
       <div className="max-w-[520px]">
         <span className="auth-badge mb-7"><Zap /> MAJESTY FX INSTITUTIONAL INFRASTRUCTURE</span>
-        <h1>{title}</h1>
+        <h1 className="text-white">{title}</h1>
         <p>{text}</p>
         <ul className="flex flex-col gap-4">
           {bullets.map((b) => (
