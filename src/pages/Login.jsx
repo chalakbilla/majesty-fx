@@ -3,25 +3,15 @@ import {
   ArrowLeft,
   ArrowRight,
   ChevronDown,
-  CircleCheck,
   Eye,
   EyeOff,
   Lock,
   Mail,
-  ShieldCheck,
   Users,
-  Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-import { LanguageSelector } from '../components/route/Auth.jsx';
-
-const bullets = [
-  'Real-time MT4/MT5 bridge & LP liquidity aggregation',
-  'Instant crypto USDT (TRC20/ERC20) & wire treasury queues',
-  'Automated client KYC & tiered risk compliance scoring',
-  'Multi-tier Introducing Broker (IB) automated rebate engine',
-];
+import { LanguageSelector, AuthLeftPanel, portalThemes } from '../components/route/Auth.jsx';
 
 const portalOptions = [
   { value: 'client', label: 'Referral' },
@@ -29,49 +19,6 @@ const portalOptions = [
   { value: 'ib2', label: 'Partner 002' },
   { value: 'ib3', label: 'Partner 003' },
 ];
-
-const portalThemes = {
-  client: {
-    label: 'Referral',
-    badge: 'Referral',
-    clientBadge: 'Client Portal',
-    themeColor: '#ea580c',
-    badgeBg: '#fff7ed',
-    badgeColor: '#ea580c',
-    badgeBorder: '#fed7aa',
-    gradient: 'linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
-  },
-  ib1: {
-    label: 'Partner 001',
-    badge: 'Partner 001',
-    clientBadge: 'PARTNER 001',
-    themeColor: '#2563eb',
-    badgeBg: '#eff6ff',
-    badgeColor: '#2563eb',
-    badgeBorder: '#bfdbfe',
-    gradient: 'linear-gradient(145deg, #3b82f6 0%, #2563eb 45%, #1d4ed8 100%)',
-  },
-  ib2: {
-    label: 'Partner 002',
-    badge: 'Partner 002',
-    clientBadge: 'PARTNER 002',
-    themeColor: '#7c3aed',
-    badgeBg: '#faf5ff',
-    badgeColor: '#7c3aed',
-    badgeBorder: '#e9d5ff',
-    gradient: 'linear-gradient(145deg, #8b5cf6 0%, #7c3aed 45%, #5b21b6 100%)',
-  },
-  ib3: {
-    label: 'Partner 003',
-    badge: 'Partner 003',
-    clientBadge: 'PARTNER 003',
-    themeColor: '#059669',
-    badgeBg: '#ecfdf5',
-    badgeColor: '#059669',
-    badgeBorder: '#a7f3d0',
-    gradient: 'linear-gradient(145deg, #10b981 0%, #059669 45%, #064e3b 100%)',
-  },
-};
 
 export default function Login() {
   const [portal, setPortal] = useState('client');
@@ -86,48 +33,8 @@ export default function Login() {
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
-      {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
-      <div
-        className="hidden lg:flex lg:w-1/2 min-h-screen text-white p-10 xl:p-16 flex-col justify-center relative overflow-y-auto box-border transition-all duration-500"
-        style={{
-          background: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 36px 36px, ${currentTheme.gradient}`,
-        }}
-      >
-        <div className="max-w-[560px] w-full mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/15 border border-white/25 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-8 backdrop-blur-sm">
-            <Zap className="w-3.5 h-3.5 text-white" />
-            <span>Majesty FX Institutional Infrastructure</span>
-          </div>
-
-          <h1 className="font-sora text-3xl xl:text-4xl 2xl:text-[44px] font-extrabold leading-[1.18] tracking-tight text-white mb-5">
-            Institutional Trading Operations. Settled with absolute precision.
-          </h1>
-
-          <p className="text-white/90 text-sm xl:text-base leading-relaxed mb-8">
-            Unified command center for multi-asset trading, automated KYC compliance, MT4/MT5 bridge
-            liquidity, and instant treasury settlements.
-          </p>
-
-          <div className="space-y-3.5 mb-10">
-            {bullets.map((b) => (
-              <div key={b} className="flex items-start gap-3">
-                <CircleCheck className="w-5 h-5 text-white shrink-0 mt-0.5" />
-                <span className="text-sm xl:text-[15px] font-medium text-white/95">{b}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="pt-6 border-t border-white/20 flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-white shrink-0 mt-0.5" />
-            <div>
-              <div className="font-bold text-sm text-white">Tier-1 Regulated Custody &amp; Liquidity</div>
-              <div className="text-xs text-white/80 mt-0.5">
-                Client capital segregated in top-tier financial institutions.
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Reusable Left Institutional Infrastructure Panel */}
+      <AuthLeftPanel portal={portal} />
 
       {/* Right Form Panel (Clean, expanded, exactly matching original UI & mobile reference) */}
       <div className="w-full lg:w-1/2 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12 overflow-y-auto box-border bg-white lg:bg-[#f8fafc]">

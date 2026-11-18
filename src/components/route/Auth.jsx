@@ -90,6 +90,8 @@ export function LanguageSelector() {
   );
 }
 
+export { default as AuthLeftPanel, portalThemes } from './AuthLeftPanel.jsx';
+
 export function AuthPanel({ title, text, bullets, children }) {
   return (
     <aside className="auth-panel hidden lg:flex flex-col justify-center">

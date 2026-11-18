@@ -4,27 +4,18 @@ import {
   ArrowRight,
   Calendar,
   ChevronDown,
-  CircleCheck,
   Eye,
   EyeOff,
   Globe,
   Lock,
   Mail,
   Phone,
-  ShieldCheck,
   User,
   Users,
-  Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
-
-const bullets = [
-  'Real-time MT4/MT5 bridge & LP liquidity aggregation',
-  'Instant crypto USDT (TRC20/ERC20) & wire treasury queues',
-  'Automated client KYC & tiered risk compliance scoring',
-  'Multi-tier Introducing Broker (IB) automated rebate engine',
-];
+import { AuthLeftPanel, portalThemes } from '../components/route/Auth.jsx';
 
 const portalOptions = [
   { value: 'client', label: 'Referral' },
@@ -32,49 +23,6 @@ const portalOptions = [
   { value: 'ib2', label: 'Partner 002' },
   { value: 'ib3', label: 'Partner 003' },
 ];
-
-const portalThemes = {
-  client: {
-    label: 'Referral',
-    badge: 'Referral',
-    clientBadge: 'Client Portal',
-    themeColor: '#ea580c',
-    badgeBg: '#fff7ed',
-    badgeColor: '#ea580c',
-    badgeBorder: '#fed7aa',
-    gradient: 'linear-gradient(145deg, #f97316 0%, #ea580c 45%, #c2410c 100%)',
-  },
-  ib1: {
-    label: 'Partner 001',
-    badge: 'Partner 001',
-    clientBadge: 'PARTNER 001',
-    themeColor: '#2563eb',
-    badgeBg: '#eff6ff',
-    badgeColor: '#2563eb',
-    badgeBorder: '#bfdbfe',
-    gradient: 'linear-gradient(145deg, #3b82f6 0%, #2563eb 45%, #1d4ed8 100%)',
-  },
-  ib2: {
-    label: 'Partner 002',
-    badge: 'Partner 002',
-    clientBadge: 'PARTNER 002',
-    themeColor: '#7c3aed',
-    badgeBg: '#faf5ff',
-    badgeColor: '#7c3aed',
-    badgeBorder: '#e9d5ff',
-    gradient: 'linear-gradient(145deg, #8b5cf6 0%, #7c3aed 45%, #5b21b6 100%)',
-  },
-  ib3: {
-    label: 'Partner 003',
-    badge: 'Partner 003',
-    clientBadge: 'PARTNER 003',
-    themeColor: '#059669',
-    badgeBg: '#ecfdf5',
-    badgeColor: '#059669',
-    badgeBorder: '#a7f3d0',
-    gradient: 'linear-gradient(145deg, #10b981 0%, #059669 45%, #064e3b 100%)',
-  },
-};
 
 const countries = [
   'United Kingdom',
@@ -101,62 +49,8 @@ export default function Register() {
 
   return (
     <div className="min-h-screen w-full flex flex-col lg:flex-row bg-[#f8fafc]">
-      {/* Left Institutional Infrastructure Panel (Desktop only, hidden on mobile/tablet) */}
-      <div
-        className="hidden lg:flex w-[46%] min-h-screen relative overflow-hidden flex-col justify-center px-10 xl:px-16 shrink-0 text-white transition-all duration-500"
-        style={{
-          background: `linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px) 0% 0% / 40px 40px, ${currentTheme.gradient}`,
-          padding: 'clamp(2.5rem, 4vw, 4.5rem)',
-        }}
-      >
-        {/* Glow circles */}
-        <div
-          className="absolute -top-[15%] -right-[15%] w-[450px] h-[450px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          className="absolute -bottom-[15%] -left-[15%] w-[400px] h-[400px] rounded-full pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle, rgba(0, 0, 0, 0.18) 0%, transparent 70%)',
-          }}
-        />
-
-        <div className="max-w-[520px] relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/[0.18] border border-white/30 px-3.5 py-1.5 rounded-full text-[0.78rem] font-bold tracking-wider uppercase mb-7 backdrop-blur-md">
-            <Zap className="w-3.5 h-3.5 text-white" />
-            <span>Majesty FX Institutional Infrastructure</span>
-          </div>
-
-          <h1 className="text-[clamp(1.9rem,2.7vw,2.6rem)] font-extrabold leading-[1.18] tracking-tight text-white mb-5 font-sora">
-            Instant Institutional Onboarding. Secure Client Infrastructure.
-          </h1>
-
-          <p className="text-base leading-relaxed text-white/90 mb-8">
-            Create your verified Majesty FX client cabinet in under 60 seconds with institutional security and automated multi-tier rebate capabilities.
-          </p>
-
-          <div className="flex flex-col gap-4">
-            {bullets.map((b) => (
-              <div key={b} className="flex items-center gap-3">
-                <div className="w-6 h-6 rounded-full bg-white/[0.22] flex items-center justify-center shrink-0">
-                  <CircleCheck className="w-4 h-4 text-white" />
-                </div>
-                <span className="text-[0.94rem] text-white font-medium">{b}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-10 pt-7 border-t border-white/[0.22] flex items-center gap-4">
-            <ShieldCheck className="w-7 h-7 text-white opacity-90 shrink-0" />
-            <div className="text-[0.82rem] text-white/[0.88] leading-snug">
-              <strong className="block font-bold">Tier-1 Regulated Custody &amp; Liquidity</strong>
-              <span>Client capital segregated in top-tier financial institutions.</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Reusable Left Institutional Infrastructure Panel */}
+      <AuthLeftPanel portal={portal} />
 
       {/* Right Form Card Section */}
       <div className="w-full flex-1 min-h-screen flex flex-col items-center justify-center p-3.5 sm:p-6 md:p-10 bg-[#f8fafc] overflow-y-auto box-border">
@@ -169,9 +63,18 @@ export default function Register() {
                 Majesty&nbsp;<span className="text-[#f97316]">FX</span>
               </span>
             </Link>
-            <span className="inline-flex items-center gap-1.5 bg-[#fff7ed] border border-[#fed7aa] text-[#ea580c] px-2.5 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap">
-              <Users className="w-3.5 h-3.5 text-[#ea580c]" />
-              <span>Client Portal</span>
+            <span
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[0.7rem] font-bold uppercase tracking-wider shrink-0 whitespace-nowrap transition-colors"
+              style={{
+                backgroundColor: currentTheme.badgeBg,
+                borderColor: currentTheme.badgeBorder,
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                color: currentTheme.badgeColor,
+              }}
+            >
+              <Users className="w-3.5 h-3.5" style={{ color: currentTheme.badgeColor }} />
+              <span>{currentTheme.clientBadge}</span>
             </span>
           </div>
 
