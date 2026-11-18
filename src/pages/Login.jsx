@@ -7,6 +7,7 @@ import {
   EyeOff,
   Lock,
   Mail,
+  ShieldCheck,
   Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';

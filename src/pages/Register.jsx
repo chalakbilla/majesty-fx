@@ -10,6 +10,7 @@ import {
   Lock,
   Mail,
   Phone,
+  ShieldCheck,
   User,
   Users,
 } from 'lucide-react';
