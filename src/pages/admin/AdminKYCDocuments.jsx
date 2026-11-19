@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import {
   Check,
-  CheckCircle,
-  Clock,
-  Download,
+  ChevronLeft,
+  ChevronRight,
   Eye,
   FileCheck,
-  FileText,
-  Filter,
+  FileSpreadsheet,
   RefreshCw,
   Search,
-  Shield,
   X,
-  XCircle,
 } from 'lucide-react';
 
 export default function AdminKYCDocuments() {
@@ -27,7 +23,7 @@ export default function AdminKYCDocuments() {
       backSide: null,
       status: 'PENDING',
       registeredDate: '2026-11-16 09:42',
-      remark: '—',
+      remark: '-',
     },
     {
       id: 2,
@@ -39,7 +35,7 @@ export default function AdminKYCDocuments() {
       backSide: null,
       status: 'PENDING',
       registeredDate: '2026-11-15 09:42',
-      remark: '—',
+      remark: '-',
     },
     {
       id: 3,
@@ -51,7 +47,7 @@ export default function AdminKYCDocuments() {
       backSide: null,
       status: 'APPROVED',
       registeredDate: '2026-10-18 09:42',
-      remark: 'Verified via biometric scan',
+      remark: '-',
     },
   ]);
 
@@ -87,7 +83,7 @@ export default function AdminKYCDocuments() {
   const handleApprove = (id) => {
     setDocuments((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: 'APPROVED', remark: adminRemark || 'Approved by admin' } : d
+        d.id === id ? { ...d, status: 'APPROVED', remark: adminRemark || 'Verified' } : d
       )
     );
     setPreviewDoc(null);
@@ -97,7 +93,7 @@ export default function AdminKYCDocuments() {
   const handleReject = (id) => {
     setDocuments((prev) =>
       prev.map((d) =>
-        d.id === id ? { ...d, status: 'REJECTED', remark: adminRemark || 'Rejected by compliance desk' } : d
+        d.id === id ? { ...d, status: 'REJECTED', remark: adminRemark || 'Rejected' } : d
       )
     );
     setPreviewDoc(null);
@@ -112,12 +108,12 @@ export default function AdminKYCDocuments() {
   };
 
   const handleExportCSV = () => {
-    const headers = ['#', 'Client Name', 'Email', 'Referred By', 'Document Type', 'Status', 'Registered Date', 'Remark'];
+    const headers = ['#', 'DESK', 'EMAIL', 'CLIENT NAME', 'DOCUMENT TYPE', 'STATUS', 'REGISTERED DATE', 'ADMIN REMARK'];
     const rows = filteredDocs.map((d) => [
       d.id,
-      `"${d.clientName}"`,
       d.email,
-      `"${d.referredBy}"`,
+      d.email,
+      `"${d.clientName}"`,
       d.documentType,
       d.status,
       d.registeredDate,
@@ -134,217 +130,293 @@ export default function AdminKYCDocuments() {
   };
 
   return (
-    <div className="space-y-6 sm:space-y-7 w-full min-w-0">
-      {/* Page Header Banner */}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', position: 'relative' }}>
+      {/* Header Banner - Matching scratch/kyc_documents/index.html */}
       <div className="relative bg-gradient-to-r from-white via-white to-orange-50/20 rounded-2xl border border-slate-200 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)] overflow-hidden transition-all duration-200">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 bg-orange-100/50 rounded-full blur-3xl -z-10 hidden sm:block"
         />
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
-          <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1">
-            <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
-              <span className="text-slate-900 font-extrabold">KYC Verification</span>{' '}
-              <span className="inline-block font-black text-orange-600 tracking-tight">Desk</span>
-            </h1>
-            <p className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
-              Review identity and residence verification documents submitted by retail clients and partners.
-            </p>
-          </div>
-          <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap shrink-0">
-            <button
-              type="button"
-              onClick={handleExportCSV}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs transition-colors cursor-pointer"
-            >
-              <Download className="w-4 h-4" />
-              <span>Export to CSV</span>
-            </button>
-            <button
-              type="button"
-              onClick={handleRefresh}
-              title="Refresh page data"
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 shadow-2xs transition-colors cursor-pointer"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 text-slate-600 ${refreshing ? 'animate-spin' : ''}`} />
-              <span className="hidden sm:inline">Refresh</span>
-            </button>
+        <div className="flex flex-col gap-3.5 sm:gap-4">
+          <nav aria-label="Breadcrumbs" className="flex items-center gap-1.5 text-xs text-slate-500 font-medium overflow-x-auto pb-0.5 scrollbar-none pr-10 sm:pr-0">
+            <span className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">Admin Console</span>
+            <span className="text-slate-400 mx-0.5">›</span>
+            <span className="whitespace-nowrap text-slate-800 font-semibold">KYC Documents</span>
+          </nav>
+
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
+            <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1 pr-10 sm:pr-0">
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
+                  <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
+                    KYC Verification
+                  </span>{' '}
+                  <span className="inline-block font-black text-orange-600 tracking-tight" style={{ color: 'rgb(234, 88, 12)' }}>
+                    Desk
+                  </span>
+                </h1>
+              </div>
+              <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
+                Review, inspect high-resolution ID proofs, and manage compliance approvals in real-time.
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0">
+              <button
+                type="button"
+                onClick={handleExportCSV}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs sm:text-sm font-semibold rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 shadow-2xs hover:shadow-xs transition-all cursor-pointer"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                <span>Export to CSV</span>
+              </button>
+              <button
+                aria-label="Refresh"
+                onClick={handleRefresh}
+                className="btn-secondary absolute top-3 right-3 sm:static !p-2 sm:!px-[0.85rem] sm:!py-2 transition-all cursor-pointer disabled:opacity-60 active:scale-[0.98]"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.4rem',
+                  padding: '0.5rem 0.85rem',
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  borderRadius: '0.5rem',
+                  border: '1px solid rgb(203, 213, 225)',
+                  backgroundColor: 'rgb(255, 255, 255)',
+                  color: 'rgb(51, 65, 85)',
+                  cursor: 'pointer',
+                  boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 2px',
+                  transition: '0.15s',
+                }}
+                title="Refresh page data"
+                type="button"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 text-slate-600 ${refreshing ? 'animate-spin' : ''}`} />
+                <span className="hidden sm:inline">Refresh</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Status Filter Tabs & Search Bar */}
-      <div className="bg-white rounded-xl border border-slate-200/90 p-3 sm:p-4 shadow-2xs flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-        {/* Filter Tabs */}
-        <div className="flex items-center gap-1.5 overflow-x-auto">
+      {/* Filter Tabs and Search Bar - Exactly matching scratch/kyc_documents/index.html */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="inline-flex bg-slate-100/90 p-1 rounded-lg gap-1 overflow-x-auto">
           <button
             type="button"
             onClick={() => setActiveTab('ALL')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'ALL'
-                ? 'bg-[#7c3aed] text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-emerald-100 text-emerald-800 shadow-xs'
+                : 'text-slate-600 hover:bg-white/60'
             }`}
           >
             <span>All</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">{counts.all}</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
+                activeTab === 'ALL' ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-600'
+              }`}
+            >
+              {counts.all}
+            </span>
           </button>
+
           <button
             type="button"
             onClick={() => setActiveTab('PENDING')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'PENDING'
-                ? 'bg-amber-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-amber-100 text-amber-800 shadow-xs'
+                : 'text-amber-700 hover:bg-amber-50'
             }`}
           >
-            <Clock className="w-3 h-3" />
             <span>Pending</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">{counts.pending}</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
+                activeTab === 'PENDING' ? 'bg-amber-500 text-white' : 'bg-amber-200 text-amber-800'
+              }`}
+            >
+              {counts.pending}
+            </span>
           </button>
+
           <button
             type="button"
             onClick={() => setActiveTab('APPROVED')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'APPROVED'
-                ? 'bg-emerald-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-blue-100 text-blue-800 shadow-xs'
+                : 'text-slate-600 hover:bg-white/60'
             }`}
           >
-            <CheckCircle className="w-3 h-3" />
             <span>Approved</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">{counts.approved}</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
+                activeTab === 'APPROVED' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-600'
+              }`}
+            >
+              {counts.approved}
+            </span>
           </button>
+
           <button
             type="button"
             onClick={() => setActiveTab('REJECTED')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-all cursor-pointer inline-flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'REJECTED'
-                ? 'bg-rose-600 text-white shadow-xs'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                ? 'bg-rose-100 text-rose-800 shadow-xs'
+                : 'text-slate-600 hover:bg-white/60'
             }`}
           >
-            <XCircle className="w-3 h-3" />
             <span>Rejected</span>
-            <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20">{counts.rejected}</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.5 rounded-full font-extrabold ${
+                activeTab === 'REJECTED' ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-600'
+              }`}
+            >
+              {counts.rejected}
+            </span>
           </button>
         </div>
 
-        {/* Search */}
-        <div className="relative md:w-72">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+        <div className="relative sm:w-64">
+          <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by client or email..."
-            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 transition-all text-slate-800 placeholder-slate-400 outline-none"
+            className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 rounded-lg outline-none"
           />
         </div>
       </div>
 
-      {/* KYC Documents Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse text-xs">
+      {/* KYC Table - Exactly matching scratch/kyc_documents/index.html */}
+      <div className="data-table">
+        <div className="data-table-scroll">
+          <table className="data-table-grid" data-cards="">
             <thead>
-              <tr className="bg-slate-50/90 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                <th className="py-3 px-3 w-10">#</th>
-                <th className="py-3 px-4">DESK</th>
-                <th className="py-3 px-4">EMAIL</th>
-                <th className="py-3 px-4">CLIENT NAME</th>
-                <th className="py-3 px-4">DOCUMENT TYPE</th>
-                <th className="py-3 px-4 text-center">FRONT SIDE</th>
-                <th className="py-3 px-4 text-center">BACK SIDE</th>
-                <th className="py-3 px-4">STATUS</th>
-                <th className="py-3 px-4">REGISTERED DATE</th>
-                <th className="py-3 px-4">ADMIN REMARK</th>
-                <th className="py-3 px-4 text-right">ACTIONS</th>
+              <tr>
+                <th style={{ width: '40px' }}>#</th>
+                <th>DESK</th>
+                <th>EMAIL</th>
+                <th>CLIENT NAME</th>
+                <th>DOCUMENT TYPE</th>
+                <th style={{ textAlign: 'center' }}>FRONT SIDE</th>
+                <th style={{ textAlign: 'center' }}>BACK SIDE</th>
+                <th>STATUS</th>
+                <th>REGISTERED DATE</th>
+                <th>ADMIN REMARK</th>
+                <th style={{ textAlign: 'right' }}>ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody>
               {filteredDocs.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="py-12 text-center text-slate-400 font-medium">
-                    No KYC documents found matching the filter criteria.
+                  <td colSpan={11} style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
+                    No KYC documents found matching search criteria.
                   </td>
                 </tr>
               ) : (
-                filteredDocs.map((doc) => (
-                  <tr key={doc.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td className="py-3 px-3 text-slate-400 font-mono text-[11px]">
-                      {doc.id}
+                filteredDocs.map((doc, idx) => (
+                  <tr key={doc.id} style={{ borderBottom: '1px solid rgb(241, 245, 249)', backgroundColor: 'rgb(255, 255, 255)' }}>
+                    <td data-label="#" style={{ padding: '0.65rem', color: 'rgb(100, 116, 139)', fontSize: '0.75rem', fontFamily: 'monospace' }}>
+                      {idx + 1}
                     </td>
-                    <td className="py-3 px-4 font-semibold text-blue-600">
+                    <td data-label="DESK" style={{ padding: '0.65rem', fontWeight: 600, color: 'rgb(37, 99, 235)' }}>
                       {doc.email}
                     </td>
-                    <td className="py-3 px-4">
-                      <div className="font-bold text-slate-900">{doc.clientName}</div>
-                      <div className="mt-0.5">
-                        <span className="inline-flex items-center text-[10px] font-medium px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-                          Ref by:{' '}
-                          <strong className="text-orange-600 ml-1">{doc.referredBy}</strong>
+                    <td data-label="EMAIL" style={{ padding: '0.65rem' }}>
+                      <div style={{ fontWeight: 600, color: 'rgb(15, 23, 42)' }}>{doc.clientName}</div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', marginTop: '0.15rem' }}>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            fontSize: '0.68rem',
+                            fontWeight: 600,
+                            padding: '0.1rem 0.4rem',
+                            borderRadius: '4px',
+                            backgroundColor: 'rgb(241, 245, 249)',
+                            color: 'rgb(71, 85, 105)',
+                            border: '1px solid rgb(226, 232, 240)',
+                          }}
+                        >
+                          Ref by:
+                          <strong style={{ marginLeft: '0.2rem', color: 'rgb(234, 88, 12)' }}>{doc.referredBy}</strong>
                         </span>
                       </div>
                     </td>
-                    <td className="py-3 px-4 font-mono uppercase text-slate-700">
+                    <td data-label="CLIENT NAME" style={{ padding: '0.65rem', color: 'rgb(51, 65, 85)', fontWeight: 500 }}>
                       {doc.documentType}
                     </td>
-                    <td className="py-3 px-4 text-center text-slate-400 italic text-[11px]">
-                      Not provided
+                    <td data-label="DOCUMENT TYPE" style={{ textAlign: 'center', padding: '0.65rem' }}>
+                      <span className="text-xs text-slate-400 italic">Not provided</span>
                     </td>
-                    <td className="py-3 px-4 text-center text-slate-400 italic text-[11px]">
-                      Not provided
+                    <td data-label="FRONT SIDE" style={{ textAlign: 'center', padding: '0.65rem' }}>
+                      <span className="text-xs text-slate-400 italic">Not provided</span>
                     </td>
-                    <td className="py-3 px-4">
+                    <td data-label="BACK SIDE" style={{ padding: '0.65rem' }}>
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold tracking-wider ${
-                          doc.status === 'APPROVED'
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : doc.status === 'REJECTED'
-                            ? 'bg-rose-100 text-rose-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}
+                        style={{
+                          display: 'inline-block',
+                          padding: '0.2rem 0.55rem',
+                          borderRadius: '4px',
+                          fontSize: '0.725rem',
+                          fontWeight: 700,
+                          letterSpacing: '0.02em',
+                          backgroundColor:
+                            doc.status === 'APPROVED'
+                              ? 'rgb(220, 252, 231)'
+                              : doc.status === 'REJECTED'
+                              ? 'rgb(254, 226, 226)'
+                              : 'rgb(254, 243, 199)',
+                          color:
+                            doc.status === 'APPROVED'
+                              ? 'rgb(22, 101, 52)'
+                              : doc.status === 'REJECTED'
+                              ? 'rgb(153, 27, 27)'
+                              : 'rgb(146, 64, 14)',
+                        }}
                       >
                         {doc.status}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-slate-500 font-mono text-[11px]">
+                    <td data-label="STATUS" style={{ padding: '0.65rem', color: 'rgb(100, 116, 139)', fontSize: '0.8rem' }}>
                       {doc.registeredDate}
                     </td>
-                    <td className="py-3 px-4 text-slate-500">
-                      {doc.remark}
+                    <td data-label="REGISTERED DATE" style={{ padding: '0.65rem', color: 'rgb(71, 85, 105)', fontSize: '0.8rem' }}>
+                      <span style={{ color: 'rgb(148, 163, 184)' }}>{doc.remark}</span>
                     </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="inline-flex items-center gap-1.5 justify-end">
+                    <td data-actions="" data-label="ACTIONS" style={{ textAlign: 'right', padding: '0.65rem' }}>
+                      <div className="admin-action-group">
                         <button
                           type="button"
-                          onClick={() => {
-                            setPreviewDoc(doc);
-                            setAdminRemark(doc.remark !== '—' ? doc.remark : '');
-                          }}
-                          title="View / Review KYC Document"
-                          className="p-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer"
+                          onClick={() => setPreviewDoc(doc)}
+                          className="admin-action-btn admin-action-btn-view"
+                          title="View / Review Document"
                         >
-                          <Eye className="w-3.5 h-3.5" />
+                          <Eye style={{ width: '14px', height: '14px' }} />
                         </button>
                         {doc.status === 'PENDING' && (
                           <>
                             <button
                               type="button"
                               onClick={() => handleApprove(doc.id)}
-                              title="Approve Document"
-                              className="p-1 rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-600 cursor-pointer"
+                              className="admin-action-btn admin-action-btn-approve"
+                              title="Approve KYC"
                             >
-                              <Check className="w-3.5 h-3.5" />
+                              <Check style={{ width: '14px', height: '14px' }} />
                             </button>
                             <button
                               type="button"
                               onClick={() => handleReject(doc.id)}
-                              title="Reject Document"
-                              className="p-1 rounded bg-rose-50 hover:bg-rose-100 text-rose-600 cursor-pointer"
+                              className="admin-action-btn admin-action-btn-reject"
+                              title="Reject KYC"
                             >
-                              <X className="w-3.5 h-3.5" />
+                              <X style={{ width: '14px', height: '14px' }} />
                             </button>
                           </>
                         )}
@@ -357,30 +429,34 @@ export default function AdminKYCDocuments() {
           </table>
         </div>
 
-        {/* Footer */}
-        <div className="p-3.5 border-t border-slate-200 bg-slate-50/50 flex items-center justify-between text-xs text-slate-500">
-          <div>
-            Showing <span className="font-bold text-slate-700">{filteredDocs.length}</span> of{' '}
-            <span className="font-bold text-slate-700">{documents.length}</span> entries
-          </div>
-          <div className="inline-flex items-center gap-1">
-            <button
-              type="button"
-              disabled
-              className="px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-400 text-xs font-semibold disabled:opacity-50"
-            >
-              Prev
-            </button>
-            <button type="button" className="px-2.5 py-1 rounded bg-[#7c3aed] text-white text-xs font-bold">
-              1
-            </button>
-            <button
-              type="button"
-              disabled
-              className="px-2.5 py-1 rounded border border-slate-200 bg-white text-slate-400 text-xs font-semibold disabled:opacity-50"
-            >
-              Next
-            </button>
+        {/* Table Pager */}
+        <div className="table-pager">
+          <span className="table-pager-info">
+            Showing <strong>1</strong> to <strong>{filteredDocs.length}</strong> of{' '}
+            <strong>{documents.length}</strong> entries
+          </span>
+          <div className="table-pager-controls">
+            <label className="table-pager-size">
+              <span>Rows</span>
+              <select aria-label="Rows per page">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+              </select>
+            </label>
+            <nav aria-label="Pages" className="table-pager-pages">
+              <button aria-label="Previous page" className="table-pager-btn" disabled type="button">
+                <ChevronLeft style={{ width: '13px', height: '13px' }} />
+                <span>Prev</span>
+              </button>
+              <button aria-current="page" className="table-pager-btn table-pager-num" type="button">
+                1
+              </button>
+              <button aria-label="Next page" className="table-pager-btn" disabled type="button">
+                <span>Next</span>
+                <ChevronRight style={{ width: '13px', height: '13px' }} />
+              </button>
+            </nav>
           </div>
         </div>
       </div>
@@ -388,85 +464,95 @@ export default function AdminKYCDocuments() {
       {/* Review Modal */}
       {previewDoc && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.5)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '1rem',
+          }}
           onClick={() => setPreviewDoc(null)}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 duration-150"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '0.75rem',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+              maxWidth: '440px',
+              width: '100%',
+              padding: '1.5rem',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '1rem',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <div className="flex items-center gap-2 text-orange-600">
-                <FileCheck className="w-5 h-5" />
-                <h3 className="font-sora font-extrabold text-base text-slate-900">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <FileCheck size={18} color="#ea580c" />
+                <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 700, color: '#0f172a' }}>
                   Review KYC Document
                 </h3>
               </div>
-              <button
-                type="button"
-                onClick={() => setPreviewDoc(null)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer"
-              >
-                <X className="w-5 h-5" />
+              <button onClick={() => setPreviewDoc(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+                <X size={18} />
               </button>
             </div>
 
-            <div className="space-y-3 text-xs">
-              <div className="p-3 bg-slate-50 rounded-xl space-y-1.5 border border-slate-200/80">
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Client:</span>
-                  <span className="font-bold text-slate-800">{previewDoc.clientName}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Email:</span>
-                  <span className="font-mono text-slate-700">{previewDoc.email}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Document Type:</span>
-                  <span className="font-mono uppercase font-bold text-slate-800">{previewDoc.documentType}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-slate-500">Current Status:</span>
-                  <span className="font-bold text-amber-600">{previewDoc.status}</span>
-                </div>
+            <div style={{ backgroundColor: '#f8fafc', padding: '0.75rem', borderRadius: '0.5rem', fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Client:</span>
+                <span style={{ fontWeight: 700, color: '#0f172a' }}>{previewDoc.clientName}</span>
               </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Email:</span>
+                <span style={{ fontFamily: 'monospace' }}>{previewDoc.email}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ color: '#64748b' }}>Document Type:</span>
+                <span style={{ textTransform: 'uppercase', fontWeight: 700 }}>{previewDoc.documentType}</span>
+              </div>
+            </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Admin Compliance Remarks
-                </label>
-                <textarea
-                  rows={3}
-                  value={adminRemark}
-                  onChange={(e) => setAdminRemark(e.target.value)}
-                  placeholder="Enter verification notes or reason for rejection..."
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 outline-none text-xs"
-                />
-              </div>
+            <div>
+              <label style={{ fontSize: '0.75rem', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '0.3rem' }}>
+                Compliance Remarks
+              </label>
+              <textarea
+                rows={3}
+                value={adminRemark}
+                onChange={(e) => setAdminRemark(e.target.value)}
+                placeholder="Enter remarks or verification notes..."
+                style={{ width: '100%', boxSizing: 'border-box', padding: '0.5rem', fontSize: '0.75rem', border: '1px solid #cbd5e1', borderRadius: '6px' }}
+              />
+            </div>
 
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setPreviewDoc(null)}
-                  className="px-3.5 py-2 rounded-lg border border-slate-200 font-semibold text-slate-700 hover:bg-slate-50 cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleReject(previewDoc.id)}
-                  className="px-3.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-700 text-white font-bold cursor-pointer"
-                >
-                  Reject
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleApprove(previewDoc.id)}
-                  className="px-3.5 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold cursor-pointer"
-                >
-                  Approve KYC
-                </button>
-              </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }}>
+              <button
+                type="button"
+                onClick={() => setPreviewDoc(null)}
+                style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 600, borderRadius: '6px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer' }}
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={() => handleReject(previewDoc.id)}
+                style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', background: '#dc2626', color: '#fff', cursor: 'pointer' }}
+              >
+                Reject
+              </button>
+              <button
+                type="button"
+                onClick={() => handleApprove(previewDoc.id)}
+                style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', fontWeight: 700, borderRadius: '6px', border: 'none', background: '#16a34a', color: '#fff', cursor: 'pointer' }}
+              >
+                Approve KYC
+              </button>
             </div>
           </div>
         </div>

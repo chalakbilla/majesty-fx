@@ -4,18 +4,29 @@ import {
   Activity,
   ArrowDown,
   ArrowRight,
-  BarChart3,
+  BarChart2,
   Bell,
   ChevronDown,
   ChevronRight,
-  ExternalLink,
+  Clock,
+  Coins,
   FileCheck,
   FileText,
+  Globe,
+  HelpCircle,
+  Key,
+  Layers,
+  LifeBuoy,
   LogOut,
   Mail,
   Menu,
   PieChart,
+  RefreshCw,
+  Settings,
+  Shield,
+  TrendingUp,
   User,
+  UserCheck,
   UserPlus,
   Users,
   Wallet,
@@ -26,8 +37,13 @@ import { getAdminUser, logoutAdmin } from '../../utils/adminAuth.js';
 
 export default function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ibExpanded, setIbExpanded] = useState(true);
+  const [ibExpanded, setIbExpanded] = useState(false);
   const [pammExpanded, setPammExpanded] = useState(false);
+  const [copyExpanded, setCopyExpanded] = useState(false);
+  const [txExpanded, setTxExpanded] = useState(false);
+  const [accountsExpanded, setAccountsExpanded] = useState(false);
+  const [settingsExpanded, setSettingsExpanded] = useState(false);
+
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [apiDropdownOpen, setApiDropdownOpen] = useState(false);
   const [pendingDropdownOpen, setPendingDropdownOpen] = useState(false);
@@ -37,8 +53,9 @@ export default function AdminLayout() {
   const adminUser = getAdminUser() || {
     name: 'Demo Sandbox Admin',
     username: 'demoadmin',
+    email: 'demo@majestyfx.com',
     role: 'Super Admin',
-    portal: 'Majesty FX Demo Sandbox Portal'
+    portal: 'Majesty FX Demo Sandbox Portal',
   };
 
   const handleLogout = () => {
@@ -59,68 +76,80 @@ export default function AdminLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const topMenuItems = [
-    { label: 'Professional Email', icon: Mail, path: '/admin/professional-email' },
-    { label: 'Clients', icon: Users, path: '/admin/clients' },
-    { label: 'Trading Accounts', icon: BarChart3, path: '/admin/trading-accounts' },
-    { label: 'KYC Documents', icon: FileCheck, path: '/admin/kyc-documents', badge: '2', badgeColor: 'bg-blue-600 text-white' },
-    { label: 'Trade Report', icon: Activity, path: '/admin/trade-report' },
-  ];
+  const currentPath = location.pathname;
 
-  const ibSubmenuItems = [
-    { label: 'Demo Sandbox', path: '/admin/demo' },
-    { label: 'IB Overview', path: '/admin/ib/dashboard' },
-    { label: 'IB Partner Network', path: '/admin/ib-clients', badge: '3', badgeColor: 'bg-orange-500 text-white' },
-    { label: 'IB Referral Tree', path: '/admin/referral-tree' },
-    { label: 'IB Commissions Settings', path: '/admin/ib-commissions-settings' },
-    { label: 'IB Commission History', path: '/admin/ib-commission-history' },
-    { label: 'IB Commission Withdrawal History', path: '/admin/ib-commission-withdrawal-history' },
-    { label: 'Rebate & Rank Settings', path: '/admin/rank-management' },
-    { label: 'Rebate Accounts', path: '/admin/rebate-accounts' },
-    { label: 'IB Rewards', path: '/admin/ib-rewards' },
-  ];
-
-  const pammSubmenuItems = [
-    { label: 'Total PAMM Clients', path: '/admin/pamm-clients' },
-    { label: 'Total PAMM Active Accounts', path: '/admin/pamm-accounts' },
-    { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
-    { label: 'PAMM Commission Report', path: '/admin/pamm-report' },
-  ];
+  const isLinkActive = (path) => currentPath === path;
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] text-slate-800 font-montserrat flex flex-col">
-      {/* Top Header Navbar */}
-      <header ref={headerRef} className="bg-white border-b border-slate-200 h-[70px] sticky top-0 z-40 px-3 sm:px-6 flex items-center justify-between">
-        <div className="flex items-center gap-2 sm:gap-3.5 min-w-0">
+    <div className="dashboard-portal admin-portal" data-desk="demo" style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      {/* Top Header Navbar - Matching scratch_header_exact.html */}
+      <header ref={headerRef} className="admin-header">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', minWidth: 0 }}>
           {/* Mobile hamburger */}
           <button
             type="button"
-            className="lg:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors focus:outline-none cursor-pointer"
+            aria-label="Toggle navigation menu"
+            className="admin-toggle-btn"
             onClick={() => setMobileMenuOpen((v) => !v)}
-            aria-label="Toggle navigation"
           >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <Menu className="w-5 h-5 text-slate-700" />
           </button>
 
           {/* Logo */}
-          <Link to="/admin/demo" className="flex items-center gap-2 shrink-0 no-underline">
-            <img src={logo} alt="Majesty FX" className="h-8 sm:h-9 w-auto object-contain" />
-            <span className="font-montserrat font-extrabold text-base sm:text-lg text-[#0b192c] tracking-tight">
-              Majesty <span className="text-[#ff5a0a]">FX</span>
+          <Link to="/admin/demo" style={{ display: 'flex', alignItems: 'center', gap: '0.55rem', textDecoration: 'none', flexShrink: 0 }}>
+            <img
+              alt="Majesty FX Emblem"
+              src={logo}
+              style={{ height: '34px', width: 'auto', objectFit: 'contain' }}
+            />
+            <span
+              className="admin-brand-text"
+              style={{
+                fontFamily: 'var(--font-montserrat), sans-serif',
+                fontWeight: 800,
+                fontSize: '1.2rem',
+                letterSpacing: '-0.02em',
+                color: 'var(--text-heading, #0f172a)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                lineHeight: 1,
+              }}
+            >
+              Majesty
+              <span style={{ color: 'rgb(249, 115, 22)' }}>FX</span>
             </span>
           </Link>
 
+          <div
+            className="admin-hide-sm"
+            style={{ width: '1px', height: '20px', backgroundColor: 'rgb(226, 232, 240)', margin: '0px 0.25rem', flexShrink: 0 }}
+          />
+
           {/* Purple Portal Badge */}
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-[#7c3aed] bg-[#f5f3ff] border border-[#ddd6fe] whitespace-nowrap">
-            <span className="w-2 h-2 rounded-full bg-[#7c3aed]" />
+          <div
+            className="admin-hide-sm"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.35rem 0.75rem',
+              borderRadius: '8px',
+              fontSize: '0.78rem',
+              fontWeight: 700,
+              border: '1px solid rgb(221, 214, 254)',
+              backgroundColor: 'rgb(245, 243, 255)',
+              color: 'rgb(124, 58, 237)',
+            }}
+          >
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: 'rgb(139, 92, 246)' }} />
             <span>Majesty FX Demo Sandbox Portal</span>
           </div>
         </div>
 
         {/* Right Header Badges and User Profile */}
-        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexShrink: 0 }}>
           {/* API Status Pill + Dropdown Modal */}
-          <div className="relative">
+          <div style={{ position: 'relative' }}>
             <button
               type="button"
               onClick={() => {
@@ -128,51 +157,119 @@ export default function AdminLayout() {
                 setPendingDropdownOpen(false);
                 setProfileDropdownOpen(false);
               }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                padding: '0.38rem 0.7rem',
+                borderRadius: '9999px',
+                fontSize: '0.74rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: '0.2s',
+                border: '1px solid rgb(187, 247, 208)',
+                backgroundColor: 'rgb(240, 253, 244)',
+                color: 'rgb(21, 128, 61)',
+              }}
               title="Click for MT5 Manager API connection status"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100/70 transition-colors cursor-pointer"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>API Connected</span>
-              <ChevronDown className={`w-3 h-3 text-emerald-600 transition-transform ${apiDropdownOpen ? 'rotate-180' : ''}`} />
+              <span
+                style={{
+                  width: '6px',
+                  height: '6px',
+                  borderRadius: '50%',
+                  backgroundColor: 'rgb(22, 163, 74)',
+                  boxShadow: 'rgba(22, 163, 74, 0.6) 0px 0px 6px',
+                }}
+              />
+              <span className="admin-api-long">API Connected</span>
+              <span className="admin-api-short">MT5</span>
+              <ChevronDown className="w-3 h-3 admin-api-chevron" />
             </button>
 
-            {/* MT5 API Connected Dropdown Modal (Matching Screenshot) */}
+            {/* MT5 API Connected Dropdown Modal */}
             {apiDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-2xl shadow-xl p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex items-start gap-3 mb-4">
-                  <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center shrink-0">
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginTop: '0.5rem',
+                  width: '320px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '1rem',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                  padding: '1.25rem',
+                  zIndex: 999,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1rem' }}>
+                  <div
+                    style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '0.75rem',
+                      backgroundColor: '#ecfdf5',
+                      border: '1px solid #a7f3d0',
+                      color: '#059669',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
                     <Activity className="w-5 h-5" />
                   </div>
                   <div>
-                    <h3 className="font-sora font-extrabold text-sm text-[#0f172a] leading-tight">
+                    <h3 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 800, color: '#0f172a' }}>
                       MT5 API Connected
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p style={{ margin: '0.125rem 0 0', fontSize: '0.75rem', color: '#64748b' }}>
                       Server: MajestyFX-Demo
                     </p>
                   </div>
                 </div>
 
-                <div className="bg-slate-50/90 border border-slate-200/80 rounded-xl p-3.5 space-y-2.5 text-xs font-medium">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500">Assigned Manager:</span>
-                    <span className="font-bold font-mono text-slate-800">#9999</span>
+                <div
+                  style={{
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '0.75rem',
+                    padding: '0.875rem',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '0.625rem',
+                    fontSize: '0.75rem',
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#64748b' }}>Assigned Manager:</span>
+                    <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#1e293b' }}>#9999</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500">Gateway Host:</span>
-                    <span className="font-bold font-mono text-slate-800">demo.majestyfx.com</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#64748b' }}>Gateway Host:</span>
+                    <span style={{ fontWeight: 700, fontFamily: 'monospace', color: '#1e293b' }}>demo.majestyfx.com</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-500">Status:</span>
-                    <span className="font-bold text-emerald-600">Operational (18ms)</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#64748b' }}>Status:</span>
+                    <span style={{ fontWeight: 700, color: '#16a34a' }}>Operational (18ms)</span>
                   </div>
                 </div>
 
-                <div className="mt-4 flex justify-end">
+                <div style={{ marginTop: '1rem', display: 'flex', justifyContent: 'flex-end' }}>
                   <button
                     type="button"
                     onClick={() => setApiDropdownOpen(false)}
-                    className="px-4 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition-colors cursor-pointer"
+                    style={{
+                      padding: '0.375rem 1rem',
+                      borderRadius: '0.5rem',
+                      backgroundColor: '#f1f5f9',
+                      color: '#334155',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      border: 'none',
+                    }}
                   >
                     Close
                   </button>
@@ -181,8 +278,8 @@ export default function AdminLayout() {
             )}
           </div>
 
-          {/* Pending Alerts Pill + Dropdown Modal (Matching Screenshot) */}
-          <div className="relative">
+          {/* Pending Alerts Pill + Dropdown Modal */}
+          <div style={{ position: 'relative' }}>
             <button
               type="button"
               onClick={() => {
@@ -190,48 +287,100 @@ export default function AdminLayout() {
                 setApiDropdownOpen(false);
                 setProfileDropdownOpen(false);
               }}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold text-amber-900 bg-amber-50 border border-amber-300 hover:bg-amber-100/70 transition-colors cursor-pointer"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.45rem 0.75rem',
+                borderRadius: '9999px',
+                border: '1px solid rgb(245, 158, 11)',
+                backgroundColor: 'rgb(255, 251, 235)',
+                color: 'rgb(146, 64, 14)',
+                cursor: 'pointer',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                transition: '0.2s',
+                boxShadow: 'rgba(245, 158, 11, 0.2) 0px 1px 3px',
+              }}
+              title="Pending Actions Queue"
             >
-              <div className="relative flex items-center">
-                <Bell className="w-3.5 h-3.5 text-amber-700" />
-                <span className="absolute -top-1 -right-1.5 w-2 h-2 rounded-full bg-rose-500" />
+              <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                <Bell className="w-4 h-4 text-amber-600" />
+                <span
+                  style={{
+                    position: 'absolute',
+                    top: '-6px',
+                    right: '-7px',
+                    backgroundColor: 'rgb(239, 68, 68)',
+                    color: '#ffffff',
+                    fontSize: '0.625rem',
+                    fontWeight: 700,
+                    borderRadius: '9999px',
+                    minWidth: '16px',
+                    height: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '0px 3px',
+                    border: '1.5px solid #ffffff',
+                  }}
+                >
+                  9
+                </span>
               </div>
-              <span className="text-amber-900 font-extrabold">9 Pending</span>
+              <span className="admin-hide-mobile">
+                <span>
+                  <strong style={{ color: 'rgb(180, 83, 9)' }}>9</strong> Pending
+                </span>
+              </span>
             </button>
 
             {/* Pending Action Center Dropdown Modal */}
             {pendingDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-84 bg-white border border-slate-200 rounded-2xl shadow-xl p-4 sm:p-5 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginTop: '0.5rem',
+                  width: '330px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '1rem',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                  padding: '1.25rem',
+                  zIndex: 999,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '0.75rem', borderBottom: '1px solid #f1f5f9' }}>
                   <div>
-                    <h3 className="font-sora font-extrabold text-sm text-[#0f172a] leading-tight">
+                    <h3 style={{ margin: 0, fontSize: '0.875rem', fontWeight: 800, color: '#0f172a' }}>
                       Pending Action Center
                     </h3>
-                    <p className="text-xs text-slate-500 mt-0.5">
+                    <p style={{ margin: '0.125rem 0 0', fontSize: '0.75rem', color: '#64748b' }}>
                       9 actions require attention
                     </p>
                   </div>
-                  <span className="px-2.5 py-1 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                  <span style={{ padding: '0.25rem 0.6rem', borderRadius: '9999px', fontSize: '0.6875rem', fontWeight: 700, backgroundColor: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}>
                     Action Needed
                   </span>
                 </div>
 
-                <div className="mt-3 space-y-2.5">
+                <div style={{ marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.625rem' }}>
                   <Link
                     to="/admin/demo"
                     onClick={() => setPendingDropdownOpen(false)}
-                    className="flex items-center justify-between p-3 rounded-xl bg-[#fffdf0] border border-[#fef08a] hover:bg-[#fef9c3] transition-colors"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', borderRadius: '0.75rem', backgroundColor: '#fffdf0', border: '1px solid #fef08a', textDecoration: 'none' }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '0.75rem', backgroundColor: '#d1fae5', color: '#047857', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <Wallet className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-sora font-bold text-xs text-slate-900">Deposit Requests</div>
-                        <div className="text-[11px] text-slate-500">Proof of payment verification</div>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>Deposit Requests</div>
+                        <div style={{ fontSize: '0.6875rem', color: '#64748b' }}>Proof of payment verification</div>
                       </div>
                     </div>
-                    <span className="w-6 h-6 rounded-full bg-[#7c3aed] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                    <span style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#7c3aed', color: '#ffffff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       2
                     </span>
                   </Link>
@@ -239,37 +388,37 @@ export default function AdminLayout() {
                   <Link
                     to="/admin/demo"
                     onClick={() => setPendingDropdownOpen(false)}
-                    className="flex items-center justify-between p-3 rounded-xl bg-[#fff5f5] border border-[#fecdd3] hover:bg-[#ffe4e6] transition-colors"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', borderRadius: '0.75rem', backgroundColor: '#fff5f5', border: '1px solid #fecdd3', textDecoration: 'none' }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '0.75rem', backgroundColor: '#ffe4e6', color: '#be123c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <ArrowDown className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-sora font-bold text-xs text-slate-900">Withdrawal Requests</div>
-                        <div className="text-[11px] text-slate-500">Payout requests awaiting approval</div>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>Withdrawal Requests</div>
+                        <div style={{ fontSize: '0.6875rem', color: '#64748b' }}>Payout requests awaiting approval</div>
                       </div>
                     </div>
-                    <span className="w-6 h-6 rounded-full bg-[#e11d48] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                    <span style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#e11d48', color: '#ffffff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       2
                     </span>
                   </Link>
 
                   <Link
-                    to="/admin/clients"
+                    to="/admin/kyc-documents"
                     onClick={() => setPendingDropdownOpen(false)}
-                    className="flex items-center justify-between p-3 rounded-xl bg-[#f0f9ff] border border-[#bae6fd] hover:bg-[#e0f2fe] transition-colors"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', borderRadius: '0.75rem', backgroundColor: '#eff6ff', border: '1px solid #bfdbfe', textDecoration: 'none' }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '0.75rem', backgroundColor: '#dbeafe', color: '#1d4ed8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <FileCheck className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-sora font-bold text-xs text-slate-900">KYC Documents</div>
-                        <div className="text-[11px] text-slate-500">ID & address verification</div>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>KYC Documents</div>
+                        <div style={{ fontSize: '0.6875rem', color: '#64748b' }}>ID & address verification</div>
                       </div>
                     </div>
-                    <span className="w-6 h-6 rounded-full bg-[#2563eb] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                    <span style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#2563eb', color: '#ffffff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       2
                     </span>
                   </Link>
@@ -277,18 +426,18 @@ export default function AdminLayout() {
                   <Link
                     to="/admin/ib-clients"
                     onClick={() => setPendingDropdownOpen(false)}
-                    className="flex items-center justify-between p-3 rounded-xl bg-[#fffbf5] border border-[#fed7aa] hover:bg-[#ffedd5] transition-colors"
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.75rem', borderRadius: '0.75rem', backgroundColor: '#fffbf5', border: '1px solid #fed7aa', textDecoration: 'none' }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <div style={{ width: '36px', height: '36px', borderRadius: '0.75rem', backgroundColor: '#fef3c7', color: '#b45309', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <UserPlus className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="font-sora font-bold text-xs text-slate-900">IB Partner Applications</div>
-                        <div className="text-[11px] text-slate-500">Affiliate & partner requests</div>
+                        <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f172a' }}>IB Partner Applications</div>
+                        <div style={{ fontSize: '0.6875rem', color: '#64748b' }}>Affiliate & partner requests</div>
                       </div>
                     </div>
-                    <span className="w-6 h-6 rounded-full bg-[#7c3aed] text-white text-xs font-bold flex items-center justify-center shadow-xs">
+                    <span style={{ width: '24px', height: '24px', borderRadius: '50%', backgroundColor: '#7c3aed', color: '#ffffff', fontSize: '0.75rem', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       3
                     </span>
                   </Link>
@@ -300,59 +449,167 @@ export default function AdminLayout() {
           {/* Switch to Client Portal Link */}
           <Link
             to="/"
-            className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+            className="admin-portal-link"
+            title="Switch to Client Portal"
+            style={{
+              color: '#1e293b',
+              whiteSpace: 'nowrap',
+              backgroundColor: '#fff',
+              border: '1px solid #e2e8f0',
+              borderRadius: '8px',
+              alignItems: 'center',
+              gap: '0.45rem',
+              padding: '0.42rem 0.85rem',
+              fontSize: '0.8125rem',
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'all .15s',
+              display: 'inline-flex',
+              boxShadow: '0 1px 2px #0000000a',
+            }}
           >
-            <span>Client Portal</span>
-            <ArrowRight className="w-3.5 h-3.5" />
+            <span className="admin-portal-link-text">Client Portal</span>
+            <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
           </Link>
 
           {/* Language Selector */}
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border border-slate-200 bg-white text-xs font-semibold text-slate-700 shadow-2xs">
-            <span>🇬🇧</span>
-            <span>English</span>
-            <ChevronDown className="w-3 h-3 text-slate-400" />
+          <div className="hidden md:inline-flex">
+            <button
+              aria-label="Change Language"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                padding: '0.42rem 0.75rem',
+                borderRadius: '9999px',
+                border: '1px solid rgb(226, 232, 240)',
+                backgroundColor: 'rgb(255, 255, 255)',
+                color: 'rgb(51, 65, 85)',
+                fontSize: '0.8125rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: '0.15s',
+                boxShadow: 'rgba(0, 0, 0, 0.04) 0px 1px 2px',
+              }}
+              title="Language"
+              type="button"
+            >
+              <Globe className="w-3.5 h-3.5 text-orange-600 shrink-0" />
+              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgb(15, 23, 42)' }}>
+                English
+              </span>
+              <ChevronDown className="w-3 h-3 text-slate-400" />
+            </button>
           </div>
 
-          {/* Admin Profile Dropdown (Matching Screenshot media_1795074510483_b0da6331.png) */}
-          <div className="relative">
+          {/* Admin Profile Dropdown - Matching media_1795074510483_b0da6331.png & scratch_header_exact.html */}
+          <div style={{ position: 'relative' }}>
             <button
               type="button"
+              aria-label="Admin user menu"
+              className="admin-user-btn"
               onClick={() => {
                 setProfileDropdownOpen((v) => !v);
                 setApiDropdownOpen(false);
                 setPendingDropdownOpen(false);
               }}
-              className="flex items-center gap-2 sm:gap-2.5 px-2.5 py-1 sm:py-1.5 rounded-2xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/80 transition-all focus:outline-none cursor-pointer shadow-2xs"
             >
-              <div className="relative">
-                <div className="w-8 h-8 rounded-full bg-[#0f172a] text-white flex items-center justify-center font-bold text-xs shrink-0">
-                  <User className="w-4 h-4 text-slate-200" />
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    backgroundColor: 'rgb(15, 23, 42)',
+                    borderRadius: '9999px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: '#ffffff',
+                    boxShadow: 'rgba(0, 0, 0, 0.08) 0px 1px 3px',
+                  }}
+                >
+                  <User className="w-4 h-4 text-white" />
                 </div>
-                <span className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-white" />
+                <span
+                  style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    width: '9px',
+                    height: '9px',
+                    backgroundColor: 'rgb(34, 197, 94)',
+                    border: '2px solid #ffffff',
+                    borderRadius: '9999px',
+                  }}
+                />
               </div>
-              <div className="hidden md:flex flex-col text-left">
-                <span className="text-xs font-bold text-slate-900 leading-tight">
-                  {adminUser.username || 'demoadmin'}
-                </span>
-                <span className="text-[11px] font-semibold text-[#8b5cf6] leading-tight">
-                  {adminUser.name || 'Demo Sandbox Admin'}
-                </span>
+              <div className="admin-hide-mobile" style={{ fontSize: '0.8125rem', textAlign: 'left' }}>
+                <div
+                  style={{
+                    fontWeight: 600,
+                    color: 'rgb(15, 23, 42)',
+                    lineHeight: 1.2,
+                    maxWidth: '140px',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  demoadmin
+                </div>
+                <div
+                  style={{
+                    color: 'rgb(139, 92, 246)',
+                    fontSize: '0.7rem',
+                    lineHeight: 1.2,
+                    marginTop: '1px',
+                    fontWeight: 600,
+                    minHeight: '0.84rem',
+                  }}
+                >
+                  Demo Sandbox Admin
+                </div>
               </div>
-              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 hidden sm:block transition-transform ${profileDropdownOpen ? 'rotate-180' : ''}`} />
+              <div className="admin-hide-mobile" style={{ display: 'flex', alignItems: 'center' }}>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-500" />
+              </div>
             </button>
 
             {/* Profile Dropdown Menu */}
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-60 bg-white border border-slate-200/90 rounded-2xl shadow-xl p-4 z-50 animate-in fade-in zoom-in-95 duration-150">
-                <div className="pb-3 border-b border-slate-100">
-                  <div className="font-bold text-sm text-[#0f172a]">{adminUser.username || 'demoadmin'}</div>
-                  <div className="text-xs text-slate-500 mt-0.5">{adminUser.email || 'demo@majestyfx.com'}</div>
+              <div
+                style={{
+                  position: 'absolute',
+                  right: 0,
+                  marginTop: '0.5rem',
+                  width: '240px',
+                  backgroundColor: '#ffffff',
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '1rem',
+                  boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+                  padding: '1rem',
+                  zIndex: 999,
+                }}
+              >
+                <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid #f1f5f9' }}>
+                  <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#0f172a' }}>demoadmin</div>
+                  <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>demo@majestyfx.com</div>
                 </div>
-                <div className="pt-2 space-y-1">
+                <div style={{ paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
                   <Link
                     to="/"
                     onClick={() => setProfileDropdownOpen(false)}
-                    className="flex items-center gap-2.5 px-2 py-2 text-xs font-semibold text-blue-600 hover:bg-blue-50/70 rounded-lg transition-colors"
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.625rem',
+                      padding: '0.5rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: '#2563eb',
+                      textDecoration: 'none',
+                      borderRadius: '0.5rem',
+                    }}
                   >
                     <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
                     <span>Go to Client Portal</span>
@@ -360,7 +617,21 @@ export default function AdminLayout() {
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="w-full flex items-center gap-2.5 px-2 py-2 text-xs font-semibold text-rose-600 hover:bg-rose-50/70 rounded-lg transition-colors text-left cursor-pointer"
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.625rem',
+                      padding: '0.5rem',
+                      fontSize: '0.75rem',
+                      fontWeight: 600,
+                      color: '#e11d48',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      borderRadius: '0.5rem',
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                    }}
                   >
                     <LogOut className="w-3.5 h-3.5 text-rose-600" />
                     <span>Sign Out</span>
@@ -372,229 +643,350 @@ export default function AdminLayout() {
         </div>
       </header>
 
-      {/* Main Body with Sidebar + Content */}
-      <div className="flex flex-1 min-h-[calc(100vh-70px)]">
-        {/* Desktop Sidebar (Matching Screenshots) */}
-        <aside className="hidden lg:flex w-64 shrink-0 bg-white border-r border-slate-200 h-[calc(100vh-70px)] sticky top-[70px] overflow-y-auto flex-col py-3 px-3 space-y-1">
-          {/* Top Admin User Card */}
-          <div className="flex items-center gap-2.5 p-2.5 mb-2 rounded-xl bg-slate-50/80 border border-slate-200/70">
-            <div className="w-8 h-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center shrink-0">
-              <User className="w-4 h-4" />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-xs font-bold text-slate-900 leading-tight truncate">
-                {adminUser.username || 'demoadmin'}
-              </span>
-              <span className="text-[10px] text-slate-500 leading-tight truncate">
-                {adminUser.name || 'Demo Sandbox Admin'}
-              </span>
-            </div>
-          </div>
-
-          {/* Top Nav Items */}
-          {topMenuItems.map((item) => {
-            const isActive = location.pathname === item.path;
-            return (
-              <NavLink
-                key={item.label}
-                to={item.path}
-                className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                  isActive
-                    ? 'bg-[#7c3aed] text-white font-bold shadow-sm'
-                    : 'text-slate-700 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                <div className="flex items-center gap-2.5">
-                  <item.icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-slate-500'}`} />
-                  <span>{item.label}</span>
-                </div>
-                {item.badge && (
-                  <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${item.badgeColor}`}>
-                    {item.badge}
-                  </span>
-                )}
-              </NavLink>
-            );
-          })}
-
-          {/* IB Management Accordion */}
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => setIbExpanded((v) => !v)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-slate-800 hover:bg-slate-50 transition-colors text-xs font-bold cursor-pointer"
+      {/* Main Container: Fixed Sidebar + Scrollable Main Area */}
+      <div style={{ display: 'flex', height: 'calc(-70px + 100vh)', paddingTop: '70px' }}>
+        {/* Sidebar - Matching scratch_aside_exact.html */}
+        <aside
+          className={`dashboard-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}
+          style={{
+            position: 'fixed',
+            top: '70px',
+            left: '0px',
+            right: 'auto',
+            width: '16rem',
+            height: 'calc(-70px + 100vh)',
+            borderRight: '1px solid rgb(226, 232, 240)',
+            borderLeftWidth: 'medium',
+            borderLeftStyle: 'none',
+            borderLeftColor: 'currentcolor',
+            boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
+            zIndex: 40,
+            background: 'linear-gradient(rgb(219, 234, 254), rgb(243, 232, 255), rgb(252, 231, 243), rgb(255, 228, 230))',
+            overflow: 'hidden auto',
+          }}
+        >
+          <nav style={{ padding: '0.75rem 0.75rem 6rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            {/* User Mini Card */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.65rem',
+                padding: '0.5rem 0.75rem',
+                marginBottom: '0.5rem',
+                borderRadius: '0.5rem',
+                backgroundColor: 'rgba(255, 255, 255, 0.45)',
+                border: '1px solid rgba(191, 219, 254, 0.6)',
+              }}
             >
-              <div className="flex items-center gap-2.5">
-                <UserPlus className="w-4 h-4 text-slate-700" />
-                <span>IB Management</span>
+              <div
+                style={{
+                  width: '30px',
+                  height: '30px',
+                  borderRadius: '9999px',
+                  backgroundColor: 'rgb(203, 213, 225)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: 'rgb(71, 85, 105)',
+                }}
+              >
+                <User className="w-4 h-4" />
               </div>
-              <ChevronDown
-                className={`w-3.5 h-3.5 text-slate-400 transition-transform ${ibExpanded ? 'rotate-180' : ''}`}
-              />
-            </button>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'rgb(51, 65, 85)', lineHeight: 1.2 }}>
+                  demoadmin
+                </span>
+                <span style={{ fontSize: '0.7rem', color: 'var(--desk)', fontWeight: 600 }}>
+                  Demo Sandbox Admin
+                </span>
+              </div>
+            </div>
 
-            {ibExpanded && (
-              <div className="pl-4 pr-1 py-1 space-y-1">
-                {ibSubmenuItems.map((sub) => {
-                  const isActive = location.pathname === sub.path;
-                  return (
+            {/* 1. Professional Email */}
+            <NavLink
+              to="/admin/professional-email"
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 0.85rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: isActive ? 700 : 500,
+                textDecoration: 'none',
+                transition: '0.15s',
+                backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                color: isActive ? '#ffffff' : 'rgb(31, 41, 55)',
+              })}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <Mail style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0 }} />
+                <span>Professional Email</span>
+              </div>
+            </NavLink>
+
+            {/* 2. Clients */}
+            <NavLink
+              to="/admin/clients"
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 0.85rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: isActive ? 700 : 500,
+                textDecoration: 'none',
+                transition: '0.15s',
+                backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                color: isActive ? '#ffffff' : 'rgb(31, 41, 55)',
+              })}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <Users style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0 }} />
+                <span>Clients</span>
+              </div>
+            </NavLink>
+
+            {/* 3. Trading Accounts */}
+            <NavLink
+              to="/admin/trading-accounts"
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 0.85rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: isActive ? 700 : 500,
+                textDecoration: 'none',
+                transition: '0.15s',
+                backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                color: isActive ? '#ffffff' : 'rgb(31, 41, 55)',
+              })}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <BarChart2 style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0 }} />
+                <span>Trading Accounts</span>
+              </div>
+            </NavLink>
+
+            {/* 4. KYC Documents */}
+            <NavLink
+              to="/admin/kyc-documents"
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 0.85rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: isActive ? 700 : 500,
+                textDecoration: 'none',
+                transition: '0.15s',
+                backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                color: isActive ? '#ffffff' : 'rgb(31, 41, 55)',
+              })}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <FileCheck style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0 }} />
+                <span>KYC Documents</span>
+              </div>
+              <span
+                style={{
+                  backgroundColor: 'rgb(37, 99, 235)',
+                  color: 'rgb(255, 255, 255)',
+                  fontSize: '0.675rem',
+                  fontWeight: 700,
+                  padding: '0.1rem 0.45rem',
+                  borderRadius: '9999px',
+                  lineHeight: 1.2,
+                }}
+              >
+                2
+              </span>
+            </NavLink>
+
+            {/* 5. Trade Report */}
+            <NavLink
+              to="/admin/trade-report"
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '0.65rem 0.85rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.9375rem',
+                fontWeight: isActive ? 700 : 500,
+                textDecoration: 'none',
+                transition: '0.15s',
+                backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                color: isActive ? '#ffffff' : 'rgb(31, 41, 55)',
+              })}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <TrendingUp style={{ width: '1.35rem', height: '1.35rem', flexShrink: 0 }} />
+                <span>Trade Report</span>
+              </div>
+            </NavLink>
+
+            {/* 6. IB Management (Expandable) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setIbExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <UserPlus style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>IB Management</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <ChevronRight
+                    className={`w-4 h-4 text-slate-600 transition-transform ${ibExpanded ? 'rotate-90' : ''}`}
+                  />
+                </div>
+              </div>
+
+              {ibExpanded && (
+                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  {[
+                    { label: 'Demo Sandbox', path: '/admin/demo' },
+                    { label: 'IB Overview', path: '/admin/ib/dashboard' },
+                    { label: 'IB Partner Network', path: '/admin/ib-clients', badge: '3' },
+                    { label: 'IB Referral Tree', path: '/admin/referral-tree' },
+                    { label: 'IB Commissions Settings', path: '/admin/ib-commissions-settings' },
+                    { label: 'IB Commission History', path: '/admin/ib-commission-history' },
+                    { label: 'IB Commission Withdrawal History', path: '/admin/ib-commission-withdrawal-history' },
+                    { label: 'Rebate & Rank Settings', path: '/admin/rank-management' },
+                    { label: 'Rebate Accounts', path: '/admin/rebate-accounts' },
+                    { label: 'IB Rewards', path: '/admin/ib-rewards' },
+                  ].map((sub) => (
                     <NavLink
                       key={sub.path}
                       to={sub.path}
-                      className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                        isActive
-                          ? 'bg-[#7c3aed] text-white font-bold shadow-sm'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
-                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => ({
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.45rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        fontSize: '0.85rem',
+                        fontWeight: isActive ? 700 : 500,
+                        textDecoration: 'none',
+                        transition: '0.15s',
+                        backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                        color: isActive ? '#ffffff' : 'rgb(51, 65, 85)',
+                      })}
                     >
-                      <div className="flex items-center gap-2 truncate">
-                        <span
-                          className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                            isActive ? 'bg-white' : 'bg-slate-400'
-                          }`}
-                        />
-                        <span className="truncate">{sub.label}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{sub.label}</span>
                       </div>
                       {sub.badge && (
-                        <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full shrink-0 ${sub.badgeColor}`}>
+                        <span style={{ backgroundColor: 'rgb(249, 115, 22)', color: '#fff', fontSize: '0.675rem', fontWeight: 700, padding: '0.1rem 0.4rem', borderRadius: '9999px' }}>
                           {sub.badge}
                         </span>
                       )}
                     </NavLink>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-          {/* PAMM Accordion */}
-          <div className="pt-1">
-            <button
-              type="button"
-              onClick={() => setPammExpanded((v) => !v)}
-              className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-slate-800 hover:bg-slate-50 transition-colors text-xs font-bold cursor-pointer"
-            >
-              <div className="flex items-center gap-2.5">
-                <PieChart className="w-4 h-4 text-slate-700" />
-                <span>PAMM</span>
+            {/* 7. PAMM (Expandable) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setPammExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <PieChart style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>PAMM</span>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 text-slate-600 transition-transform ${pammExpanded ? 'rotate-90' : ''}`}
+                />
               </div>
-              <ChevronDown
-                className={`w-3.5 h-3.5 text-slate-400 transition-transform ${pammExpanded ? 'rotate-180' : ''}`}
-              />
-            </button>
-            {pammExpanded && (
-              <div className="pl-4 pr-1 py-1 space-y-1">
-                {pammSubmenuItems.map((sub) => {
-                  const isActive = location.pathname === sub.path;
-                  return (
+
+              {pammExpanded && (
+                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  {[
+                    { label: 'Total PAMM Clients', path: '/admin/pamm-clients' },
+                    { label: 'Total PAMM Active Accounts', path: '/admin/pamm-accounts' },
+                    { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
+                    { label: 'PAMM Commission Report', path: '/admin/pamm-report' },
+                  ].map((sub) => (
                     <NavLink
                       key={sub.path}
                       to={sub.path}
-                      className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                        isActive
-                          ? 'bg-[#7c3aed] text-white font-bold shadow-sm'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70'
-                      }`}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => ({
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '0.45rem 0.75rem',
+                        borderRadius: '0.375rem',
+                        fontSize: '0.85rem',
+                        fontWeight: isActive ? 700 : 500,
+                        textDecoration: 'none',
+                        transition: '0.15s',
+                        backgroundColor: isActive ? 'var(--desk)' : 'transparent',
+                        color: isActive ? '#ffffff' : 'rgb(51, 65, 85)',
+                      })}
                     >
-                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${isActive ? 'bg-white' : 'bg-slate-400'}`} />
-                      <span>{sub.label}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{sub.label}</span>
+                      </div>
                     </NavLink>
-                  );
-                })}
-              </div>
-            )}
-          </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </nav>
         </aside>
 
-        {/* Mobile Slide-Over Drawer */}
-        {mobileMenuOpen && (
-          <div className="fixed inset-0 z-50 lg:hidden flex">
-            <div
-              className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs"
-              onClick={() => setMobileMenuOpen(false)}
-            />
-            <div className="relative w-72 max-w-[85%] bg-white h-full shadow-2xl p-4 overflow-y-auto flex flex-col space-y-2 z-10">
-              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                <div className="flex items-center gap-2">
-                  <img src={logo} alt="Majesty FX" className="h-7 w-auto" />
-                  <span className="font-extrabold text-sm text-[#0b192c]">Majesty FX</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="p-1.5 rounded-lg text-slate-500 hover:bg-slate-100 cursor-pointer"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Mobile top items */}
-              {topMenuItems.map((item) => (
-                <NavLink
-                  key={item.label}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg ${
-                    location.pathname === item.path ? 'bg-[#7c3aed] text-white font-bold' : 'text-slate-700 hover:bg-slate-50'
-                  }`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <item.icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </div>
-                  {item.badge && (
-                    <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${item.badgeColor}`}>
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              ))}
-
-              <div className="pt-2 border-t border-slate-100">
-                <div className="px-3 py-1 text-xs font-bold text-slate-900">IB Management</div>
-                <div className="space-y-1 mt-1 pl-2">
-                  {ibSubmenuItems.map((sub) => {
-                    const isActive = location.pathname === sub.path;
-                    return (
-                      <NavLink
-                        key={sub.path}
-                        to={sub.path}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                          isActive
-                            ? 'bg-[#7c3aed] text-white font-bold shadow-sm'
-                            : 'text-slate-600 hover:bg-slate-100'
-                        }`}
-                      >
-                        <span>{sub.label}</span>
-                        {sub.badge && (
-                          <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded-full ${sub.badgeColor}`}>
-                            {sub.badge}
-                          </span>
-                        )}
-                      </NavLink>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-auto pt-4 border-t border-slate-100">
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg cursor-pointer"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span>Sign Out</span>
-                </button>
-              </div>
+        {/* Main Content Area */}
+        <main
+          className="admin-main-area text-slate-900"
+          style={{ overscrollBehavior: 'contain', marginLeft: '16rem', flex: 1, height: 'calc(-70px + 100vh)', overflowY: 'auto' }}
+        >
+          <div className="relative min-h-full bg-[#f8fafc] border-l border-slate-200/60 p-4 sm:p-6 lg:p-8 pb-16">
+            <div className="relative max-w-[1700px] mx-auto">
+              <Outlet />
             </div>
           </div>
-        )}
-
-        {/* Content Area */}
-        <main className="flex-1 min-w-0 bg-[#f8fafc] p-4 sm:p-6 lg:p-8 overflow-y-auto">
-          <Outlet />
         </main>
       </div>
     </div>

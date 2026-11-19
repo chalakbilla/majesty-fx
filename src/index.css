@@ -1,3 +1,5 @@
+@import './styles/admin.css';
+@import './styles/admin-utilities.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
