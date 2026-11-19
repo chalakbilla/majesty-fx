@@ -6,8 +6,6 @@ import {
   RefreshCw,
   Search,
   X,
-  Eye,
-  AlertCircle,
 } from 'lucide-react';
 
 const STORAGE_KEY = 'majesty_admin_rejected_withdrawals';
@@ -27,36 +25,6 @@ const DEFAULT_REJECTED_WITHDRAWALS = [
     date: '11/16/2026, 05:22 PM',
     walletAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
     rejectionReason: 'Unmet trading turnover requirement on credit bonus or verification flag',
-  },
-  {
-    id: 'TX-90112',
-    txId: 'TX-90112',
-    account: '800101',
-    clientName: 'Alexander Wright',
-    clientEmail: 'alex.wright@demo.example.com',
-    method: 'Bank Wire Transfer',
-    amount: '$1,500.00',
-    amountNum: 1500.0,
-    fee: '$15.00',
-    status: 'Rejected',
-    date: '11/12/2026, 02:15 PM',
-    walletAddress: 'IBAN: GB29NWBK60161331926819',
-    rejectionReason: 'Beneficiary bank name does not match KYC verified identification',
-  },
-  {
-    id: 'TX-90105',
-    txId: 'TX-90105',
-    account: '800105',
-    clientName: 'Elena Rostova',
-    clientEmail: 'elena.rostova@demo.example.com',
-    method: 'USDT (TRC20)',
-    amount: '$3,200.00',
-    amountNum: 3200.0,
-    fee: '$10.00',
-    status: 'Rejected',
-    date: '11/08/2026, 11:40 AM',
-    walletAddress: 'TJYy124AjkxKj3290aksmcx928371ksmxx',
-    rejectionReason: 'Open trading positions on MT5 account; margin level under threshold',
   },
 ];
 
@@ -206,9 +174,9 @@ export default function AdminRejectedWithdrawals() {
             <Link to="/admin/dashboard" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
               Home
             </Link>
-            <ChevronRight size={12} className="text-slate-400 shrink-0 mx-0.5" />
+            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
             <span className="whitespace-nowrap text-slate-500">Transactions &amp; Money</span>
-            <ChevronRight size={12} className="text-slate-400 shrink-0 mx-0.5" />
+            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
             <span className="whitespace-nowrap text-slate-800 font-semibold">Rejected Withdrawals</span>
           </nav>
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
@@ -247,7 +215,7 @@ export default function AdminRejectedWithdrawals() {
         </div>
       </div>
 
-      {/* 2. Controls & Search Filter Bar */}
+      {/* 2. Controls & Search Filter Bar matching reference */}
       <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3 w-full sm:w-auto flex-1">
           <div className="relative flex-1 max-w-md">
@@ -257,16 +225,8 @@ export default function AdminRejectedWithdrawals() {
               placeholder="Search by TX ID, Account, Client, Method..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-8 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-orange-500 focus:bg-white transition-colors"
+              className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-orange-500 focus:bg-white transition-colors"
             />
-            {search && (
-              <button
-                onClick={() => setSearch('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full cursor-pointer"
-              >
-                <X size={13} />
-              </button>
-            )}
           </div>
           <select
             value={statusFilter}
@@ -476,22 +436,6 @@ export default function AdminRejectedWithdrawals() {
           </div>
         </div>
       )}
-
-      {/* 5. Footer matching Version 2.0 */}
-      <footer
-        style={{
-          marginTop: '1.5rem',
-          paddingTop: '1rem',
-          borderTop: '1px solid rgb(226, 232, 240)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          fontSize: '0.8125rem',
-          color: 'rgb(100, 116, 139)',
-        }}
-      >
-        <span>Version 2.0</span>
-      </footer>
     </div>
   );
 }
