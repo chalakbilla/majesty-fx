@@ -22,6 +22,7 @@ import {
   Menu,
   PieChart,
   RefreshCw,
+  Repeat,
   Settings,
   Shield,
   TrendingUp,
@@ -932,6 +933,75 @@ export default function AdminLayout() {
                       onClick={() => setMobileMenuOpen(false)}
                       style={({ isActive }) => {
                         const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin');
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.45rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.85rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{sub.label}</span>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 8. Copy Trading (Expandable) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setCopyExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Repeat style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Copy Trading</span>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 text-slate-600 transition-transform ${copyExpanded ? 'rotate-90' : ''}`}
+                />
+              </div>
+
+              {copyExpanded && (
+                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  {[
+                    { label: 'Copy Trading Accounts', path: '/admin/copy-trading-accounts' },
+                    { label: 'Pending Master Accounts', path: '/admin/pending-master-accounts' },
+                    { label: 'Master Account', path: '/admin/master-accounts' },
+                    { label: 'Rejected Master Account', path: '/admin/rejected-master-accounts' },
+                    { label: 'Approved Followers', path: '/admin/approved-followers' },
+                    { label: 'Rejected Followers', path: '/admin/rejected-followers' },
+                    { label: 'Profit Sharing Data', path: '/admin/profit-sharing-data' },
+                  ].map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => {
+                        const active = isActive || (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
