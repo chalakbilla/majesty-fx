@@ -672,10 +672,13 @@ export default function AdminLayout() {
             boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
             zIndex: 40,
             background: 'linear-gradient(rgb(219, 234, 254), rgb(243, 232, 255), rgb(252, 231, 243), rgb(255, 228, 230))',
-            overflow: 'hidden auto',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+            overflow: 'hidden',
           }}
         >
-          <nav style={{ padding: '0.75rem 0.75rem 6rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+          <nav style={{ padding: '0.75rem 0.75rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.35rem', flex: 1, overflowY: 'auto' }}>
             {/* User Mini Card */}
             <div
               style={{
@@ -1354,6 +1357,22 @@ export default function AdminLayout() {
               )}
             </div>
           </nav>
+
+          {/* Left Bottom Container matching media_1795090995283_6a8ab8cb.png */}
+          <div
+            style={{
+              padding: '0.75rem 1rem',
+              borderTop: '1px solid rgb(226, 232, 240)',
+              backgroundColor: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(8px)',
+              flexShrink: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.5rem',
+            }}
+          >
+            <LanguageSelector variant="sidebar" />
+          </div>
         </aside>
 
         {/* Main Content Area */}
