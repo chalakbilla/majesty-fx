@@ -15,65 +15,158 @@ import {
   Key,
   Send,
   Save,
-  Server,
-  Mail,
-  Eye,
-  EyeOff,
-  AlertCircle,
   RefreshCw,
-  ChevronRight,
-  ShieldCheck,
+  AlertCircle,
 } from 'lucide-react';
-import { AE, CN, DE, ES, FR, GB, PK, RU, TR } from 'country-flag-icons/react/3x2';
 
 const STORAGE_KEY = 'majesty_admin_notification_settings';
-const AUTH_STORAGE_KEY = 'majesty_admin_auth';
 const LANG_STORAGE_KEY = 'majesty_language';
 
 const LANGUAGES = [
-  { code: 'en', name: 'English', native: 'English', Flag: GB, dir: 'LTR' },
-  { code: 'ar', name: 'Arabic', native: 'العربية', Flag: AE, dir: 'RTL', rtl: true },
-  { code: 'es', name: 'Spanish', native: 'Español', Flag: ES, dir: 'LTR' },
-  { code: 'fr', name: 'French', native: 'Français', Flag: FR, dir: 'LTR' },
-  { code: 'de', name: 'German', native: 'Deutsch', Flag: DE, dir: 'LTR' },
-  { code: 'ru', name: 'Russian', native: 'Русский', Flag: RU, dir: 'LTR' },
-  { code: 'zh', name: 'Chinese', native: '简体中文', Flag: CN, dir: 'LTR' },
-  { code: 'tr', name: 'Turkish', native: 'Türkçe', Flag: TR, dir: 'LTR' },
-  { code: 'ur', name: 'Urdu', native: 'اردو', Flag: PK, dir: 'RTL', rtl: true },
+  {
+    code: 'en',
+    name: 'English',
+    native: 'English',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <clipPath id="s">
+          <path d="M0,0 v30 h60 v-30 z" />
+        </clipPath>
+        <clipPath id="t">
+          <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+        </clipPath>
+        <g clipPath="url(#s)">
+          <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+          <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" strokeWidth="6" />
+          <path d="M0,0 L60,30 M60,0 L0,30" clipPath="url(#t)" stroke="#C8102E" strokeWidth="4" />
+          <path d="M30,0 v30 M0,15 h60" stroke="#fff" strokeWidth="10" />
+          <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" strokeWidth="6" />
+        </g>
+      </svg>
+    ),
+  },
+  {
+    code: 'ar',
+    name: 'Arabic',
+    native: 'العربية',
+    dir: 'RTL',
+    rtl: true,
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="10" y="0" fill="#00732F" />
+        <rect width="60" height="10" y="10" fill="#FFFFFF" />
+        <rect width="60" height="10" y="20" fill="#000000" />
+        <rect width="16" height="30" x="0" y="0" fill="#FF0000" />
+      </svg>
+    ),
+  },
+  {
+    code: 'es',
+    name: 'Spanish',
+    native: 'Español',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="7.5" y="0" fill="#AA151B" />
+        <rect width="60" height="15" y="7.5" fill="#F1BF00" />
+        <rect width="60" height="7.5" y="22.5" fill="#AA151B" />
+        <circle cx="18" cy="15" r="3" fill="#AA151B" opacity="0.8" />
+      </svg>
+    ),
+  },
+  {
+    code: 'fr',
+    name: 'French',
+    native: 'Français',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="20" height="30" x="0" fill="#002654" />
+        <rect width="20" height="30" x="20" fill="#FFFFFF" />
+        <rect width="20" height="30" x="40" fill="#CE1126" />
+      </svg>
+    ),
+  },
+  {
+    code: 'de',
+    name: 'German',
+    native: 'Deutsch',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="10" y="0" fill="#000000" />
+        <rect width="60" height="10" y="10" fill="#DD0000" />
+        <rect width="60" height="10" y="20" fill="#FFCE00" />
+      </svg>
+    ),
+  },
+  {
+    code: 'ru',
+    name: 'Russian',
+    native: 'Русский',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="10" y="0" fill="#FFFFFF" />
+        <rect width="60" height="10" y="10" fill="#0039A6" />
+        <rect width="60" height="10" y="20" fill="#D52B1E" />
+      </svg>
+    ),
+  },
+  {
+    code: 'zh',
+    name: 'Chinese',
+    native: '简体中文',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="30" fill="#EE1C25" />
+        <polygon
+          points="10,5 11.5,9 15.5,9 12.3,11.5 13.5,15.5 10,13 6.5,15.5 7.7,11.5 4.5,9 8.5,9"
+          fill="#FFDE00"
+        />
+        <circle cx="19" cy="5" r="1.2" fill="#FFDE00" />
+        <circle cx="22" cy="8" r="1.2" fill="#FFDE00" />
+        <circle cx="22" cy="12" r="1.2" fill="#FFDE00" />
+        <circle cx="19" cy="15" r="1.2" fill="#FFDE00" />
+      </svg>
+    ),
+  },
+  {
+    code: 'tr',
+    name: 'Turkish',
+    native: 'Türkçe',
+    dir: 'LTR',
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="60" height="30" fill="#E30A17" />
+        <circle cx="23" cy="15" r="7.5" fill="#FFFFFF" />
+        <circle cx="25" cy="15" r="6" fill="#E30A17" />
+        <polygon points="33,15 30.5,13.8 31.2,16.5 29.2,14.8 32,14.8 29.8,16.5" fill="#FFFFFF" />
+      </svg>
+    ),
+  },
+  {
+    code: 'ur',
+    name: 'Urdu',
+    native: 'اردو',
+    dir: 'RTL',
+    rtl: true,
+    flag: (
+      <svg viewBox="0 0 60 30" width="100%" height="100%" preserveAspectRatio="none">
+        <rect width="15" height="30" x="0" y="0" fill="#FFFFFF" />
+        <rect width="45" height="30" x="15" y="0" fill="#01411C" />
+        <circle cx="37" cy="15" r="8" fill="#FFFFFF" />
+        <circle cx="39" cy="13.5" r="7.2" fill="#01411C" />
+        <polygon
+          points="42,10 43,12.5 45.5,12.5 43.5,14 44.2,16.5 42,15 39.8,16.5 40.5,14 38.5,12.5 41,12.5"
+          fill="#FFFFFF"
+        />
+      </svg>
+    ),
+  },
 ];
-
-const DEFAULT_DESKS = {
-  superadmin: {
-    name: 'Super Admin Desk',
-    email: 'admin@majestyfx.com',
-    enabled: true,
-    role: 'superadmin',
-  },
-  demo_admin: {
-    name: 'DEMO Desk',
-    email: 'demo@majestyfx.com',
-    enabled: true,
-    role: 'demo_admin',
-  },
-  referral_admin: {
-    name: 'Referral Admin Desk',
-    email: 'referral@majestyfx.com',
-    enabled: true,
-    role: 'referral_admin',
-  },
-  ib1_admin: {
-    name: 'IB1 Desk (Primewave)',
-    email: 'ib1@majestyfx.com',
-    enabled: true,
-    role: 'ib1_admin',
-  },
-  ib2_admin: {
-    name: 'IB2 Desk (KF Markets)',
-    email: 'ib2@majestyfx.com',
-    enabled: true,
-    role: 'ib2_admin',
-  },
-};
 
 const EVENT_ITEMS = [
   { title: 'Contact Form Inquiries', desc: 'Direct website & helpdesk messages' },
@@ -87,7 +180,6 @@ const EVENT_ITEMS = [
 
 export default function AdminSettings() {
   const location = useLocation();
-  const isLanguageTab = new URLSearchParams(location.search).get('tab') === 'language';
 
   // Smooth scroll to Language & Regional Settings if tab=language
   useEffect(() => {
@@ -103,114 +195,38 @@ export default function AdminSettings() {
     }
   }, [location.search]);
 
-  // Authentication & Desk state
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
-  const [currentDeskKey, setCurrentDeskKey] = useState('demo_admin');
-  const [currentDeskLabel, setCurrentDeskLabel] = useState('DEMO');
-
   // Language state
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     return localStorage.getItem(LANG_STORAGE_KEY) || 'en';
   });
 
-  // Outgoing Mail (SMTP) State
-  const [smtpHost, setSmtpHost] = useState('smtp.hostinger.com');
-  const [smtpPort, setSmtpPort] = useState(465);
-  const [smtpSecure, setSmtpSecure] = useState(true);
-  const [smtpUser, setSmtpUser] = useState('support@imageoptimizer.in');
-  const [smtpPass, setSmtpPass] = useState('Demo@SMTP2026!');
-  const [showSmtpPass, setShowSmtpPass] = useState(false);
-  const [smtpFromName, setSmtpFromName] = useState('Majesty FX');
-  const [smtpFromEmail, setSmtpFromEmail] = useState('support@imageoptimizer.in');
+  // Notification Email form state
+  const [enabled, setEnabled] = useState(true);
+  const [notificationEmail, setNotificationEmail] = useState('demo@majestyfx.com');
 
-  // Desk Routing State
-  const [adminRecipients, setAdminRecipients] = useState(DEFAULT_DESKS);
-  const [additionalEmails, setAdditionalEmails] = useState(
-    'alerts@majestyfx.com, compliance@majestyfx.com'
-  );
-
-  // Security & Password State
+  // Security & Password state
   const [currentPassword, setCurrentPassword] = useState('Demo@2026!');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordUpdating, setPasswordUpdating] = useState(false);
   const [passwordFeedback, setPasswordFeedback] = useState(null);
 
-  // Action status states
+  // General feedback and button states
   const [statusMessage, setStatusMessage] = useState(null);
-  const [smtpVerification, setSmtpVerification] = useState(null);
-  const [dispatchResults, setDispatchResults] = useState(null);
   const [saving, setSaving] = useState(false);
-  const [testingSmtp, setTestingSmtp] = useState(false);
   const [sendingTest, setSendingTest] = useState(false);
 
   // Initialize from LocalStorage
   useEffect(() => {
     try {
-      const authStr = localStorage.getItem(AUTH_STORAGE_KEY);
-      if (authStr) {
-        const auth = JSON.parse(authStr);
-        const role = (auth.role || '').toLowerCase();
-        const desk = (auth.desk || '').toLowerCase();
-        const username = (auth.username || '').toLowerCase();
-        const email = auth.email || '';
-
-        const superRole =
-          role === 'superadmin' ||
-          desk === 'superadmin' ||
-          username === 'superadmin';
-
-        setIsSuperAdmin(superRole);
-
-        let deskKey = 'demo_admin';
-        let deskLabel = 'DEMO';
-
-        if (desk.includes('demo') || username.includes('demo')) {
-          deskKey = 'demo_admin';
-          deskLabel = 'DEMO';
-        } else if (desk.includes('referral') || role.includes('referral')) {
-          deskKey = 'referral_admin';
-          deskLabel = 'Referral';
-        } else if (desk.includes('ib1') || role.includes('ib1')) {
-          deskKey = 'ib1_admin';
-          deskLabel = 'IB1';
-        } else if (desk.includes('ib2') || role.includes('ib2')) {
-          deskKey = 'ib2_admin';
-          deskLabel = 'IB2';
-        }
-
-        setCurrentDeskKey(deskKey);
-        setCurrentDeskLabel(deskLabel);
-
-        if (email) {
-          setAdminRecipients((prev) => ({
-            ...prev,
-            [deskKey]: {
-              ...prev[deskKey],
-              email: prev[deskKey]?.email || email,
-            },
-          }));
-        }
-      }
-
-      // Load saved settings
       const savedSettingsStr = localStorage.getItem(STORAGE_KEY);
       if (savedSettingsStr) {
         const saved = JSON.parse(savedSettingsStr);
-        if (saved.smtpHost) setSmtpHost(saved.smtpHost);
-        if (saved.smtpPort) setSmtpPort(Number(saved.smtpPort));
-        if (typeof saved.smtpSecure === 'boolean') setSmtpSecure(saved.smtpSecure);
-        if (saved.smtpUser) setSmtpUser(saved.smtpUser);
-        if (saved.smtpPass) setSmtpPass(saved.smtpPass);
-        if (saved.smtpFromName) setSmtpFromName(saved.smtpFromName);
-        if (saved.smtpFromEmail) setSmtpFromEmail(saved.smtpFromEmail);
-        if (saved.adminRecipients) {
-          setAdminRecipients((prev) => ({ ...prev, ...saved.adminRecipients }));
-        }
-        if (saved.additionalEmails) setAdditionalEmails(saved.additionalEmails);
+        if (typeof saved.enabled === 'boolean') setEnabled(saved.enabled);
+        if (saved.email) setNotificationEmail(saved.email);
       }
     } catch {
-      // Fallback cleanly
+      // ignore
     }
   }, []);
 
@@ -223,16 +239,6 @@ export default function AdminSettings() {
     } catch {
       // ignore
     }
-  };
-
-  const handleDeskFieldChange = (key, field, val) => {
-    setAdminRecipients((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        [field]: val,
-      },
-    }));
   };
 
   const handlePasswordUpdate = (e) => {
@@ -268,62 +274,18 @@ export default function AdminSettings() {
     }, 600);
   };
 
-  const handleVerifySMTP = (e) => {
-    e.preventDefault();
-    setTestingSmtp(true);
-    setSmtpVerification(null);
-
-    setTimeout(() => {
-      setTestingSmtp(false);
-      setSmtpVerification({
-        success: true,
-        message: `SMTP Connection Verified: Successfully authenticated with ${smtpHost}:${smtpPort} (${
-          smtpSecure ? 'SSL/TLS' : 'STARTTLS'
-        }) as ${smtpUser}.`,
-      });
-    }, 800);
-  };
-
   const handleSendTest = (e) => {
     e.preventDefault();
     setSendingTest(true);
     setStatusMessage(null);
-    setDispatchResults(null);
 
     setTimeout(() => {
       setSendingTest(false);
-      const recipientList = isSuperAdmin
-        ? [
-            {
-              to: adminRecipients[currentDeskKey]?.email || 'demo@majestyfx.com',
-              cc: ['admin@majestyfx.com'],
-              success: true,
-              message: 'Delivered via dynamic SMTP configuration',
-            },
-            {
-              to: 'admin@majestyfx.com',
-              cc: [],
-              success: true,
-              message: 'Direct Delivery to Super Admin',
-            },
-          ]
-        : [
-            {
-              to: adminRecipients[currentDeskKey]?.email || 'demo@majestyfx.com',
-              cc: ['admin@majestyfx.com'],
-              success: true,
-              message: 'Delivered via dynamic SMTP configuration',
-            },
-          ];
-
-      setDispatchResults(recipientList);
       setStatusMessage({
         type: 'success',
-        text: isSuperAdmin
-          ? 'Live test alert dispatched successfully to all configured admin recipients.'
-          : 'Live test alert sent to your receiving email address successfully.',
+        text: `Live test alert sent to ${notificationEmail} successfully.`,
       });
-    }, 900);
+    }, 800);
   };
 
   const handleSaveSettings = (e) => {
@@ -332,15 +294,8 @@ export default function AdminSettings() {
     setStatusMessage(null);
 
     const payload = {
-      smtpHost,
-      smtpPort,
-      smtpSecure,
-      smtpUser,
-      smtpPass,
-      smtpFromName,
-      smtpFromEmail,
-      adminRecipients,
-      additionalEmails,
+      enabled,
+      email: notificationEmail,
       updatedAt: new Date().toISOString(),
     };
 
@@ -354,9 +309,7 @@ export default function AdminSettings() {
       setSaving(false);
       setStatusMessage({
         type: 'success',
-        text: isSuperAdmin
-          ? 'All SMTP mail server and admin notification routing configurations have been saved successfully.'
-          : 'Your desk notification email settings have been updated successfully.',
+        text: 'Your desk notification email settings have been updated successfully.',
       });
     }, 500);
   };
@@ -365,9 +318,9 @@ export default function AdminSettings() {
   const isRTL = !!currentLangObj.rtl;
 
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      {/* 1. Header Banner matching reference */}
-      <div className="relative bg-gradient-to-r from-white via-white to-orange-50/20 rounded-2xl border border-slate-200 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)] overflow-hidden transition-all duration-200 mb-6">
+    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0px auto' }}>
+      {/* 1. Header Card matching reference */}
+      <div className="relative bg-gradient-to-r from-white via-white to-orange-50/20 rounded-2xl border border-slate-200 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)] overflow-hidden transition-all duration-200">
         <div
           className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 bg-orange-100/50 rounded-full blur-3xl -z-10 hidden sm:block"
           aria-hidden="true"
@@ -378,7 +331,7 @@ export default function AdminSettings() {
               <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
                 <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
                   <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
-                    {currentDeskLabel} Desk Notification
+                    DEMO Desk Notification
                   </span>{' '}
                   <span
                     className="inline-block font-black text-orange-600 tracking-tight"
@@ -392,19 +345,19 @@ export default function AdminSettings() {
                 Configure your receiving notification email address for client accounts, KYC submissions, support tickets, and desk notifications.
               </div>
             </div>
-            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0">
-            </div>
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0" />
           </div>
         </div>
       </div>
 
-      {/* 2. Quick Navigation Shortcut Cards */}
+      {/* 2. 5 Shortcut Cards matching reference */}
       <div
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
           gap: '14px',
           marginBottom: '24px',
+          marginTop: '24px',
         }}
       >
         <Link
@@ -418,7 +371,7 @@ export default function AdminSettings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.15s ease',
+            transition: '0.15s',
           }}
         >
           <div>
@@ -438,8 +391,8 @@ export default function AdminSettings() {
               <Wallet size={15} color="#0284c7" />
               <span>Deposit Address Settings</span>
             </div>
-            <div style={{ fontSize: '12px', color: 'rgb(12, 74, 110)', fontWeight: 500 }}>
-              Manage crypto vault addresses, QR codes & bank wire info for {currentDeskLabel}
+            <div style={{ fontSize: '12px', color: 'rgb(12, 74, 110)', fontHeight: 500 }}>
+              Manage crypto vault addresses, QR codes & bank wire info for DEMO
             </div>
           </div>
           <ArrowRight size={18} color="#0284c7" />
@@ -456,7 +409,7 @@ export default function AdminSettings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.15s ease',
+            transition: '0.15s',
           }}
         >
           <div>
@@ -494,7 +447,7 @@ export default function AdminSettings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.15s ease',
+            transition: '0.15s',
           }}
         >
           <div>
@@ -532,7 +485,7 @@ export default function AdminSettings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.15s ease',
+            transition: '0.15s',
           }}
         >
           <div>
@@ -570,7 +523,7 @@ export default function AdminSettings() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            transition: 'all 0.15s ease',
+            transition: '0.15s',
           }}
         >
           <div>
@@ -598,19 +551,16 @@ export default function AdminSettings() {
         </Link>
       </div>
 
-      {/* 3. Language & Regional Settings */}
+      {/* 3. Language & Regional Settings matching reference */}
       <div
         id="language-settings"
         style={{
           backgroundColor: 'rgb(255, 255, 255)',
           borderRadius: '12px',
-          border: isLanguageTab ? '2px solid rgb(234, 88, 12)' : '1px solid rgb(226, 232, 240)',
+          border: '1px solid rgb(226, 232, 240)',
           padding: '24px',
           marginBottom: '24px',
-          boxShadow: isLanguageTab
-            ? '0 0 0 4px rgba(234, 88, 12, 0.15), 0 4px 20px -2px rgba(15, 23, 42, 0.08)'
-            : 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
-          transition: 'all 0.3s ease',
+          boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
         }}
       >
         <div
@@ -626,11 +576,11 @@ export default function AdminSettings() {
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
               <Globe size={18} color="var(--desk, #ea580c)" />
-              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'rgb(15, 23, 42)', margin: 0 }}>
+              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'rgb(15, 23, 42)', margin: '0px' }}>
                 Language & Regional Settings
               </h2>
             </div>
-            <p style={{ fontSize: '13px', color: 'rgb(100, 116, 139)', margin: 0 }}>
+            <p style={{ fontSize: '13px', color: 'rgb(100, 116, 139)', margin: '0px' }}>
               Choose your preferred language for the portal. Changes are saved and applied across your session instantly.
             </p>
           </div>
@@ -649,11 +599,9 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* 9 Language Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
           {LANGUAGES.map((lang) => {
             const isSelected = selectedLanguage === lang.code;
-            const FlagComponent = lang.Flag;
             return (
               <button
                 key={lang.code}
@@ -678,6 +626,7 @@ export default function AdminSettings() {
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                   <span
+                    aria-label={lang.name}
                     style={{
                       width: '24px',
                       height: '16px',
@@ -690,7 +639,7 @@ export default function AdminSettings() {
                       flexShrink: 0,
                     }}
                   >
-                    <FlagComponent style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {lang.flag}
                   </span>
                   <div>
                     <div
@@ -765,7 +714,7 @@ export default function AdminSettings() {
         </div>
       </div>
 
-      {/* 4. Alert / Feedback Banners */}
+      {/* Alert banner if any */}
       {statusMessage && (
         <div
           style={{
@@ -785,331 +734,9 @@ export default function AdminSettings() {
         </div>
       )}
 
-      {smtpVerification && (
-        <div
-          style={{
-            padding: '16px 20px',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            backgroundColor: smtpVerification.success ? '#f0fdf4' : '#fef2f2',
-            border: `1px solid ${smtpVerification.success ? '#bbf7d0' : '#fecaca'}`,
-            color: smtpVerification.success ? '#166534' : '#991b1b',
-          }}
-        >
-          {smtpVerification.success ? <CheckCircle2 size={20} /> : <AlertCircle size={20} />}
-          <div style={{ fontSize: '14px', fontWeight: 600 }}>{smtpVerification.message}</div>
-        </div>
-      )}
-
-      {/* Live Test Delivery Dispatch Status Table */}
-      {dispatchResults && (
-        <div
-          style={{
-            padding: '18px 20px',
-            borderRadius: '8px',
-            marginBottom: '24px',
-            backgroundColor: '#f8fafc',
-            border: '1px solid #e2e8f0',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <Mail size={18} color="#2563eb" />
-            <h4 style={{ margin: 0, fontSize: '15px', color: '#0f172a' }}>Live Test Delivery Dispatch Status</h4>
-          </div>
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '13px' }}>
-            <thead>
-              <tr style={{ textAlign: 'left', borderBottom: '1px solid #e2e8f0', color: '#64748b' }}>
-                <th style={{ padding: '8px 12px' }}>Recipient (To)</th>
-                <th style={{ padding: '8px 12px' }}>Super Admin (Permanent CC)</th>
-                <th style={{ padding: '8px 12px' }}>Status</th>
-                <th style={{ padding: '8px 12px' }}>Details</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dispatchResults.map((r, i) => (
-                <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                  <td style={{ padding: '8px 12px', fontWeight: 600, color: '#0f172a' }}>{r.to}</td>
-                  <td style={{ padding: '8px 12px', color: '#ea580c', fontWeight: 500 }}>
-                    {Array.isArray(r.cc) && r.cc.length > 0 ? r.cc.join(', ') : 'Direct Delivery to Super Admin'}
-                  </td>
-                  <td style={{ padding: '8px 12px' }}>
-                    <span
-                      style={{
-                        padding: '3px 8px',
-                        borderRadius: '4px',
-                        fontSize: '11px',
-                        fontWeight: 700,
-                        backgroundColor: r.success ? '#dcfce7' : '#fee2e2',
-                        color: r.success ? '#15803d' : '#b91c1c',
-                      }}
-                    >
-                      {r.success ? 'DELIVERED' : 'FAILED'}
-                    </span>
-                  </td>
-                  <td style={{ padding: '8px 12px', color: '#64748b' }}>{r.message}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      {/* Main Form */}
+      {/* Main Settings Form matching reference */}
       <form onSubmit={handleSaveSettings}>
-        {/* 5. Outgoing Mail (SMTP) Server Configuration (Shown in Super Admin Mode) */}
-        {isSuperAdmin && (
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '12px',
-              border: '1px solid #e2e8f0',
-              padding: '24px',
-              marginBottom: '24px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: '12px',
-                marginBottom: '8px',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <Server size={22} color="#ff6600" />
-                <h3 style={{ margin: 0, fontSize: '18px', color: '#0f172a' }}>
-                  Outgoing Mail (SMTP) Server Configuration
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={handleVerifySMTP}
-                disabled={testingSmtp || saving}
-                style={{
-                  padding: '8px 16px',
-                  borderRadius: '6px',
-                  border: '1px solid #0284c7',
-                  backgroundColor: '#f0f9ff',
-                  color: '#0369a1',
-                  fontSize: '13px',
-                  fontWeight: 600,
-                  cursor: testingSmtp ? 'not-allowed' : 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                }}
-              >
-                {testingSmtp ? <RefreshCw size={14} className="spin animate-spin" /> : <Check size={14} />}
-                <span>{testingSmtp ? 'Testing...' : 'Verify SMTP Connection'}</span>
-              </button>
-            </div>
-            <p style={{ margin: '0 0 20px 0', fontSize: '13px', color: '#64748b' }}>
-              These settings control all outgoing emails from Majesty FX (client onboarding, verification links, deposit
-              confirmations, and admin notifications). You can change hosts, credentials, and senders anytime without
-              editing code or server files.
-            </p>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: '16px',
-                marginBottom: '16px',
-              }}
-            >
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  SMTP Server Host
-                </label>
-                <input
-                  type="text"
-                  value={smtpHost}
-                  onChange={(e) => setSmtpHost(e.target.value)}
-                  placeholder="e.g. smtp.hostinger.com or mail.domain.com"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  SMTP Port
-                </label>
-                <input
-                  type="number"
-                  value={smtpPort}
-                  onChange={(e) => setSmtpPort(parseInt(e.target.value, 10) || 465)}
-                  placeholder="465 or 587"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  Encryption Mode
-                </label>
-                <select
-                  value={smtpSecure ? 'true' : 'false'}
-                  onChange={(e) => setSmtpSecure(e.target.value === 'true')}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                    backgroundColor: '#ffffff',
-                  }}
-                >
-                  <option value="true">SSL / TLS (Port 465 - Recommended)</option>
-                  <option value="false">STARTTLS / Plain (Port 587)</option>
-                </select>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: '16px',
-                marginBottom: '16px',
-              }}
-            >
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  SMTP Username / Authentication Email
-                </label>
-                <input
-                  type="text"
-                  value={smtpUser}
-                  onChange={(e) => setSmtpUser(e.target.value)}
-                  placeholder="e.g. support@imageoptimizer.in"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  SMTP Password
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type={showSmtpPass ? 'text' : 'password'}
-                    value={smtpPass}
-                    onChange={(e) => setSmtpPass(e.target.value)}
-                    placeholder="Enter SMTP password"
-                    required
-                    style={{
-                      width: '100%',
-                      padding: '10px 40px 10px 12px',
-                      borderRadius: '6px',
-                      border: '1px solid #cbd5e1',
-                      fontSize: '13px',
-                      outline: 'none',
-                    }}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowSmtpPass(!showSmtpPass)}
-                    style={{
-                      position: 'absolute',
-                      right: '10px',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                      background: 'none',
-                      border: 'none',
-                      cursor: 'pointer',
-                      color: '#64748b',
-                    }}
-                  >
-                    {showSmtpPass ? <EyeOff size={16} /> : <Eye size={16} />}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                gap: '16px',
-              }}
-            >
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  Sender Display Name (From Name)
-                </label>
-                <input
-                  type="text"
-                  value={smtpFromName}
-                  onChange={(e) => setSmtpFromName(e.target.value)}
-                  placeholder="e.g. Majesty FX"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-
-              <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-                  Sender Email Address (From Email)
-                </label>
-                <input
-                  type="email"
-                  value={smtpFromEmail}
-                  onChange={(e) => setSmtpFromEmail(e.target.value)}
-                  placeholder="e.g. support@imageoptimizer.in"
-                  required
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px',
-                    borderRadius: '6px',
-                    border: '1px solid #cbd5e1',
-                    fontSize: '13px',
-                    outline: 'none',
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* 6. Admin Desk Notification Routing / Desk Notification Email */}
+        {/* Card 1: DEMO Desk Notification Email */}
         <div
           style={{
             backgroundColor: 'rgb(255, 255, 255)',
@@ -1122,191 +749,88 @@ export default function AdminSettings() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <Users size={20} color="#ff6600" />
-            <h3 style={{ margin: 0, fontSize: '17px', color: 'rgb(15, 23, 42)' }}>
-              {isSuperAdmin
-                ? 'Admin Desk Notification Routing (Multiple Admin Desks)'
-                : `${currentDeskLabel} Desk Notification Email`}
+            <h3 style={{ margin: '0px', fontSize: '17px', color: 'rgb(15, 23, 42)' }}>
+              DEMO Desk Notification Email
             </h3>
           </div>
           <p style={{ margin: '0px 0px 20px', fontSize: '13px', color: 'rgb(100, 116, 139)' }}>
-            {isSuperAdmin
-              ? 'Set the notification destination email for each administrator. The Super Admin is permanently copied in CC on every notification sent to any desk.'
-              : 'Set the notification destination email where you want to receive operational alerts (KYC submissions, client accounts, deposits, and tickets) for your desk.'}
+            Set the notification destination email where you want to receive operational alerts (KYC submissions, client accounts, deposits, and tickets) for your desk.
           </p>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '16px',
-            }}
-          >
-            {Object.entries(adminRecipients)
-              .filter(([deskKey]) => isSuperAdmin || deskKey === currentDeskKey)
-              .map(([deskKey, deskData]) => {
-                const isSuper = deskKey === 'superadmin';
-                return (
-                  <div
-                    key={deskKey}
-                    style={{
-                      border: isSuper ? '2px solid #ff6600' : '1px solid rgb(226, 232, 240)',
-                      borderRadius: '10px',
-                      padding: '16px',
-                      backgroundColor: deskData.enabled ? 'rgb(255, 255, 255)' : 'rgb(248, 250, 252)',
-                      position: 'relative',
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'flex-start',
-                        marginBottom: '12px',
-                      }}
-                    >
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span style={{ fontWeight: 700, fontSize: '14px', color: 'rgb(15, 23, 42)' }}>
-                            {deskData.name}
-                          </span>
-                          {isSuper && (
-                            <span
-                              style={{
-                                backgroundColor: '#ffedd5',
-                                color: '#c2410c',
-                                fontSize: '10px',
-                                fontWeight: 800,
-                                padding: '2px 8px',
-                                borderRadius: '999px',
-                                letterSpacing: '0.4px',
-                              }}
-                            >
-                              PERMANENT CC
-                            </span>
-                          )}
-                        </div>
-                        <div style={{ fontSize: '11px', color: 'rgb(100, 116, 139)', marginTop: '2px' }}>
-                          {isSuper
-                            ? 'Irrespective of any admin added, Super Admin receives all mails (CC)'
-                            : `Role: ${deskData.role}`}
-                        </div>
-                      </div>
-
-                      {isSuper ? (
-                        <span
-                          style={{
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            color: '#15803d',
-                            backgroundColor: '#dcfce7',
-                            padding: '3px 8px',
-                            borderRadius: '4px',
-                          }}
-                        >
-                          ALWAYS ACTIVE
-                        </span>
-                      ) : (
-                        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', cursor: 'pointer' }}>
-                          <input
-                            type="checkbox"
-                            checked={deskData.enabled}
-                            onChange={(e) => handleDeskFieldChange(deskKey, 'enabled', e.target.checked)}
-                            style={{ accentColor: 'rgb(255, 102, 0)', width: '16px', height: '16px' }}
-                          />
-                          <span style={{ fontWeight: 600, color: deskData.enabled ? 'rgb(21, 128, 61)' : '#94a3b8' }}>
-                            {deskData.enabled ? 'Enabled' : 'Disabled'}
-                          </span>
-                        </label>
-                      )}
-                    </div>
-
-                    <div>
-                      <label
-                        style={{
-                          display: 'block',
-                          fontSize: '12px',
-                          fontWeight: 600,
-                          color: 'rgb(51, 65, 85)',
-                          marginBottom: '6px',
-                        }}
-                      >
-                        {isSuper ? 'Notification Email Address *' : 'Your Receiving Notification Email Address *'}
-                      </label>
-                      <input
-                        type="email"
-                        value={deskData.email}
-                        onChange={(e) => handleDeskFieldChange(deskKey, 'email', e.target.value)}
-                        placeholder={
-                          isSuper ? 'e.g. admin@majestyfx.com' : 'e.g. referral@majestyfx.com or your email'
-                        }
-                        required
-                        style={{
-                          width: '100%',
-                          padding: '10px 12px',
-                          borderRadius: '6px',
-                          border: '1px solid rgb(203, 213, 225)',
-                          fontSize: '13px',
-                          outline: 'none',
-                          backgroundColor: 'rgb(255, 255, 255)',
-                        }}
-                      />
-                      {!isSuper && (
-                        <div style={{ marginTop: '8px', fontSize: '12px', color: 'rgb(100, 116, 139)' }}>
-                          ℹ️ Operational alerts for your desk (KYC, accounts, tickets, deposits) will be routed to this email address.
-                        </div>
-                      )}
-                    </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+            <div
+              style={{
+                border: '1px solid rgb(226, 232, 240)',
+                borderRadius: '10px',
+                padding: '16px',
+                backgroundColor: 'rgb(255, 255, 255)',
+                position: 'relative',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  marginBottom: '12px',
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span style={{ fontWeight: 700, fontSize: '14px', color: 'rgb(15, 23, 42)' }}>DEMO Desk</span>
                   </div>
-                );
-              })}
+                  <div style={{ fontSize: '11px', color: 'rgb(100, 116, 139)', marginTop: '2px' }}>
+                    Role: demo_admin
+                  </div>
+                </div>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', cursor: 'pointer' }}>
+                  <input
+                    type="checkbox"
+                    checked={enabled}
+                    onChange={(e) => setEnabled(e.target.checked)}
+                    style={{ accentColor: 'rgb(255, 102, 0)', width: '16px', height: '16px' }}
+                  />
+                  <span style={{ fontWeight: 600, color: enabled ? 'rgb(21, 128, 61)' : '#94a3b8' }}>
+                    {enabled ? 'Enabled' : 'Disabled'}
+                  </span>
+                </label>
+              </div>
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: 'rgb(51, 65, 85)',
+                    marginBottom: '6px',
+                  }}
+                >
+                  Your Receiving Notification Email Address *
+                </label>
+                <input
+                  placeholder="e.g. referral@majestyfx.com or your email"
+                  required
+                  type="email"
+                  value={notificationEmail}
+                  onChange={(e) => setNotificationEmail(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px',
+                    borderRadius: '6px',
+                    border: '1px solid rgb(203, 213, 225)',
+                    fontSize: '13px',
+                    outline: 'none',
+                    backgroundColor: 'rgb(255, 255, 255)',
+                  }}
+                />
+                <div style={{ marginTop: '8px', fontSize: '12px', color: 'rgb(100, 116, 139)' }}>
+                  ℹ️ Operational alerts for your desk (KYC, accounts, tickets, deposits) will be routed to this email address.
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* 7. Additional / Personal Notification Recipients (in Super Admin Mode) */}
-        {isSuperAdmin && (
-          <div
-            style={{
-              backgroundColor: '#ffffff',
-              borderRadius: '12px',
-              border: '1px solid #e2e8f0',
-              padding: '24px',
-              marginBottom: '24px',
-              boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <Mail size={20} color="#2563eb" />
-              <h3 style={{ margin: 0, fontSize: '17px', color: '#0f172a' }}>
-                Additional / Personal Notification Recipients
-              </h3>
-            </div>
-            <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: '#64748b' }}>
-              Need extra emails to receive all system alerts (e.g. your personal Gmail address or compliance team)?
-              Enter them below separated by commas or lines.
-            </p>
-            <textarea
-              value={additionalEmails}
-              onChange={(e) => setAdditionalEmails(e.target.value)}
-              placeholder="e.g. alerts@majestyfx.com, compliance@majestyfx.com"
-              rows={3}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '8px',
-                border: '1px solid #cbd5e1',
-                fontSize: '13px',
-                fontFamily: 'monospace',
-                outline: 'none',
-                resize: 'vertical',
-              }}
-            />
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '6px' }}>
-              Multiple emails can be separated by commas, spaces, or line breaks.
-            </div>
-          </div>
-        )}
-
-        {/* 8. Events Delivered to Your Email / Live Client Events */}
+        {/* Card 2: DEMO Desk Events Delivered to Your Email */}
         <div
           style={{
             backgroundColor: 'rgb(255, 255, 255)',
@@ -1320,9 +844,7 @@ export default function AdminSettings() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <Bell size={20} color="#10b981" />
             <h3 style={{ margin: '0px', fontSize: '17px', color: 'rgb(15, 23, 42)' }}>
-              {isSuperAdmin
-                ? 'Live Client Events Automatically Dispatched'
-                : `${currentDeskLabel} Desk Events Delivered to Your Email`}
+              DEMO Desk Events Delivered to Your Email
             </h3>
           </div>
           <div
@@ -1345,11 +867,7 @@ export default function AdminSettings() {
                   border: '1px solid rgb(241, 245, 249)',
                 }}
               >
-                <CheckCircle2
-                  size={16}
-                  color="#16a34a"
-                  style={{ marginTop: '2px', flexShrink: 0 }}
-                />
+                <CheckCircle2 size={16} color="#16a34a" style={{ marginTop: '2px', flexShrink: 0 }} />
                 <div>
                   <div style={{ fontSize: '13px', fontWeight: 600, color: 'rgb(15, 23, 42)' }}>{item.title}</div>
                   <div style={{ fontSize: '11px', color: 'rgb(100, 116, 139)' }}>{item.desc}</div>
@@ -1359,7 +877,7 @@ export default function AdminSettings() {
           </div>
         </div>
 
-        {/* 9. Security & Credentials */}
+        {/* Card 3: Security & Credentials */}
         <div
           style={{
             backgroundColor: 'rgb(255, 255, 255)',
@@ -1417,13 +935,13 @@ export default function AdminSettings() {
                   marginBottom: '6px',
                 }}
               >
-                Current Password {isSuperAdmin ? '(optional for Super Admin)' : '*'}
+                Current Password *
               </label>
               <input
+                placeholder="Enter current password"
                 type="password"
                 value={currentPassword}
                 onChange={(e) => setCurrentPassword(e.target.value)}
-                placeholder="Enter current password"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -1434,7 +952,6 @@ export default function AdminSettings() {
                 }}
               />
             </div>
-
             <div>
               <label
                 style={{
@@ -1448,10 +965,10 @@ export default function AdminSettings() {
                 New Password *
               </label>
               <input
+                placeholder="At least 8 characters"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="At least 8 characters"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -1462,7 +979,6 @@ export default function AdminSettings() {
                 }}
               />
             </div>
-
             <div>
               <label
                 style={{
@@ -1476,10 +992,10 @@ export default function AdminSettings() {
                 Confirm New Password *
               </label>
               <input
+                placeholder="Re-enter new password"
                 type="password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Re-enter new password"
                 style={{
                   width: '100%',
                   padding: '10px 12px',
@@ -1491,7 +1007,6 @@ export default function AdminSettings() {
               />
             </div>
           </div>
-
           <button
             type="button"
             onClick={handlePasswordUpdate}
@@ -1500,27 +1015,23 @@ export default function AdminSettings() {
               padding: '10px 20px',
               borderRadius: '6px',
               border: 'none',
-              backgroundColor: passwordUpdating || !newPassword || newPassword.length < 8 ? '#64748b' : '#0f172a',
-              color: '#ffffff',
+              backgroundColor: 'rgb(15, 23, 42)',
+              color: 'rgb(255, 255, 255)',
               fontSize: '13px',
               fontWeight: 600,
-              cursor: passwordUpdating || !newPassword || newPassword.length < 8 ? 'not-allowed' : 'pointer',
+              cursor: !newPassword || newPassword.length < 8 ? 'not-allowed' : 'pointer',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '6px',
-              transition: 'background-color 0.15s ease',
+              opacity: !newPassword || newPassword.length < 8 ? 0.6 : 1,
             }}
           >
-            {passwordUpdating ? (
-              <RefreshCw size={14} className="spin animate-spin" />
-            ) : (
-              <Key size={14} />
-            )}
+            {passwordUpdating ? <RefreshCw size={14} className="spin animate-spin" /> : <Key size={14} />}
             <span>{passwordUpdating ? 'Updating Password...' : 'Update My Password'}</span>
           </button>
         </div>
 
-        {/* 10. Bottom Action Buttons */}
+        {/* Bottom Buttons */}
         <div
           style={{
             display: 'flex',
@@ -1533,7 +1044,7 @@ export default function AdminSettings() {
           <button
             type="button"
             onClick={handleSendTest}
-            disabled={sendingTest || saving || testingSmtp}
+            disabled={sendingTest || saving}
             style={{
               padding: '12px 20px',
               borderRadius: '8px',
@@ -1548,23 +1059,12 @@ export default function AdminSettings() {
               gap: '8px',
             }}
           >
-            {sendingTest ? (
-              <RefreshCw size={16} className="spin animate-spin" />
-            ) : (
-              <Send size={16} color="#ff6600" />
-            )}
-            <span>
-              {sendingTest
-                ? 'Sending Test...'
-                : isSuperAdmin
-                ? 'Send Test Alert to All Admins'
-                : 'Send Test Alert to My Email'}
-            </span>
+            {sendingTest ? <RefreshCw size={16} className="spin animate-spin" /> : <Send size={16} color="#ff6600" />}
+            <span>{sendingTest ? 'Sending Test...' : 'Send Test Alert to My Email'}</span>
           </button>
-
           <button
             type="submit"
-            disabled={saving || sendingTest || testingSmtp}
+            disabled={saving || sendingTest}
             style={{
               padding: '12px 28px',
               borderRadius: '8px',
@@ -1580,12 +1080,8 @@ export default function AdminSettings() {
               boxShadow: 'rgba(255, 102, 0, 0.25) 0px 2px 8px',
             }}
           >
-            {saving ? (
-              <RefreshCw size={16} className="spin animate-spin" />
-            ) : (
-              <Save size={16} />
-            )}
-            <span>{saving ? 'Saving...' : isSuperAdmin ? 'Save Configuration' : 'Save My Notification Email'}</span>
+            {saving ? <RefreshCw size={16} className="spin animate-spin" /> : <Save size={16} />}
+            <span>{saving ? 'Saving...' : 'Save My Notification Email'}</span>
           </button>
         </div>
       </form>
