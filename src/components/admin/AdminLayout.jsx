@@ -58,7 +58,9 @@ export default function AdminLayout() {
     location.pathname === '/admin/pending-accounts' ||
     location.pathname === '/admin/pending-master-accounts' ||
     location.pathname === '/admin/approved-accounts' ||
-    location.pathname === '/admin/master-accounts'
+    location.pathname === '/admin/master-accounts' ||
+    location.pathname === '/admin/rejected-master-accounts' ||
+    location.pathname === '/admin/rejected-accounts'
   );
   const [supportExpanded, setSupportExpanded] = useState(
     location.pathname.startsWith('/admin/manage-priority') ||
@@ -1112,7 +1114,8 @@ export default function AdminLayout() {
                           currentPath === sub.path ||
                           (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
                           (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')) ||
-                          (sub.path === '/admin/approved-accounts' && (currentPath === '/admin/approved-accounts' || currentPath === '/admin/master-accounts'));
+                          (sub.path === '/admin/approved-accounts' && (currentPath === '/admin/approved-accounts' || currentPath === '/admin/master-accounts')) ||
+                          (sub.path === '/admin/rejected-master-accounts' && (currentPath === '/admin/rejected-master-accounts' || currentPath === '/admin/rejected-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
