@@ -6,6 +6,7 @@ import {
   Download,
   Eye,
   FileSpreadsheet,
+  Loader2,
   Plus,
   RefreshCw,
   RotateCcw,
@@ -24,16 +25,22 @@ export default function AdminClients() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [addModalOpen, setAddModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // New Client Form
-  const [newClient, setNewClient] = useState({
+  // New Institutional Client Form
+  const defaultNewClient = {
     fullName: '',
     email: '',
     mobile: '',
-    country: 'United States',
-    portalTier: 'Standard',
-    accountNo: '',
-  });
+    country: 'India',
+    city: '',
+    accountType: 'STANDARD',
+    portalTier: 'referrer',
+    referralCode: '',
+    markEmailVerified: true,
+    markKycVerified: false,
+  };
+  const [newClient, setNewClient] = useState(defaultNewClient);
 
   const handleResetFilters = () => {
     setSearchQuery('');
@@ -47,31 +54,37 @@ export default function AdminClients() {
     e.preventDefault();
     if (!newClient.fullName || !newClient.email) return;
 
-    const created = {
-      id: clients.length + 1,
-      tradingAccounts: [newClient.accountNo || `${800100 + clients.length + 1}`],
-      fullName: newClient.fullName,
-      email: newClient.email,
-      portalTier: newClient.portalTier,
-      mt5Server: 'MajestyFX-Demo',
-      mobile: newClient.mobile || '—',
-      country: newClient.country,
-      kycStatus: 'Pending',
-      password: '••••••••',
-      emailKyc: 'Pending',
-      cri: 'Low',
-    };
+    setIsSubmitting(true);
+    setTimeout(() => {
+      const nextId = clients.length ? Math.max(...clients.map((c) => Number(c.id) || 0)) + 1 : 1;
+      const accountNo = `${800100 + nextId}`;
+      const created = {
+        id: nextId,
+        tradingAccounts: [accountNo],
+        fullName: newClient.fullName,
+        email: newClient.email,
+        portalTier:
+          newClient.portalTier === 'ib1'
+            ? 'IB1 Partner'
+            : newClient.portalTier === 'ib2'
+            ? 'IB2 Partner'
+            : 'Standard',
+        mt5Server: newClient.portalTier === 'ib2' ? 'TheKFMarket-Live' : 'MajestyFX-Trade',
+        mobile: newClient.mobile || '—',
+        country: newClient.country,
+        city: newClient.city || '—',
+        accountType: newClient.accountType,
+        kycStatus: newClient.markKycVerified ? 'Verified' : 'Pending',
+        emailKyc: newClient.markEmailVerified ? 'Verified' : 'Pending',
+        password: '••••••••',
+        cri: 'Low',
+      };
 
-    setClients([created, ...clients]);
-    setAddModalOpen(false);
-    setNewClient({
-      fullName: '',
-      email: '',
-      mobile: '',
-      country: 'United States',
-      portalTier: 'Standard',
-      accountNo: '',
-    });
+      setClients([created, ...clients]);
+      setIsSubmitting(false);
+      setAddModalOpen(false);
+      setNewClient(defaultNewClient);
+    }, 450);
   };
 
   const filteredClients = clients.filter((c) => {
@@ -308,123 +321,491 @@ export default function AdminClients() {
       {/* Add Client Modal */}
       {addModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
-          onClick={() => setAddModalOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-150"
+          onClick={() => !isSubmitting && setAddModalOpen(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 duration-150"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '16px',
+              boxShadow: '0 25px 50px -12px rgba(15, 23, 42, 0.35)',
+              width: '100%',
+              maxWidth: '660px',
+              maxHeight: 'min(90vh, 740px)',
+              display: 'flex',
+              flexDirection: 'column',
+              margin: 'auto',
+              overflow: 'hidden',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-sora font-extrabold text-base text-slate-900">
-                Register New Referral Client
-              </h3>
+            {/* Modal Header */}
+            <div
+              style={{
+                flexShrink: 0,
+                padding: '1.15rem 1.5rem',
+                borderBottom: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#ffffff',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                <div
+                  style={{
+                    width: '36px',
+                    height: '36px',
+                    borderRadius: '10px',
+                    backgroundColor: '#fff7ed',
+                    border: '1px solid #ffedd5',
+                    color: '#ea580c',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <UserPlus size={18} />
+                </div>
+                <div>
+                  <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#0f172a', margin: 0 }}>
+                    Add New Institutional Client
+                  </h2>
+                  <p style={{ fontSize: '0.8rem', color: '#64748b', margin: '0.15rem 0 0 0' }}>
+                    Create account profile & auto-provision MT5 Live Trading Account
+                  </p>
+                </div>
+              </div>
               <button
                 type="button"
-                onClick={() => setAddModalOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+                onClick={() => !isSubmitting && setAddModalOpen(false)}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#94a3b8',
+                  cursor: 'pointer',
+                  padding: '0.4rem',
+                  borderRadius: '6px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+                title="Close modal"
               >
-                <X className="w-5 h-5" />
+                <X size={20} />
               </button>
             </div>
 
-            <form onSubmit={handleAddClient} className="space-y-3 text-xs">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newClient.fullName}
-                  onChange={(e) => setNewClient({ ...newClient, fullName: e.target.value })}
-                  placeholder="e.g. John Doe"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800"
-                />
-              </div>
+            {/* Modal Form Body */}
+            <form
+              onSubmit={handleAddClient}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                minHeight: 0,
+                overflow: 'hidden',
+              }}
+            >
+              <div
+                style={{
+                  padding: '1.25rem 1.5rem',
+                  overflowY: 'auto',
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '1.15rem',
+                }}
+              >
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                    gap: '1rem',
+                  }}
+                >
+                  {/* Full Name */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Full Name <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Alexander Vance"
+                      value={newClient.fullName}
+                      onChange={(e) => setNewClient({ ...newClient, fullName: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    />
+                  </div>
 
-              <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  required
-                  value={newClient.email}
-                  onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
-                  placeholder="client@example.com"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800"
-                />
-              </div>
+                  {/* Email Address */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Email Address <span style={{ color: '#ef4444' }}>*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      placeholder="trader@domain.com"
+                      value={newClient.email}
+                      onChange={(e) => setNewClient({ ...newClient, email: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    />
+                  </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Mobile Phone
-                  </label>
-                  <input
-                    type="text"
-                    value={newClient.mobile}
-                    onChange={(e) => setNewClient({ ...newClient, mobile: e.target.value })}
-                    placeholder="+1 (555) 000-0000"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800"
-                  />
+                  {/* Phone / Mobile */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Phone / Mobile
+                    </label>
+                    <input
+                      type="tel"
+                      placeholder="+971 50 123 4567"
+                      value={newClient.mobile}
+                      onChange={(e) => setNewClient({ ...newClient, mobile: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    />
+                  </div>
+
+                  {/* Country of Residence */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Country of Residence
+                    </label>
+                    <select
+                      value={newClient.country}
+                      onChange={(e) => setNewClient({ ...newClient, country: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    >
+                      <option value="India">India (IN)</option>
+                      <option value="United Arab Emirates">United Arab Emirates (AE)</option>
+                      <option value="United Kingdom">United Kingdom (GB)</option>
+                      <option value="United States">United States (US)</option>
+                      <option value="Singapore">Singapore (SG)</option>
+                      <option value="Germany">Germany (DE)</option>
+                      <option value="Russia">Russia (RU)</option>
+                      <option value="Australia">Australia (AU)</option>
+                      <option value="South Africa">South Africa (ZA)</option>
+                      <option value="Canada">Canada (CA)</option>
+                      <option value="Global">Other / Global</option>
+                    </select>
+                  </div>
+
+                  {/* City */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Dubai, London, Mumbai"
+                      value={newClient.city}
+                      onChange={(e) => setNewClient({ ...newClient, city: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    />
+                  </div>
+
+                  {/* MT5 Account Type */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      MT5 Account Type
+                    </label>
+                    <select
+                      value={newClient.accountType}
+                      onChange={(e) => setNewClient({ ...newClient, accountType: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    >
+                      <option value="STANDARD">Standard Account (1:500 Leverage)</option>
+                      <option value="RAW SPREAD">Raw Spread Account (Institutional ECN)</option>
+                      <option value="PRO VIP">Pro VIP Account (0.0 Pip Tier)</option>
+                    </select>
+                  </div>
+
+                  {/* Portal Tier / Destination Network */}
+                  <div>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Portal Tier / Destination Network
+                    </label>
+                    <select
+                      value={newClient.portalTier}
+                      onChange={(e) => setNewClient({ ...newClient, portalTier: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    >
+                      <option value="referrer">Direct Retail / Referrals (MajestyFX-Trade)</option>
+                      <option value="ib1">IB1 Partner Network (MajestyFX-Trade)</option>
+                      <option value="ib2">IB2 Partner Network (TheKFMarket-Live)</option>
+                    </select>
+                  </div>
+
+                  {/* Help text */}
+                  <div style={{ gridColumn: 'span 2', fontSize: '0.75rem', color: '#64748b' }}>
+                    The client receives an email link to set their own portal password. Admins never see client passwords.
+                  </div>
+
+                  {/* Referring IB */}
+                  <div style={{ gridColumn: 'span 2' }}>
+                    <label
+                      style={{
+                        display: 'block',
+                        fontSize: '0.8rem',
+                        fontWeight: 600,
+                        color: '#334155',
+                        marginBottom: '0.35rem',
+                      }}
+                    >
+                      Referring IB / Partner Code (Optional)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. IB-GOLD-8891 or leave empty"
+                      value={newClient.referralCode}
+                      onChange={(e) => setNewClient({ ...newClient, referralCode: e.target.value })}
+                      style={{
+                        width: '100%',
+                        padding: '0.6rem 0.8rem',
+                        fontSize: '0.85rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '8px',
+                        outline: 'none',
+                        backgroundColor: '#ffffff',
+                        color: '#0f172a',
+                      }}
+                    />
+                  </div>
                 </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    value={newClient.country}
-                    onChange={(e) => setNewClient({ ...newClient, country: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800"
-                  />
-                </div>
-              </div>
 
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Portal Tier
-                  </label>
-                  <select
-                    value={newClient.portalTier}
-                    onChange={(e) => setNewClient({ ...newClient, portalTier: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 bg-white"
+                {/* Verification Checkboxes */}
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '1.5rem',
+                    padding: '0.85rem 1rem',
+                    backgroundColor: '#f8fafc',
+                    border: '1px solid #e2e8f0',
+                    borderRadius: '10px',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      cursor: 'pointer',
+                      fontSize: '0.825rem',
+                      color: '#1e293b',
+                      fontWeight: 500,
+                    }}
                   >
-                    <option value="Standard">Standard</option>
-                    <option value="Pro Zero">Pro Zero</option>
-                    <option value="VIP Raw">VIP Raw</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    MT5 Account No
+                    <input
+                      type="checkbox"
+                      checked={newClient.markEmailVerified}
+                      onChange={(e) => setNewClient({ ...newClient, markEmailVerified: e.target.checked })}
+                      style={{ accentColor: '#16a34a', width: '16px', height: '16px', cursor: 'pointer' }}
+                    />
+                    <span>Mark Email as Verified</span>
                   </label>
-                  <input
-                    type="text"
-                    value={newClient.accountNo}
-                    onChange={(e) => setNewClient({ ...newClient, accountNo: e.target.value })}
-                    placeholder="Auto or #800108"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800"
-                  />
+                  <label
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.5rem',
+                      cursor: 'pointer',
+                      fontSize: '0.825rem',
+                      color: '#1e293b',
+                      fontWeight: 500,
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={newClient.markKycVerified}
+                      onChange={(e) => setNewClient({ ...newClient, markKycVerified: e.target.checked })}
+                      style={{ accentColor: '#16a34a', width: '16px', height: '16px', cursor: 'pointer' }}
+                    />
+                    <span>Mark KYC as Verified</span>
+                  </label>
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-2">
+              {/* Modal Footer */}
+              <div
+                style={{
+                  flexShrink: 0,
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  gap: '0.75rem',
+                  padding: '1rem 1.5rem',
+                  borderTop: '1px solid #e2e8f0',
+                  backgroundColor: '#ffffff',
+                }}
+              >
                 <button
                   type="button"
+                  disabled={isSubmitting}
                   onClick={() => setAddModalOpen(false)}
-                  className="px-3.5 py-2 rounded-lg border border-slate-200 text-slate-700 font-semibold"
+                  style={{
+                    padding: '0.6rem 1.25rem',
+                    borderRadius: '8px',
+                    border: '1px solid #cbd5e1',
+                    backgroundColor: '#ffffff',
+                    color: '#475569',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold"
+                  disabled={isSubmitting}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    padding: '0.6rem 1.35rem',
+                    borderRadius: '8px',
+                    border: 'none',
+                    backgroundColor: 'rgb(124, 58, 237)',
+                    color: '#ffffff',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    cursor: isSubmitting ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 2px 6px rgba(124, 58, 237, 0.3)',
+                    opacity: isSubmitting ? 0.7 : 1,
+                  }}
                 >
-                  Save & Allocate MT5
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 size={16} className="animate-spin" />
+                      <span>Provisioning Account...</span>
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus size={16} />
+                      <span>Create Client</span>
+                    </>
+                  )}
                 </button>
               </div>
             </form>
