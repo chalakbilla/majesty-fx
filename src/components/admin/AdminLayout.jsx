@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import logo from '../../assets/logo.png';
 import { getAdminUser, logoutAdmin } from '../../utils/adminAuth.js';
+import { LanguageSelector } from '../route/Auth.jsx';
 
 export default function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -472,34 +473,9 @@ export default function AdminLayout() {
             <ArrowRight className="w-3.5 h-3.5 text-blue-600" />
           </Link>
 
-          {/* Language Selector */}
+          {/* Language Selector matching screenshot media_1795078594987_61eaaa22.png */}
           <div className="hidden md:inline-flex">
-            <button
-              aria-label="Change Language"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                padding: '0.42rem 0.75rem',
-                borderRadius: '9999px',
-                border: '1px solid rgb(226, 232, 240)',
-                backgroundColor: 'rgb(255, 255, 255)',
-                color: 'rgb(51, 65, 85)',
-                fontSize: '0.8125rem',
-                fontWeight: 600,
-                cursor: 'pointer',
-                transition: '0.15s',
-                boxShadow: 'rgba(0, 0, 0, 0.04) 0px 1px 2px',
-              }}
-              title="Language"
-              type="button"
-            >
-              <Globe className="w-3.5 h-3.5 text-orange-600 shrink-0" />
-              <span style={{ fontSize: '0.8125rem', fontWeight: 600, color: 'rgb(15, 23, 42)' }}>
-                English
-              </span>
-              <ChevronDown className="w-3 h-3 text-slate-400" />
-            </button>
+            <LanguageSelector align="right" />
           </div>
 
           {/* Admin Profile Dropdown - Matching media_1795074510483_b0da6331.png & scratch_header_exact.html */}

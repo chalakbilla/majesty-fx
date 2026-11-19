@@ -16,9 +16,11 @@ export const languages = [
   { code: 'ur', name: 'Urdu', native: 'اردو', Flag: PK, rtl: true },
 ];
 
-export function LanguageSelector() {
+export function LanguageSelector({ align = 'left', className = '', value, onChange }) {
+  const [internalSelected, setInternalSelected] = useState('en');
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState('en');
+  const selected = value !== undefined ? value : internalSelected;
+  const setSelected = onChange || setInternalSelected;
   const dropdownRef = useRef(null);
 
   const current = languages.find((l) => l.code === selected) || languages[0];
@@ -39,7 +41,7 @@ export function LanguageSelector() {
   }, [open]);
 
   return (
-    <div className="auth-lang-wrap" ref={dropdownRef}>
+    <div className={`auth-lang-wrap ${className}`} ref={dropdownRef}>
       <button
         type="button"
         className={`auth-lang ${open ? 'is-open' : ''}`}
@@ -54,7 +56,12 @@ export function LanguageSelector() {
       </button>
 
       {open && (
-        <div className="lang-dialog" role="dialog" aria-label="Select Language">
+        <div
+          className="lang-dialog"
+          role="dialog"
+          aria-label="Select Language"
+          style={align === 'right' ? { left: 'auto', right: 0 } : undefined}
+        >
           <div className="lang-dialog-head">
             <span>SELECT LANGUAGE</span>
             <Globe />
