@@ -56,7 +56,9 @@ export default function AdminLayout() {
   const [copyExpanded, setCopyExpanded] = useState(
     location.pathname.startsWith('/admin/copy') ||
     location.pathname === '/admin/pending-accounts' ||
-    location.pathname === '/admin/pending-master-accounts'
+    location.pathname === '/admin/pending-master-accounts' ||
+    location.pathname === '/admin/approved-accounts' ||
+    location.pathname === '/admin/master-accounts'
   );
   const [supportExpanded, setSupportExpanded] = useState(
     location.pathname.startsWith('/admin/manage-priority') ||
@@ -1094,7 +1096,7 @@ export default function AdminLayout() {
                   {[
                     { label: 'Copy Trading Accounts', path: '/admin/copy-trading-accounts' },
                     { label: 'Pending Master Accounts', path: '/admin/pending-accounts' },
-                    { label: 'Master Account', path: '/admin/master-accounts' },
+                    { label: 'Master Account', path: '/admin/approved-accounts' },
                     { label: 'Rejected Master Account', path: '/admin/rejected-master-accounts' },
                     { label: 'Approved Followers', path: '/admin/approved-followers' },
                     { label: 'Rejected Followers', path: '/admin/rejected-followers' },
@@ -1109,7 +1111,8 @@ export default function AdminLayout() {
                           isActive ||
                           currentPath === sub.path ||
                           (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
-                          (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts'));
+                          (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')) ||
+                          (sub.path === '/admin/approved-accounts' && (currentPath === '/admin/approved-accounts' || currentPath === '/admin/master-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
