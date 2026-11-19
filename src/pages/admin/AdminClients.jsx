@@ -67,8 +67,8 @@ export default function AdminClients() {
           newClient.portalTier === 'ib1'
             ? 'IB1 Partner'
             : newClient.portalTier === 'ib2'
-            ? 'IB2 Partner'
-            : 'Standard',
+              ? 'IB2 Partner'
+              : 'Standard',
         mt5Server: newClient.portalTier === 'ib2' ? 'TheKFMarket-Live' : 'MajestyFX-Trade',
         mobile: newClient.mobile || '—',
         country: newClient.country,
@@ -285,11 +285,10 @@ export default function AdminClients() {
                     <td className="py-3 px-3 font-medium">{c.country}</td>
                     <td className="py-3 px-3">
                       <span
-                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${
-                          c.kycStatus === 'Approved'
+                        className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${c.kycStatus === 'Approved'
                             ? 'bg-emerald-50 text-emerald-700 border border-emerald-200'
                             : 'bg-amber-50 text-amber-700 border border-amber-200'
-                        }`}
+                          }`}
                       >
                         {c.kycStatus}
                       </span>

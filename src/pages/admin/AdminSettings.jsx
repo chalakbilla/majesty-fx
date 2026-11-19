@@ -104,7 +104,7 @@ export default function AdminSettings() {
   }, [location.search]);
 
   // Authentication & Desk state
-  const [isSuperAdmin, setIsSuperAdmin] = useState(true);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [currentDeskKey, setCurrentDeskKey] = useState('demo_admin');
   const [currentDeskLabel, setCurrentDeskLabel] = useState('DEMO');
 
@@ -156,10 +156,9 @@ export default function AdminSettings() {
         const email = auth.email || '';
 
         const superRole =
-          role.includes('super') ||
+          role === 'superadmin' ||
           desk === 'superadmin' ||
-          username === 'superadmin' ||
-          username === 'demoadmin';
+          username === 'superadmin';
 
         setIsSuperAdmin(superRole);
 
@@ -374,99 +373,26 @@ export default function AdminSettings() {
           aria-hidden="true"
         />
         <div className="flex flex-col gap-3.5 sm:gap-4">
-          {/* Breadcrumbs */}
-          <nav
-            aria-label="Breadcrumbs"
-            className="flex items-center gap-1.5 text-xs text-slate-500 font-medium overflow-x-auto pb-0.5 scrollbar-none"
-          >
-            <Link to="/admin/demo" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
-              Admin Console
-            </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
-            <Link to="/admin/settings" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
-              System Settings
-            </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
-            <span className="whitespace-nowrap text-slate-800 font-semibold">
-              {isLanguageTab ? 'Language & Regional Settings' : 'Email & Notifications'}
-            </span>
-          </nav>
-
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
             <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1">
               <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
                 <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
-                  {isSuperAdmin ? (
-                    <>
-                      <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
-                        Dynamic Email (SMTP) & Admin
-                      </span>{' '}
-                      <span
-                        className="inline-block font-black text-orange-600 tracking-tight"
-                        style={{ color: 'rgb(234, 88, 12)' }}
-                      >
-                        Notification Panel
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
-                        {currentDeskLabel} Desk Notification
-                      </span>{' '}
-                      <span
-                        className="inline-block font-black text-orange-600 tracking-tight"
-                        style={{ color: 'rgb(234, 88, 12)' }}
-                      >
-                        Settings
-                      </span>
-                    </>
-                  )}
+                  <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
+                    {currentDeskLabel} Desk Notification
+                  </span>{' '}
+                  <span
+                    className="inline-block font-black text-orange-600 tracking-tight"
+                    style={{ color: 'rgb(234, 88, 12)' }}
+                  >
+                    Settings
+                  </span>
                 </h1>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
-                {isSuperAdmin
-                  ? 'Configure your live SMTP mail server credentials and admin routing dynamically. The Super Admin is guaranteed permanent CC across all notifications.'
-                  : 'Configure your receiving notification email address for client accounts, KYC submissions, support tickets, and desk notifications.'}
+                Configure your receiving notification email address for client accounts, KYC submissions, support tickets, and desk notifications.
               </div>
             </div>
-
-            {/* View Scope Toggle */}
             <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0">
-              <button
-                type="button"
-                onClick={() => setIsSuperAdmin(!isSuperAdmin)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 14px',
-                  borderRadius: '9999px',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  border: isSuperAdmin ? '1.5px solid #fed7aa' : '1.5px solid #cbd5e1',
-                  backgroundColor: isSuperAdmin ? '#fff7ed' : '#f8fafc',
-                  color: isSuperAdmin ? '#c2410c' : '#475569',
-                  transition: 'all 0.15s ease',
-                }}
-                title="Toggle between Desk-specific view and Full Super Admin SMTP panel"
-              >
-                <ShieldCheck style={{ width: '15px', height: '15px', color: isSuperAdmin ? '#ea580c' : '#64748b' }} />
-                <span>{isSuperAdmin ? 'Super Admin Mode' : `${currentDeskLabel} Desk Mode`}</span>
-                <span
-                  style={{
-                    fontSize: '10px',
-                    fontWeight: 800,
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    backgroundColor: isSuperAdmin ? '#ea580c' : '#94a3b8',
-                    color: '#ffffff',
-                    marginLeft: '4px',
-                  }}
-                >
-                  SWITCH
-                </span>
-              </button>
             </div>
           </div>
         </div>
@@ -1663,22 +1589,6 @@ export default function AdminSettings() {
           </button>
         </div>
       </form>
-
-      {/* 11. Version Footer */}
-      <footer
-        style={{
-          marginTop: '1.5rem',
-          paddingTop: '1rem',
-          borderTop: '1px solid rgb(226, 232, 240)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          fontSize: '0.8125rem',
-          color: 'rgb(100, 116, 139)',
-        }}
-      >
-        <span>Version 2.0</span>
-      </footer>
     </div>
   );
 }

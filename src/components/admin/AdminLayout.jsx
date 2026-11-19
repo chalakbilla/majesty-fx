@@ -1556,18 +1556,18 @@ export default function AdminLayout() {
                     const active = isLang
                       ? hasLangTab
                       : isEmail
-                      ? (location.pathname === '/admin/settings' && !hasLangTab) || location.pathname === '/admin/email-notifications'
-                      : isExport
-                      ? currentPath === '/admin/clients/export' || currentPath === '/admin/data-export'
-                      : currentPath === sub.path ||
-                        (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                        (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
-                        (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
-                        (sub.path === '/admin/payment-method-history' && (currentPath === '/admin/settings/payment-method-history')) ||
-                        (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                        (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                        (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
-                        (sub.path === '/admin/ib-commissions-settings' && (currentPath === '/admin/settings/ib-rebate-rules' || currentPath === '/admin/ib-rebate-rules'));
+                        ? (location.pathname === '/admin/settings' && !hasLangTab) || location.pathname === '/admin/email-notifications'
+                        : isExport
+                          ? currentPath === '/admin/clients/export' || currentPath === '/admin/data-export'
+                          : currentPath === sub.path ||
+                          (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
+                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                          (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
+                          (sub.path === '/admin/payment-method-history' && (currentPath === '/admin/settings/payment-method-history')) ||
+                          (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                          (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                          (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
+                          (sub.path === '/admin/ib-commissions-settings' && (currentPath === '/admin/settings/ib-rebate-rules' || currentPath === '/admin/ib-rebate-rules'));
                     return (
                       <NavLink
                         key={sub.label}
