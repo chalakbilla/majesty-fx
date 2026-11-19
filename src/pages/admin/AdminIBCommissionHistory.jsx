@@ -131,11 +131,11 @@ export default function AdminIBCommissionHistory() {
       <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)]">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
-              <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
+            <h1 className="text-2xl sm:text-3xl lg:text-[2rem] font-black tracking-tight leading-tight" style={{ fontWeight: 900 }}>
+              <span className="text-slate-900 font-black" style={{ color: 'rgb(15, 23, 42)', fontWeight: 900 }}>
                 IB
               </span>{' '}
-              <span className="font-extrabold text-orange-500" style={{ color: '#ff6600' }}>
+              <span className="font-black text-orange-600 tracking-tight" style={{ color: 'rgb(249, 115, 22)', fontWeight: 900 }}>
                 Commission History
               </span>
             </h1>
