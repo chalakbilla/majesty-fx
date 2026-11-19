@@ -50,6 +50,7 @@ import AdminPAMMReport from './pages/admin/AdminPAMMReport.jsx';
 import AdminPAMMActiveAccounts from './pages/admin/AdminPAMMActiveAccounts.jsx';
 import AdminTotalPAMMClients from './pages/admin/AdminTotalPAMMClients.jsx';
 import AdminPAMMReferralTree from './pages/admin/AdminPAMMReferralTree.jsx';
+import AdminPAMMCommissionReport from './pages/admin/AdminPAMMCommissionReport.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 
 function Shell({ className = '' }) {
@@ -147,7 +148,8 @@ export default function App() {
           <Route path="/admin/pamm-accounts" element={<AdminPAMMActiveAccounts />} />
           <Route path="/admin/pamm-referral-tree" element={<AdminPAMMReferralTree />} />
           <Route path="/admin/pamm-tree" element={<AdminPAMMReferralTree />} />
-          <Route path="/admin/pamm-report" element={<AdminPAMMReport title="PAMM Commission Report" />} />
+          <Route path="/admin/pamm-commission-report" element={<AdminPAMMCommissionReport />} />
+          <Route path="/admin/pamm-report" element={<AdminPAMMCommissionReport />} />
         </Route>
       </Route>
 
