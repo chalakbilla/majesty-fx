@@ -28,34 +28,6 @@ const DEFAULT_REJECTED_DEPOSITS = [
     proofUrl: '',
     adminComment: 'Transaction hash could not be found on explorer',
   },
-  {
-    id: 'dep_demo_08',
-    requestId: 'dep_demo_08',
-    dateTime: '11/14/2026, 1:45:20 PM',
-    email: 'david.miller@demo.example.com',
-    tradeId: '800103',
-    amount: 'USD 500.00',
-    amountNum: 500.0,
-    paymentMethod: 'bank_wire',
-    status: 'rejected',
-    proof: 'bank_slip_9021.pdf',
-    proofUrl: '',
-    adminComment: 'Bank transfer slip unreadable or missing payment reference',
-  },
-  {
-    id: 'dep_demo_11',
-    requestId: 'dep_demo_11',
-    dateTime: '11/17/2026, 9:20:11 AM',
-    email: 'sofia.mansoor@demo.example.com',
-    tradeId: '800101',
-    amount: 'USD 2,500.00',
-    amountNum: 2500.0,
-    paymentMethod: 'crypto_btc',
-    status: 'rejected',
-    proof: '0x9923abc881273948712398471923847192384719',
-    proofUrl: '',
-    adminComment: 'Deposit declined: payment proof does not match requested amount',
-  },
 ];
 
 function exportToCSV(filename, headers, rows) {
@@ -289,7 +261,7 @@ export default function AdminRejectedDeposits() {
         </p>
       )}
 
-      {/* 2. Search & Controls */}
+      {/* 2. Search & Controls matching exact reference */}
       <div className="bg-white rounded-xl border border-slate-200/90 p-3 sm:p-4 shadow-2xs flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         <div className="relative flex-1 sm:max-w-md">
           <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -328,67 +300,67 @@ export default function AdminRejectedDeposits() {
         </div>
       </div>
 
-      {/* 3. Data Table matching exact reference DOM */}
-      <div className="data-table bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden">
-        <div className="data-table-scroll overflow-x-auto">
-          <table className="data-table-grid w-full text-left border-collapse text-xs sm:text-sm" data-cards="">
+      {/* 3. Data Table matching exact reference DOM & classes */}
+      <div className="data-table">
+        <div className="data-table-scroll">
+          <table className="data-table-grid" data-cards="">
             <thead>
-              <tr className="bg-slate-50/80 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                <th style={{ width: '40px', padding: '0.75rem 1rem' }}>#</th>
-                <th style={{ padding: '0.75rem 1rem' }}>REQUEST ID</th>
-                <th style={{ padding: '0.75rem 1rem' }}>DATE &amp; TIME</th>
-                <th style={{ padding: '0.75rem 1rem' }}>EMAIL</th>
-                <th style={{ padding: '0.75rem 1rem' }}>TRADE ID</th>
-                <th style={{ padding: '0.75rem 1rem' }}>AMOUNT</th>
-                <th style={{ padding: '0.75rem 1rem' }}>PAYMENT METHOD</th>
-                <th style={{ padding: '0.75rem 1rem' }}>STATUS</th>
-                <th style={{ padding: '0.75rem 1rem' }}>PROOF</th>
-                <th style={{ padding: '0.75rem 1rem' }}>REJECTION REASON</th>
-                <th style={{ textAlign: 'right', padding: '0.75rem 1rem' }}>ACTIONS</th>
+              <tr>
+                <th style={{ width: '40px' }}>#</th>
+                <th>REQUEST ID</th>
+                <th>DATE &amp; TIME</th>
+                <th>EMAIL</th>
+                <th>TRADE ID</th>
+                <th>AMOUNT</th>
+                <th>PAYMENT METHOD</th>
+                <th>STATUS</th>
+                <th>PROOF</th>
+                <th>REJECTION REASON</th>
+                <th style={{ textAlign: 'right' }}>ACTIONS</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={11} className="py-8 text-center text-slate-500">
+                  <td colSpan={11} className="data-table-empty">
                     Loading rejected deposits...
                   </td>
                 </tr>
               ) : paginatedRows.length === 0 ? (
                 <tr>
-                  <td colSpan={11} className="py-8 text-center text-slate-500">
+                  <td colSpan={11} className="data-table-empty">
                     {search ? 'No rejected deposits match the search.' : 'No data available'}
                   </td>
                 </tr>
               ) : (
                 paginatedRows.map((item) => (
-                  <tr key={item.id} className="hover:bg-slate-50/80 transition-colors">
-                    <td data-label="#" style={{ color: 'rgb(100, 116, 139)', padding: '0.75rem 1rem' }}>
+                  <tr key={item.id}>
+                    <td data-label="#" style={{ color: 'rgb(100, 116, 139)' }}>
                       {item.id}
                     </td>
                     <td
                       data-label="REQUEST ID"
                       onClick={() => setSelectedAudit(item)}
-                      style={{ fontWeight: 700, color: 'rgb(37, 99, 235)', cursor: 'pointer', padding: '0.75rem 1rem' }}
+                      style={{ fontWeight: 700, color: 'rgb(37, 99, 235)', cursor: 'pointer' }}
                     >
                       {item.requestId}
                     </td>
-                    <td data-label="DATE & TIME" style={{ color: 'rgb(100, 116, 139)', padding: '0.75rem 1rem' }}>
+                    <td data-label="DATE & TIME" style={{ color: 'rgb(100, 116, 139)' }}>
                       {item.dateTime}
                     </td>
-                    <td data-label="EMAIL" style={{ color: 'rgb(15, 23, 42)', fontWeight: 600, padding: '0.75rem 1rem' }}>
+                    <td data-label="EMAIL" style={{ color: 'rgb(15, 23, 42)', fontWeight: 600 }}>
                       {item.email}
                     </td>
-                    <td data-label="TRADE ID" style={{ fontFamily: 'monospace', padding: '0.75rem 1rem' }}>
+                    <td data-label="TRADE ID" style={{ fontFamily: 'monospace' }}>
                       {item.tradeId}
                     </td>
-                    <td data-label="AMOUNT" style={{ fontWeight: 700, color: 'rgb(220, 38, 38)', padding: '0.75rem 1rem' }}>
+                    <td data-label="AMOUNT" style={{ fontWeight: 700, color: 'rgb(220, 38, 38)' }}>
                       {item.amount}
                     </td>
-                    <td data-label="PAYMENT METHOD" style={{ color: 'rgb(51, 65, 85)', padding: '0.75rem 1rem' }}>
+                    <td data-label="PAYMENT METHOD" style={{ color: 'rgb(51, 65, 85)' }}>
                       {item.paymentMethod}
                     </td>
-                    <td data-label="STATUS" style={{ padding: '0.75rem 1rem' }}>
+                    <td data-label="STATUS">
                       <span
                         style={{
                           padding: '0.15rem 0.5rem',
@@ -408,16 +380,11 @@ export default function AdminRejectedDeposits() {
                       style={{
                         color: 'rgb(37, 99, 235)',
                         cursor: 'pointer',
-                        padding: '0.75rem 1rem',
-                        maxWidth: '180px',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
                       }}
                       title={item.proof}
                     >
                       {item.proofUrl ? (
-                        <a href={item.proofUrl} target="_blank" rel="noreferrer" className="underline">
+                        <a href={item.proofUrl} target="_blank" rel="noreferrer" style={{ textDecoration: 'underline' }}>
                           Open proof
                         </a>
                       ) : (
@@ -432,20 +399,18 @@ export default function AdminRejectedDeposits() {
                         maxWidth: '240px',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        padding: '0.75rem 1rem',
                       }}
                       title={item.adminComment}
                     >
                       {item.adminComment}
                     </td>
-                    <td data-label="ACTIONS" style={{ textAlign: 'right', padding: '0.75rem 1rem' }}>
-                      <div className="admin-action-group inline-flex items-center gap-1">
+                    <td data-actions="" data-label="ACTIONS" style={{ textAlign: 'right' }}>
+                      <div className="admin-action-group">
                         <button
                           onClick={() => setSelectedAudit(item)}
                           title="Audit Record"
                           aria-label="Audit Record"
-                          className="admin-action-btn admin-action-btn-view p-1.5 rounded-md hover:bg-slate-100 text-slate-600 transition-colors"
+                          className="admin-action-btn admin-action-btn-view"
                         >
                           <Eye size={14} />
                         </button>
@@ -458,28 +423,15 @@ export default function AdminRejectedDeposits() {
           </table>
         </div>
 
-        {/* Pager */}
-        <div
-          className="table-pager"
-          style={{
-            padding: '0.75rem 1rem',
-            borderTop: '1px solid rgb(226, 232, 240)',
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '0.75rem',
-            fontSize: '0.8125rem',
-          }}
-        >
-          <span className="table-pager-info text-slate-500">
+        {/* Pager matching reference exact structure */}
+        <div className="table-pager">
+          <span className="table-pager-info">
             Showing <strong>{filteredDeposits.length > 0 ? (currentPage - 1) * rowsPerPage + 1 : 0}</strong> to{' '}
             <strong>{Math.min(currentPage * rowsPerPage, filteredDeposits.length)}</strong> of{' '}
             <strong>{filteredDeposits.length}</strong> entries
           </span>
-          <div className="table-pager-controls flex items-center gap-4">
-            <label className="table-pager-size flex items-center gap-1.5 text-slate-600">
+          <div className="table-pager-controls">
+            <label className="table-pager-size">
               <span>Rows</span>
               <select
                 aria-label="Rows per page"
@@ -488,7 +440,6 @@ export default function AdminRejectedDeposits() {
                   setRowsPerPage(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="border border-slate-200 rounded px-1.5 py-0.5 text-xs bg-slate-50 outline-none"
               >
                 <option value={10}>10</option>
                 <option value={25}>25</option>
@@ -496,10 +447,10 @@ export default function AdminRejectedDeposits() {
                 <option value={100}>100</option>
               </select>
             </label>
-            <nav className="table-pager-pages flex items-center gap-1" aria-label="Pages">
+            <nav className="table-pager-pages" aria-label="Pages">
               <button
                 type="button"
-                className="table-pager-btn inline-flex items-center gap-1 px-2.5 py-1 rounded border border-slate-200 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="table-pager-btn"
                 disabled={currentPage <= 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                 aria-label="Previous page"
@@ -509,14 +460,14 @@ export default function AdminRejectedDeposits() {
               </button>
               <button
                 type="button"
-                className="table-pager-btn table-pager-num px-2.5 py-1 rounded bg-orange-600 text-white font-bold text-xs"
+                className="table-pager-btn table-pager-num"
                 aria-current="page"
               >
                 {currentPage}
               </button>
               <button
                 type="button"
-                className="table-pager-btn inline-flex items-center gap-1 px-2.5 py-1 rounded border border-slate-200 text-xs text-slate-600 hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+                className="table-pager-btn"
                 disabled={currentPage >= totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                 aria-label="Next page"
@@ -529,7 +480,7 @@ export default function AdminRejectedDeposits() {
         </div>
       </div>
 
-      {/* 4. Audit Modal matching reference strictly */}
+      {/* 4. Audit Modal matching reference script 1blp1ebed_7dn.js */}
       {selectedAudit && (
         <div
           style={{
