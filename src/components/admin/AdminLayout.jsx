@@ -944,7 +944,8 @@ export default function AdminLayout() {
                           isActive ||
                           (sub.path === '/admin/demo' && currentPath === '/admin') ||
                           (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
-                          (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts'));
+                          (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
+                          (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
