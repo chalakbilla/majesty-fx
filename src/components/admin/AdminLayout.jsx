@@ -1220,7 +1220,7 @@ export default function AdminLayout() {
                   {[
                     { label: 'Manage Ticket', path: '/admin/manage-priority' },
                     { label: 'Open Tickets', path: '/admin/support/open' },
-                    { label: 'Closed Tickets', path: '/admin/support-closed' },
+                    { label: 'Closed Tickets', path: '/admin/support/closed' },
                   ].map((sub) => (
                     <NavLink
                       key={sub.path}
@@ -1238,9 +1238,9 @@ export default function AdminLayout() {
                             (currentPath === '/admin/support/open' ||
                               currentPath === '/admin/support-open' ||
                               currentPath === '/admin/open')) ||
-                          (sub.path === '/admin/support-closed' &&
-                            (currentPath === '/admin/support-closed' ||
-                              currentPath === '/admin/support/closed' ||
+                          (sub.path === '/admin/support/closed' &&
+                            (currentPath === '/admin/support/closed' ||
+                              currentPath === '/admin/support-closed' ||
                               currentPath === '/admin/closed'));
                         return {
                           display: 'flex',

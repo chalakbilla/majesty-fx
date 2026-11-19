@@ -58,6 +58,7 @@ import AdminPAMMRejectedWithdrawalHistory from './pages/admin/AdminPAMMRejectedW
 import AdminPendingAccounts from './pages/admin/AdminPendingAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 import AdminManagePriority from './pages/admin/AdminManagePriority.jsx';
+import AdminSupportClosed from './pages/admin/AdminSupportClosed.jsx';
 import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
 import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
 import AdminTransactionLedger from './pages/admin/AdminTransactionLedger.jsx';
@@ -173,11 +174,11 @@ export default function App() {
           <Route path="/admin/support/priority" element={<AdminManagePriority />} />
           <Route path="/admin/support-priority" element={<AdminManagePriority />} />
           <Route path="/admin/support-open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
-          <Route path="/admin/support-closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
-          <Route path="/admin/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
-          <Route path="/admin/closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
           <Route path="/admin/support/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
-          <Route path="/admin/support/closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
+          <Route path="/admin/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
+          <Route path="/admin/support/closed" element={<AdminSupportClosed />} />
+          <Route path="/admin/support-closed" element={<AdminSupportClosed />} />
+          <Route path="/admin/closed" element={<AdminSupportClosed />} />
 
           {/* Accounts Routes */}
           <Route path="/admin/account-types" element={<AdminAccountTypes />} />
