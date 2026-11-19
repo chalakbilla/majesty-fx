@@ -114,6 +114,13 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Sync prop changes
+  useEffect(() => {
+    if (defaultStatusFilter) {
+      setStatusFilter(defaultStatusFilter);
+    }
+  }, [defaultStatusFilter]);
+
   // Sync to localStorage
   useEffect(() => {
     try {
@@ -320,10 +327,14 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
               <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
                 <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
                   <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
-                    Support Ticket
+                    {statusFilter === 'Open'
+                      ? 'Open Support'
+                      : statusFilter === 'Closed'
+                      ? 'Closed Support'
+                      : 'Support Ticket'}
                   </span>{' '}
                   <span className="inline-block font-black text-orange-600 tracking-tight" style={{ color: 'rgb(234, 88, 12)' }}>
-                    Management
+                    {statusFilter === 'Open' || statusFilter === 'Closed' ? 'Tickets' : 'Management'}
                   </span>
                 </h1>
                 <div className="shrink-0">
@@ -333,7 +344,11 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
                 </div>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
-                Review, prioritize, and communicate with clients on institutional tickets
+                {statusFilter === 'Open'
+                  ? 'Active open support requests awaiting agent assistance and institutional response'
+                  : statusFilter === 'Closed'
+                  ? 'Archived support resolutions, closed tickets, and past correspondence'
+                  : 'Review, prioritize, and communicate with clients on institutional tickets'}
               </div>
             </div>
 
