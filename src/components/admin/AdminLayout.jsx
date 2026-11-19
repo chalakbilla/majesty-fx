@@ -934,6 +934,7 @@ export default function AdminLayout() {
                     { label: 'Total PAMM Active Accounts', path: '/admin/pamm-active-accounts' },
                     { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
                     { label: 'PAMM Commission Report', path: '/admin/pamm-commission-report' },
+                    { label: 'PAMM Commission Settings', path: '/admin/pamm-commission-settings' },
                   ].map((sub) => (
                     <NavLink
                       key={sub.path}
@@ -946,7 +947,8 @@ export default function AdminLayout() {
                           (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
                           (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
                           (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
-                          (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report'));
+                          (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
+                          (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
