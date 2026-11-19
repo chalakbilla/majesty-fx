@@ -38,6 +38,9 @@ import { getAdminUser, logoutAdmin } from '../../utils/adminAuth.js';
 import { LanguageSelector } from '../route/Auth.jsx';
 
 export default function AdminLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ibExpanded, setIbExpanded] = useState(
     location.pathname.startsWith('/admin/ib') ||
@@ -55,8 +58,6 @@ export default function AdminLayout() {
   const [apiDropdownOpen, setApiDropdownOpen] = useState(false);
   const [pendingDropdownOpen, setPendingDropdownOpen] = useState(false);
 
-  const location = useLocation();
-  const navigate = useNavigate();
   const adminUser = getAdminUser() || {
     name: 'Demo Sandbox Admin',
     username: 'demoadmin',

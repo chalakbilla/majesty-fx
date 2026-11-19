@@ -121,6 +121,7 @@ export default function App() {
       <Route element={<AdminProtected />}>
         <Route element={<AdminLayout />}>
           <Route path="/admin" element={<AdminDemo />} />
+          <Route path="/admin/" element={<AdminDemo />} />
           <Route path="/admin/demo" element={<AdminDemo />} />
           <Route path="/admin/ib/dashboard" element={<AdminIBDashboard />} />
           <Route path="/admin/ib-clients" element={<AdminIBClients />} />
@@ -145,6 +146,9 @@ export default function App() {
           <Route path="/admin/pamm-report" element={<AdminPAMMReport title="PAMM Commission Report" />} />
         </Route>
       </Route>
+
+      {/* Fallback route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
