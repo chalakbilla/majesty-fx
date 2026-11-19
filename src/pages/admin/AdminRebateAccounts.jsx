@@ -160,9 +160,7 @@ export default function AdminRebateAccounts() {
                       Accounts
                     </span>
                   </h1>
-                  <span className="text-slate-600 font-medium text-xs sm:text-sm">
-                    Cashback Ledger
-                  </span>
+                  <div className="shrink-0">Cashback Ledger</div>
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                   IB partner rebate plans and cumulative cashback ledger

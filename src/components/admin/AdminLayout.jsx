@@ -64,7 +64,8 @@ export default function AdminLayout() {
     location.pathname === '/admin/profit-sharing-data' ||
     location.pathname === '/admin/profit-sharing' ||
     location.pathname === '/admin/rejected-master-accounts' ||
-    location.pathname === '/admin/rejected-accounts'
+    location.pathname === '/admin/rejected-accounts' ||
+    location.pathname === '/admin/rebate-accounts'
   );
   const [supportExpanded, setSupportExpanded] = useState(
     location.pathname.startsWith('/admin/manage-priority') ||
@@ -1107,6 +1108,7 @@ export default function AdminLayout() {
                     { label: 'Approved Followers', path: '/admin/approved-followers' },
                     { label: 'Rejected Followers', path: '/admin/rejected-followers' },
                     { label: 'Profit Sharing Data', path: '/admin/profit-sharing-data' },
+                    { label: 'Rebate Accounts', path: '/admin/rebate-accounts' },
                   ].map((sub) => (
                     <NavLink
                       key={sub.path}
