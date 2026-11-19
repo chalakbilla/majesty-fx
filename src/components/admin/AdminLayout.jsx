@@ -1534,12 +1534,14 @@ export default function AdminLayout() {
                     { label: 'Account Types', path: '/admin/account-type' },
                     { label: 'IB & Rebate Rules', path: '/admin/ib-commissions-settings' },
                     { label: 'Payment Ledger', path: '/admin/payment-ledger' },
+                    { label: 'Payment Method History', path: '/admin/payment-method-history' },
                   ].map((sub) => {
                     const active =
                       currentPath === sub.path ||
                       (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
                       (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
                       (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
+                      (sub.path === '/admin/payment-method-history' && (currentPath === '/admin/settings/payment-method-history')) ||
                       (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
                       (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
                       (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
