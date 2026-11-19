@@ -143,12 +143,9 @@ export default function AdminPAMMCommissionReport() {
                       Report
                     </span>
                   </h1>
-                  <div className="shrink-0">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border border-orange-200 bg-orange-50 text-orange-700 shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                      Fee Accounting
-                    </span>
-                  </div>
+                  <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                    Fee Accounting
+                  </span>
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                   Live periodic statements, management performance fees, and investor profit payouts

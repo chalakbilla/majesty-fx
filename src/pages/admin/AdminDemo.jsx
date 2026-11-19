@@ -254,12 +254,9 @@ export default function AdminDemo() {
                   <span className="text-slate-900 font-extrabold">Referral Desk</span>{' '}
                   <span className="inline-block font-black text-orange-600 tracking-tight">Portal</span>
                 </h1>
-                <div className="shrink-0">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 border border-orange-200">
-                    <Users className="w-3.5 h-3.5 text-orange-600" />
-                    <span>Referral Desk Gateway (MajestyFX-Trade)</span>
-                  </span>
-                </div>
+                <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                  Referral Desk Gateway (MajestyFX-Trade)
+                </span>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                 Dedicated administration command center for Referral &amp; Direct retail traders, affiliate networks, and MajestyFX MT5 accounts.

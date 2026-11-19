@@ -237,11 +237,9 @@ export default function AdminCopyTradingAccounts() {
                   <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>Copy Trading</span>{' '}
                   <span className="inline-block font-black text-orange-600 tracking-tight" style={{ color: 'rgb(234, 88, 12)' }}>Accounts</span>
                 </h1>
-                <div className="shrink-0">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 border border-orange-200">
-                    Social Trading Hub
-                  </span>
-                </div>
+                <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                  Social Trading Hub
+                </span>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                 Live administrative directory of real client copy trading accounts, follower allocations, and master strategies

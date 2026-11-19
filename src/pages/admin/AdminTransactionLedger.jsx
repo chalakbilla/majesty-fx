@@ -213,12 +213,9 @@ export default function AdminTransactionLedger({ defaultType = null, pageTitle =
                     {config.title.split(' ').slice(1).join(' ')}
                   </span>
                 </h1>
-                <div className="shrink-0">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-orange-50 text-orange-600 border border-orange-200">
-                    <Repeat className="w-3.5 h-3.5 text-orange-600" />
-                    <span>Real-Time Audit</span>
-                  </span>
-                </div>
+                <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                  Real-Time Audit
+                </span>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                 Cryptographic transaction audit trail, compliance verification status, and client ledger settlements.

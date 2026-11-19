@@ -203,12 +203,9 @@ export default function AdminPendingAccounts() {
                       Accounts
                     </span>
                   </h1>
-                  <div className="shrink-0">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border border-orange-200 bg-orange-50 text-orange-700 shadow-2xs">
-                      <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                      Compliance Audit
-                    </span>
-                  </div>
+                  <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                    Compliance Audit
+                  </span>
                 </div>
                 <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                   Master trader applications awaiting compliance verification and admin review

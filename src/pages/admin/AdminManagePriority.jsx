@@ -337,11 +337,9 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
                     {statusFilter === 'Open' || statusFilter === 'Closed' ? 'Tickets' : 'Management'}
                   </span>
                 </h1>
-                <div className="shrink-0">
-                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border border-orange-200 bg-orange-50 text-orange-700 shadow-2xs">
-                    Desk Service
-                  </span>
-                </div>
+                <span className="text-slate-600 font-medium text-xs sm:text-sm">
+                  Desk Service
+                </span>
               </div>
               <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
                 {statusFilter === 'Open'
