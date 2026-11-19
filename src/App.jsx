@@ -77,6 +77,7 @@ import AdminSettings from './pages/admin/AdminSettings.jsx';
 import AdminDataExport from './pages/admin/AdminDataExport.jsx';
 import AdminDepositHistory from './pages/admin/AdminDepositHistory.jsx';
 import AdminManualDeposit from './pages/admin/AdminManualDeposit.jsx';
+import AdminWithdrawHistory from './pages/admin/AdminWithdrawHistory.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -232,7 +233,7 @@ export default function App() {
           <Route path="/admin/deposit-history" element={<AdminDepositHistory />} />
           <Route path="/admin/deposits" element={<AdminDepositHistory />} />
           <Route path="/admin/manual-deposit" element={<AdminManualDeposit />} />
-          <Route path="/admin/withdraw-history" element={<AdminTransactionLedger />} />
+          <Route path="/admin/withdraw-history" element={<AdminWithdrawHistory />} />
           <Route path="/admin/internal-transfer" element={<AdminTransactionLedger />} />
           <Route path="/admin/internal-transfers" element={<AdminTransactionLedger />} />
           <Route path="/admin/profit-commission-withdrawal-history" element={<AdminTransactionLedger />} />
