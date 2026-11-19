@@ -57,6 +57,10 @@ import AdminPAMMAcceptWithdrawalHistory from './pages/admin/AdminPAMMAcceptWithd
 import AdminPAMMRejectedWithdrawalHistory from './pages/admin/AdminPAMMRejectedWithdrawalHistory.jsx';
 import AdminPendingAccounts from './pages/admin/AdminPendingAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
+import AdminManagePriority from './pages/admin/AdminManagePriority.jsx';
+import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
+import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
+import AdminTransactionLedger from './pages/admin/AdminTransactionLedger.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -164,6 +168,35 @@ export default function App() {
           <Route path="/admin/pamm-accept-withdrawal-history" element={<AdminPAMMAcceptWithdrawalHistory />} />
           <Route path="/admin/pamm-accepted-withdrawal-history" element={<AdminPAMMAcceptWithdrawalHistory />} />
           <Route path="/admin/pamm-rejected-withdrawal-history" element={<AdminPAMMRejectedWithdrawalHistory />} />
+          <Route path="/admin/manage-priority" element={<AdminManagePriority />} />
+          <Route path="/admin/manage-ticket" element={<AdminManagePriority />} />
+          <Route path="/admin/support/priority" element={<AdminManagePriority />} />
+          <Route path="/admin/support-priority" element={<AdminManagePriority />} />
+          <Route path="/admin/support-open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
+          <Route path="/admin/support-closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
+          <Route path="/admin/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
+          <Route path="/admin/closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
+          <Route path="/admin/support/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
+          <Route path="/admin/support/closed" element={<AdminManagePriority defaultStatusFilter="Closed" />} />
+
+          {/* Accounts Routes */}
+          <Route path="/admin/account-types" element={<AdminAccountTypes />} />
+          <Route path="/admin/account-type" element={<AdminAccountTypes />} />
+          <Route path="/admin/account-status" element={<AdminAccountStatuses />} />
+          <Route path="/admin/account-statuses" element={<AdminAccountStatuses />} />
+
+          {/* Transactions & Money Routes */}
+          <Route path="/admin/account-ledger" element={<AdminTransactionLedger />} />
+          <Route path="/admin/daily-inflow" element={<AdminTransactionLedger />} />
+          <Route path="/admin/deposit-history" element={<AdminTransactionLedger />} />
+          <Route path="/admin/manual-deposit" element={<AdminTransactionLedger />} />
+          <Route path="/admin/withdraw-history" element={<AdminTransactionLedger />} />
+          <Route path="/admin/internal-transfer" element={<AdminTransactionLedger />} />
+          <Route path="/admin/internal-transfers" element={<AdminTransactionLedger />} />
+          <Route path="/admin/profit-commission-withdrawal-history" element={<AdminTransactionLedger />} />
+          <Route path="/admin/credit-in-out" element={<AdminTransactionLedger />} />
+          <Route path="/admin/rejected-deposits" element={<AdminTransactionLedger />} />
+          <Route path="/admin/rejected-withdrawals" element={<AdminTransactionLedger />} />
         </Route>
       </Route>
 

@@ -17,9 +17,11 @@ import {
   Key,
   Layers,
   LifeBuoy,
+  ListOrdered,
   LogOut,
   Mail,
   Menu,
+  MessageSquare,
   PieChart,
   RefreshCw,
   Repeat,
@@ -56,8 +58,27 @@ export default function AdminLayout() {
     location.pathname === '/admin/pending-accounts' ||
     location.pathname === '/admin/pending-master-accounts'
   );
-  const [txExpanded, setTxExpanded] = useState(false);
-  const [accountsExpanded, setAccountsExpanded] = useState(false);
+  const [supportExpanded, setSupportExpanded] = useState(
+    location.pathname.startsWith('/admin/manage-priority') ||
+    location.pathname.startsWith('/admin/support') ||
+    location.pathname.startsWith('/admin/manage-ticket')
+  );
+  const [txExpanded, setTxExpanded] = useState(
+    location.pathname.startsWith('/admin/account-ledger') ||
+    location.pathname.startsWith('/admin/daily-inflow') ||
+    location.pathname.startsWith('/admin/deposit-history') ||
+    location.pathname.startsWith('/admin/manual-deposit') ||
+    location.pathname.startsWith('/admin/withdraw-history') ||
+    location.pathname.startsWith('/admin/internal-transfer') ||
+    location.pathname.startsWith('/admin/profit-commission') ||
+    location.pathname.startsWith('/admin/credit-in-out') ||
+    location.pathname.startsWith('/admin/rejected-deposit') ||
+    location.pathname.startsWith('/admin/rejected-withdrawal')
+  );
+  const [accountsExpanded, setAccountsExpanded] = useState(
+    location.pathname.startsWith('/admin/account-type') ||
+    location.pathname.startsWith('/admin/account-status')
+  );
   const [settingsExpanded, setSettingsExpanded] = useState(false);
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -1048,6 +1069,275 @@ export default function AdminLayout() {
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{sub.label}</span>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 9. Transactions & Money (Expandable) - matching media_1795092044563_b1440119.png */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setTxExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Repeat style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Transactions &amp; Money</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <span
+                    style={{
+                      backgroundColor: 'var(--desk)',
+                      color: 'rgb(255, 255, 255)',
+                      fontSize: '0.675rem',
+                      fontWeight: 700,
+                      padding: '0.1rem 0.45rem',
+                      borderRadius: '9999px',
+                      lineHeight: 1.2,
+                    }}
+                  >
+                    4
+                  </span>
+                  <ChevronRight
+                    className={`w-4 h-4 text-slate-600 transition-transform ${txExpanded ? 'rotate-90' : ''}`}
+                  />
+                </div>
+              </div>
+
+              {txExpanded && (
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+                  {[
+                    { label: 'Account Ledger', path: '/admin/account-ledger' },
+                    { label: 'Daily Inflow', path: '/admin/daily-inflow' },
+                    { label: 'Deposits', path: '/admin/deposit-history', badge: '2', badgeBg: 'rgb(234, 88, 12)' },
+                    { label: 'Manual Deposit', path: '/admin/manual-deposit' },
+                    { label: 'Withdrawals', path: '/admin/withdraw-history', badge: '2', badgeBg: 'rgb(225, 29, 72)' },
+                    { label: 'Internal Transfers', path: '/admin/internal-transfer' },
+                    { label: 'Profit Commission Withdrawal History', path: '/admin/profit-commission-withdrawal-history' },
+                    { label: 'Credit In/Out', path: '/admin/credit-in-out' },
+                    { label: 'Rejected Deposits', path: '/admin/rejected-deposits' },
+                    { label: 'Rejected Withdrawals', path: '/admin/rejected-withdrawals' },
+                  ].map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => {
+                        const active = isActive || currentPath === sub.path;
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.875rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor: currentPath === sub.path ? '#ffffff' : 'transparent',
+                            border: currentPath === sub.path ? '1.5px solid #ffffff' : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span>{sub.label}</span>
+                      </div>
+                      {sub.badge && (
+                        <span
+                          style={{
+                            backgroundColor: sub.badgeBg || 'var(--desk)',
+                            color: 'rgb(255, 255, 255)',
+                            fontSize: '0.675rem',
+                            fontWeight: 700,
+                            padding: '0.1rem 0.45rem',
+                            borderRadius: '9999px',
+                            lineHeight: 1.2,
+                          }}
+                        >
+                          {sub.badge}
+                        </span>
+                      )}
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 10. Support Tickets (Expandable) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setSupportExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <MessageSquare style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Support Tickets</span>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 text-slate-600 transition-transform ${supportExpanded ? 'rotate-90' : ''}`}
+                />
+              </div>
+
+              {supportExpanded && (
+                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                  {[
+                    { label: 'Manage Ticket', path: '/admin/manage-priority' },
+                    { label: 'Open Tickets', path: '/admin/support-open' },
+                    { label: 'Closed Tickets', path: '/admin/support-closed' },
+                  ].map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => {
+                        const active =
+                          isActive ||
+                          (sub.path === '/admin/manage-priority' &&
+                            (currentPath === '/admin/manage-priority' ||
+                              currentPath === '/admin/manage-ticket' ||
+                              currentPath === '/admin/support-priority' ||
+                              currentPath === '/admin/support/priority'));
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.45rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.85rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span>{sub.label}</span>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 11. Accounts (Expandable) - matching media_1795091538847_d28927b3.zip */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setAccountsExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <ListOrdered style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>Accounts</span>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 text-slate-600 transition-transform ${accountsExpanded ? 'rotate-90' : ''}`}
+                />
+              </div>
+
+              {accountsExpanded && (
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+                  {[
+                    { label: 'Account Types', path: '/admin/account-types' },
+                    { label: 'Account Status', path: '/admin/account-status' },
+                  ].map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => {
+                        const active =
+                          isActive ||
+                          currentPath === sub.path ||
+                          (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                          (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses');
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.875rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              currentPath === sub.path ||
+                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses')
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              currentPath === sub.path ||
+                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses')
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span>{sub.label}</span>
                       </div>
                     </NavLink>
