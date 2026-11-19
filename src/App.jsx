@@ -118,7 +118,7 @@ export default function App() {
       {/* Admin Protected Routes */}
       <Route element={<AdminProtected />}>
         <Route element={<AdminLayout />}>
-          <Route path="/admin" element={<Navigate to="/admin/demo" replace />} />
+          <Route path="/admin" element={<AdminDemo />} />
           <Route path="/admin/demo" element={<AdminDemo />} />
           <Route path="/admin/ib/dashboard" element={<AdminIBDashboard />} />
           <Route path="/admin/ib-clients" element={<AdminIBClients />} />

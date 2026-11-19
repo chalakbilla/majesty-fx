@@ -883,19 +883,22 @@ export default function AdminLayout() {
                       key={sub.path}
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      style={({ isActive }) => ({
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '0.45rem 0.75rem',
-                        borderRadius: '0.375rem',
-                        fontSize: '0.85rem',
-                        fontWeight: isActive ? 700 : 500,
-                        textDecoration: 'none',
-                        transition: '0.15s',
-                        backgroundColor: isActive ? 'var(--desk)' : 'transparent',
-                        color: isActive ? '#ffffff' : 'rgb(51, 65, 85)',
-                      })}
+                      style={({ isActive }) => {
+                        const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin');
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.45rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.85rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
@@ -951,19 +954,22 @@ export default function AdminLayout() {
                       key={sub.path}
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
-                      style={({ isActive }) => ({
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '0.45rem 0.75rem',
-                        borderRadius: '0.375rem',
-                        fontSize: '0.85rem',
-                        fontWeight: isActive ? 700 : 500,
-                        textDecoration: 'none',
-                        transition: '0.15s',
-                        backgroundColor: isActive ? 'var(--desk)' : 'transparent',
-                        color: isActive ? '#ffffff' : 'rgb(51, 65, 85)',
-                      })}
+                      style={({ isActive }) => {
+                        const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin');
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.45rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.85rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
                     >
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
