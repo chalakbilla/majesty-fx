@@ -51,7 +51,11 @@ export default function AdminLayout() {
   const [pammExpanded, setPammExpanded] = useState(
     location.pathname.startsWith('/admin/pamm') || location.pathname.startsWith('/admin/total-pamm')
   );
-  const [copyExpanded, setCopyExpanded] = useState(location.pathname.startsWith('/admin/copy'));
+  const [copyExpanded, setCopyExpanded] = useState(
+    location.pathname.startsWith('/admin/copy') ||
+    location.pathname === '/admin/pending-accounts' ||
+    location.pathname === '/admin/pending-master-accounts'
+  );
   const [txExpanded, setTxExpanded] = useState(false);
   const [accountsExpanded, setAccountsExpanded] = useState(false);
   const [settingsExpanded, setSettingsExpanded] = useState(false);
@@ -1007,7 +1011,7 @@ export default function AdminLayout() {
                 <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                   {[
                     { label: 'Copy Trading Accounts', path: '/admin/copy-trading-accounts' },
-                    { label: 'Pending Master Accounts', path: '/admin/pending-master-accounts' },
+                    { label: 'Pending Master Accounts', path: '/admin/pending-accounts' },
                     { label: 'Master Account', path: '/admin/master-accounts' },
                     { label: 'Rejected Master Account', path: '/admin/rejected-master-accounts' },
                     { label: 'Approved Followers', path: '/admin/approved-followers' },
@@ -1019,7 +1023,10 @@ export default function AdminLayout() {
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
                       style={({ isActive }) => {
-                        const active = isActive || (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts'));
+                        const active =
+                          isActive ||
+                          (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
+                          (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
