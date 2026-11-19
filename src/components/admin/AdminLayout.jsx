@@ -935,6 +935,7 @@ export default function AdminLayout() {
                     { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
                     { label: 'PAMM Commission Report', path: '/admin/pamm-commission-report' },
                     { label: 'PAMM Commission Settings', path: '/admin/pamm-commission-settings' },
+                    { label: 'PAMM Withdrawal History', path: '/admin/pamm-withdrawal-history' },
                   ].map((sub) => (
                     <NavLink
                       key={sub.path}
@@ -948,7 +949,8 @@ export default function AdminLayout() {
                           (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
                           (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
                           (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
-                          (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings'));
+                          (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
+                          (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
