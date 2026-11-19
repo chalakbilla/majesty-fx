@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   Wallet,
   ListOrdered,
@@ -86,6 +86,23 @@ const EVENT_ITEMS = [
 ];
 
 export default function AdminSettings() {
+  const location = useLocation();
+  const isLanguageTab = new URLSearchParams(location.search).get('tab') === 'language';
+
+  // Smooth scroll to Language & Regional Settings if tab=language
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('tab') === 'language') {
+      const timer = setTimeout(() => {
+        const el = document.getElementById('language-settings');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [location.search]);
+
   // Authentication & Desk state
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
   const [currentDeskKey, setCurrentDeskKey] = useState('demo_admin');
@@ -366,7 +383,13 @@ export default function AdminSettings() {
               Admin Console
             </Link>
             <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
-            <span className="whitespace-nowrap text-slate-800 font-semibold">Email & Notifications</span>
+            <Link to="/admin/settings" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
+              System Settings
+            </Link>
+            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
+            <span className="whitespace-nowrap text-slate-800 font-semibold">
+              {isLanguageTab ? 'Language & Regional Settings' : 'Email & Notifications'}
+            </span>
           </nav>
 
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
@@ -655,10 +678,13 @@ export default function AdminSettings() {
         style={{
           backgroundColor: 'rgb(255, 255, 255)',
           borderRadius: '12px',
-          border: '1px solid rgb(226, 232, 240)',
+          border: isLanguageTab ? '2px solid rgb(234, 88, 12)' : '1px solid rgb(226, 232, 240)',
           padding: '24px',
           marginBottom: '24px',
-          boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
+          boxShadow: isLanguageTab
+            ? '0 0 0 4px rgba(234, 88, 12, 0.15), 0 4px 20px -2px rgba(15, 23, 42, 0.08)'
+            : 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
+          transition: 'all 0.3s ease',
         }}
       >
         <div
