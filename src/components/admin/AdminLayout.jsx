@@ -1300,7 +1300,7 @@ export default function AdminLayout() {
               {accountsExpanded && (
                 <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
-                    { label: 'Account Types', path: '/admin/account-types' },
+                    { label: 'Account Types', path: '/admin/account-type' },
                     { label: 'Account Status', path: '/admin/account-status' },
                   ].map((sub) => (
                     <NavLink
@@ -1311,6 +1311,7 @@ export default function AdminLayout() {
                         const active =
                           isActive ||
                           currentPath === sub.path ||
+                          (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
                           (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
                           (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses');
                         return {
