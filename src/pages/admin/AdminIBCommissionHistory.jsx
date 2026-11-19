@@ -53,6 +53,55 @@ export default function AdminIBCommissionHistory() {
     }, 600);
   };
 
+  const handleExportCSV = () => {
+    const headers = [
+      '#',
+      'TX ID',
+      'IB PARTNER',
+      'CLIENT NAME',
+      'TICKET',
+      'SYMBOL',
+      'VOLUME',
+      'RATE',
+      'AMOUNT',
+      'STATUS',
+      'TIMESTAMP',
+    ];
+    const rows = filtered.map((t) => [
+      t.id,
+      t.txId,
+      t.partner,
+      t.client,
+      t.ticket,
+      t.symbol,
+      t.volume,
+      t.rate,
+      t.amount,
+      t.status,
+      t.timestamp,
+    ]);
+
+    const csvContent = [
+      headers.map((h) => `"${h.replace(/"/g, '""')}"`).join(','),
+      ...rows.map((row) =>
+        row.map((cell) => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',')
+      ),
+    ].join('\r\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('href', url);
+    a.setAttribute(
+      'download',
+      `ib_commission_history_${new Date().toISOString().slice(0, 10)}.csv`
+    );
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = transactions.filter((t) => {
     if (statusFilter !== 'ALL' && t.status !== statusFilter) return false;
     if (searchQuery.trim()) {
@@ -78,41 +127,49 @@ export default function AdminIBCommissionHistory() {
 
   return (
     <div className="space-y-6 sm:space-y-7 w-full min-w-0">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            <span className="text-slate-900">IB</span>{' '}
-            <span className="text-orange-600">Commission History</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Real-time commission settlement audit and multi-tier rebate logs
-          </p>
-        </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export CSV</span>
-          </button>
-          <button
-            type="button"
-            onClick={() => setRecordModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white text-xs font-bold shadow-xs transition-colors cursor-pointer"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>+ Record Commission</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleRefresh}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
+      {/* Top Header Card matching reference image media_1795100631919_71ed2304.png */}
+      <div className="bg-white rounded-2xl border border-slate-200/80 p-5 sm:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)]">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight">
+              <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
+                IB
+              </span>{' '}
+              <span className="font-extrabold text-orange-500" style={{ color: '#ff6600' }}>
+                Commission History
+              </span>
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-normal">
+              Real-time commission settlement audit and multi-tier rebate logs
+            </p>
+          </div>
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              type="button"
+              onClick={handleExportCSV}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5 text-slate-500" />
+              <span>Export CSV</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setRecordModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer hover:opacity-95"
+              style={{ backgroundColor: '#ff6600' }}
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>Record Commission</span>
+            </button>
+            <button
+              type="button"
+              onClick={handleRefresh}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 text-slate-500 ${refreshing ? 'animate-spin' : ''}`} />
+              <span>Refresh</span>
+            </button>
+          </div>
         </div>
       </div>
 
