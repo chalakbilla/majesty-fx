@@ -749,7 +749,7 @@ export default function AdminSettings() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <Users size={20} color="#ff6600" />
-            <h3 style={{ margin: '0px', fontSize: '17px', color: 'rgb(15, 23, 42)' }}>
+            <h3 style={{ margin: '0px', fontSize: '17px', fontWeight: 700, color: 'rgb(15, 23, 42)' }}>
               DEMO Desk Notification Email
             </h3>
           </div>
@@ -789,7 +789,7 @@ export default function AdminSettings() {
                     onChange={(e) => setEnabled(e.target.checked)}
                     style={{ accentColor: 'rgb(255, 102, 0)', width: '16px', height: '16px' }}
                   />
-                  <span style={{ fontWeight: 600, color: enabled ? 'rgb(21, 128, 61)' : '#94a3b8' }}>
+                  <span style={{ fontWeight: 700, color: enabled ? 'rgb(21, 128, 61)' : '#94a3b8' }}>
                     {enabled ? 'Enabled' : 'Disabled'}
                   </span>
                 </label>
@@ -798,9 +798,9 @@ export default function AdminSettings() {
                 <label
                   style={{
                     display: 'block',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: 'rgb(51, 65, 85)',
+                    fontSize: '13px',
+                    fontWeight: 700,
+                    color: 'rgb(15, 23, 42)',
                     marginBottom: '6px',
                   }}
                 >
@@ -843,7 +843,7 @@ export default function AdminSettings() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <Bell size={20} color="#10b981" />
-            <h3 style={{ margin: '0px', fontSize: '17px', color: 'rgb(15, 23, 42)' }}>
+            <h3 style={{ margin: '0px', fontSize: '17px', fontWeight: 700, color: 'rgb(15, 23, 42)' }}>
               DEMO Desk Events Delivered to Your Email
             </h3>
           </div>
@@ -869,7 +869,7 @@ export default function AdminSettings() {
               >
                 <CheckCircle2 size={16} color="#16a34a" style={{ marginTop: '2px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: 'rgb(15, 23, 42)' }}>{item.title}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 700, color: 'rgb(15, 23, 42)' }}>{item.title}</div>
                   <div style={{ fontSize: '11px', color: 'rgb(100, 116, 139)' }}>{item.desc}</div>
                 </div>
               </div>
@@ -890,7 +890,7 @@ export default function AdminSettings() {
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
             <Lock size={20} color="#ea580c" />
-            <h3 style={{ margin: '0px', fontSize: '18px', color: 'rgb(15, 23, 42)' }}>Security & Credentials</h3>
+            <h3 style={{ margin: '0px', fontSize: '18px', fontWeight: 700, color: 'rgb(15, 23, 42)' }}>Security & Credentials</h3>
           </div>
           <p style={{ margin: '0px 0px 16px', fontSize: '13px', color: 'rgb(100, 116, 139)' }}>
             Update your administrator portal login password. Changes take effect immediately across all sessions.
@@ -929,9 +929,9 @@ export default function AdminSettings() {
               <label
                 style={{
                   display: 'block',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: 'rgb(51, 65, 85)',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: 'rgb(15, 23, 42)',
                   marginBottom: '6px',
                 }}
               >
@@ -956,9 +956,9 @@ export default function AdminSettings() {
               <label
                 style={{
                   display: 'block',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: 'rgb(51, 65, 85)',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: 'rgb(15, 23, 42)',
                   marginBottom: '6px',
                 }}
               >
@@ -983,9 +983,9 @@ export default function AdminSettings() {
               <label
                 style={{
                   display: 'block',
-                  fontSize: '12px',
-                  fontWeight: 600,
-                  color: 'rgb(51, 65, 85)',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: 'rgb(15, 23, 42)',
                   marginBottom: '6px',
                 }}
               >
