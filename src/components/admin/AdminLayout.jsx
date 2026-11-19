@@ -82,6 +82,7 @@ export default function AdminLayout() {
   const [settingsExpanded, setSettingsExpanded] = useState(
     location.pathname.startsWith('/admin/payment-method') ||
     location.pathname.startsWith('/admin/payment-gateway') ||
+    location.pathname.startsWith('/admin/payment-ledger') ||
     location.pathname.startsWith('/admin/settings')
   );
 
@@ -1532,11 +1533,13 @@ export default function AdminLayout() {
                     { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
                     { label: 'Account Types', path: '/admin/account-type' },
                     { label: 'IB & Rebate Rules', path: '/admin/ib-commissions-settings' },
+                    { label: 'Payment Ledger', path: '/admin/payment-ledger' },
                   ].map((sub) => {
                     const active =
                       currentPath === sub.path ||
                       (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
                       (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                      (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
                       (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
                       (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
                       (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||

@@ -63,6 +63,7 @@ import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
 import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
 import AdminTransactionLedger from './pages/admin/AdminTransactionLedger.jsx';
 import AdminPaymentMethods from './pages/admin/AdminPaymentMethods.jsx';
+import AdminPaymentLedger from './pages/admin/AdminPaymentLedger.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -190,6 +191,8 @@ export default function App() {
           {/* System Settings Routes */}
           <Route path="/admin/payment-methods" element={<AdminPaymentMethods />} />
           <Route path="/admin/payment-gateways" element={<AdminPaymentMethods />} />
+          <Route path="/admin/payment-ledger" element={<AdminPaymentLedger />} />
+          <Route path="/admin/settings/payment-ledger" element={<AdminPaymentLedger />} />
           <Route path="/admin/settings/account-type" element={<AdminAccountTypes />} />
           <Route path="/admin/settings/account-types" element={<AdminAccountTypes />} />
           <Route path="/admin/settings/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />
