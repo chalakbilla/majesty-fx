@@ -879,7 +879,7 @@ export default function AdminLayout() {
               </div>
 
               {ibExpanded && (
-                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
                     { label: 'Demo Sandbox', path: '/admin/demo' },
                     { label: 'IB Overview', path: '/admin/ib/dashboard' },
@@ -897,14 +897,14 @@ export default function AdminLayout() {
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
                       style={({ isActive }) => {
-                        const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin');
+                        const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin') || currentPath === sub.path;
                         return {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '0.45rem 0.75rem',
+                          padding: '0.5rem 0.75rem',
                           borderRadius: '0.375rem',
-                          fontSize: '0.85rem',
+                          fontSize: '0.875rem',
                           fontWeight: active ? 700 : 500,
                           textDecoration: 'none',
                           transition: '0.15s',
@@ -913,8 +913,23 @@ export default function AdminLayout() {
                         };
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              (currentPath === sub.path || (sub.path === '/admin/demo' && currentPath === '/admin'))
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              (currentPath === sub.path || (sub.path === '/admin/demo' && currentPath === '/admin'))
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span>{sub.label}</span>
                       </div>
                       {sub.badge && (
@@ -956,7 +971,7 @@ export default function AdminLayout() {
               </div>
 
               {pammExpanded && (
-                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
                     { label: 'Total PAMM Clients', path: '/admin/total-pamm-clients' },
                     { label: 'Total PAMM Active Accounts', path: '/admin/pamm-active-accounts' },
@@ -987,9 +1002,9 @@ export default function AdminLayout() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '0.45rem 0.75rem',
+                          padding: '0.5rem 0.75rem',
                           borderRadius: '0.375rem',
-                          fontSize: '0.85rem',
+                          fontSize: '0.875rem',
                           fontWeight: active ? 700 : 500,
                           textDecoration: 'none',
                           transition: '0.15s',
@@ -998,8 +1013,39 @@ export default function AdminLayout() {
                         };
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
+                              (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
+                              (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
+                              (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
+                              (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
+                              (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
+                              (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
+                              (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
+                              (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
+                              (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
+                              (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
+                              (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
+                              (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
+                              (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
+                              (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span>{sub.label}</span>
                       </div>
                     </NavLink>
@@ -1036,7 +1082,7 @@ export default function AdminLayout() {
               </div>
 
               {copyExpanded && (
-                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
                     { label: 'Copy Trading Accounts', path: '/admin/copy-trading-accounts' },
                     { label: 'Pending Master Accounts', path: '/admin/pending-accounts' },
@@ -1053,15 +1099,16 @@ export default function AdminLayout() {
                       style={({ isActive }) => {
                         const active =
                           isActive ||
+                          currentPath === sub.path ||
                           (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
                           (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '0.45rem 0.75rem',
+                          padding: '0.5rem 0.75rem',
                           borderRadius: '0.375rem',
-                          fontSize: '0.85rem',
+                          fontSize: '0.875rem',
                           fontWeight: active ? 700 : 500,
                           textDecoration: 'none',
                           transition: '0.15s',
@@ -1070,8 +1117,27 @@ export default function AdminLayout() {
                         };
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
+                              (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
+                              (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span>{sub.label}</span>
                       </div>
                     </NavLink>
@@ -1141,7 +1207,15 @@ export default function AdminLayout() {
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
                       style={({ isActive }) => {
-                        const active = isActive || currentPath === sub.path;
+                        const active =
+                          isActive ||
+                          currentPath === sub.path ||
+                          (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
+                          (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
+                          (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
+                          (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
+                          (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
+                          (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history');
                         return {
                           display: 'flex',
                           alignItems: 'center',
@@ -1163,8 +1237,26 @@ export default function AdminLayout() {
                             width: '7px',
                             height: '7px',
                             borderRadius: '9999px',
-                            backgroundColor: currentPath === sub.path ? '#ffffff' : 'transparent',
-                            border: currentPath === sub.path ? '1.5px solid #ffffff' : '1.5px solid rgb(100, 116, 139)',
+                            backgroundColor:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
+                              (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
+                              (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
+                              (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
+                              (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
+                              (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
+                              (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
+                              (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
+                              (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
+                              (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
+                              (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
                           }}
                         />
@@ -1219,7 +1311,7 @@ export default function AdminLayout() {
               </div>
 
               {supportExpanded && (
-                <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
                     { label: 'Manage Ticket', path: '/admin/manage-priority' },
                     { label: 'Open Tickets', path: '/admin/support/open' },
@@ -1249,9 +1341,9 @@ export default function AdminLayout() {
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
-                          padding: '0.45rem 0.75rem',
+                          padding: '0.5rem 0.75rem',
                           borderRadius: '0.375rem',
-                          fontSize: '0.85rem',
+                          fontSize: '0.875rem',
                           fontWeight: active ? 700 : 500,
                           textDecoration: 'none',
                           transition: '0.15s',
@@ -1260,8 +1352,49 @@ export default function AdminLayout() {
                         };
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/manage-priority' &&
+                                (currentPath === '/admin/manage-priority' ||
+                                  currentPath === '/admin/manage-ticket' ||
+                                  currentPath === '/admin/support-priority' ||
+                                  currentPath === '/admin/support/priority')) ||
+                              (sub.path === '/admin/support/open' &&
+                                (currentPath === '/admin/support/open' ||
+                                  currentPath === '/admin/support-open' ||
+                                  currentPath === '/admin/open')) ||
+                              (sub.path === '/admin/support/closed' &&
+                                (currentPath === '/admin/support/closed' ||
+                                  currentPath === '/admin/support-closed' ||
+                                  currentPath === '/admin/closed')))
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              (currentPath === sub.path ||
+                              (sub.path === '/admin/manage-priority' &&
+                                (currentPath === '/admin/manage-priority' ||
+                                  currentPath === '/admin/manage-ticket' ||
+                                  currentPath === '/admin/support-priority' ||
+                                  currentPath === '/admin/support/priority')) ||
+                              (sub.path === '/admin/support/open' &&
+                                (currentPath === '/admin/support/open' ||
+                                  currentPath === '/admin/support-open' ||
+                                  currentPath === '/admin/open')) ||
+                              (sub.path === '/admin/support/closed' &&
+                                (currentPath === '/admin/support/closed' ||
+                                  currentPath === '/admin/support-closed' ||
+                                  currentPath === '/admin/closed')))
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
                         <span>{sub.label}</span>
                       </div>
                     </NavLink>
