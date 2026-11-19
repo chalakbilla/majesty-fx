@@ -1531,21 +1531,22 @@ export default function AdminLayout() {
                   {[
                     { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
                     { label: 'Account Types', path: '/admin/account-type' },
-                  ].map((sub) => (
-                    <NavLink
-                      key={sub.path}
-                      to={sub.path}
-                      onClick={() => setMobileMenuOpen(false)}
-                      style={({ isActive }) => {
-                        const active =
-                          isActive ||
-                          currentPath === sub.path ||
-                          (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
-                          (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                          (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                          (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'));
-                        return {
+                    { label: 'IB & Rebate Rules', path: '/admin/ib-commissions-settings' },
+                  ].map((sub) => {
+                    const active =
+                      currentPath === sub.path ||
+                      (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
+                      (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                      (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                      (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                      (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
+                      (sub.path === '/admin/ib-commissions-settings' && (currentPath === '/admin/settings/ib-rebate-rules' || currentPath === '/admin/ib-rebate-rules'));
+                    return (
+                      <NavLink
+                        key={sub.label}
+                        to={sub.path}
+                        onClick={() => setMobileMenuOpen(false)}
+                        style={{
                           display: 'flex',
                           alignItems: 'center',
                           justifyContent: 'space-between',
@@ -1557,40 +1558,24 @@ export default function AdminLayout() {
                           transition: '0.15s',
                           backgroundColor: active ? 'var(--desk)' : 'transparent',
                           color: active ? '#ffffff' : 'rgb(51, 65, 85)',
-                        };
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                        <div
-                          style={{
-                            width: '7px',
-                            height: '7px',
-                            borderRadius: '9999px',
-                            backgroundColor:
-                              currentPath === sub.path ||
-                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                              (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
-                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'))
-                                ? '#ffffff'
-                                : 'transparent',
-                            border:
-                              currentPath === sub.path ||
-                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                              (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
-                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'))
-                                ? '1.5px solid #ffffff'
-                                : '1.5px solid rgb(100, 116, 139)',
-                            flexShrink: 0,
-                          }}
-                        />
-                        <span>{sub.label}</span>
-                      </div>
-                    </NavLink>
-                  ))}
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                          <div
+                            style={{
+                              width: '7px',
+                              height: '7px',
+                              borderRadius: '9999px',
+                              backgroundColor: active ? '#ffffff' : 'transparent',
+                              border: active ? '1.5px solid #ffffff' : '1.5px solid rgb(100, 116, 139)',
+                              flexShrink: 0,
+                            }}
+                          />
+                          <span>{sub.label}</span>
+                        </div>
+                      </NavLink>
+                    );
+                  })}
                 </div>
               )}
             </div>
