@@ -79,7 +79,11 @@ export default function AdminLayout() {
     location.pathname.startsWith('/admin/account-type') ||
     location.pathname.startsWith('/admin/account-status')
   );
-  const [settingsExpanded, setSettingsExpanded] = useState(false);
+  const [settingsExpanded, setSettingsExpanded] = useState(
+    location.pathname.startsWith('/admin/payment-method') ||
+    location.pathname.startsWith('/admin/payment-gateway') ||
+    location.pathname.startsWith('/admin/settings')
+  );
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [apiDropdownOpen, setApiDropdownOpen] = useState(false);
@@ -1482,6 +1486,90 @@ export default function AdminLayout() {
                               (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
                               (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
                               (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
+                                ? '1.5px solid #ffffff'
+                                : '1.5px solid rgb(100, 116, 139)',
+                            flexShrink: 0,
+                          }}
+                        />
+                        <span>{sub.label}</span>
+                      </div>
+                    </NavLink>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 12. System Settings (Expandable) - matching media_1795098526705_779b4e10.zip */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+              <div
+                onClick={() => setSettingsExpanded((v) => !v)}
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.65rem 0.85rem',
+                  borderRadius: '0.5rem',
+                  cursor: 'pointer',
+                  transition: '0.2s',
+                  backgroundColor: 'transparent',
+                  color: 'rgb(31, 41, 55)',
+                  fontWeight: 600,
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                  <Settings style={{ width: '1.35rem', height: '1.35rem', color: 'rgb(55, 65, 81)', flexShrink: 0 }} />
+                  <span style={{ fontSize: '0.9375rem', fontWeight: 600 }}>System Settings</span>
+                </div>
+                <ChevronRight
+                  className={`w-4 h-4 text-slate-600 transition-transform ${settingsExpanded ? 'rotate-90' : ''}`}
+                />
+              </div>
+
+              {settingsExpanded && (
+                <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
+                  {[
+                    { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
+                  ].map((sub) => (
+                    <NavLink
+                      key={sub.path}
+                      to={sub.path}
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={({ isActive }) => {
+                        const active =
+                          isActive ||
+                          currentPath === sub.path ||
+                          (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
+                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods');
+                        return {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '0.5rem 0.75rem',
+                          borderRadius: '0.375rem',
+                          fontSize: '0.875rem',
+                          fontWeight: active ? 700 : 500,
+                          textDecoration: 'none',
+                          transition: '0.15s',
+                          backgroundColor: active ? 'var(--desk)' : 'transparent',
+                          color: active ? '#ffffff' : 'rgb(51, 65, 85)',
+                        };
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                        <div
+                          style={{
+                            width: '7px',
+                            height: '7px',
+                            borderRadius: '9999px',
+                            backgroundColor:
+                              currentPath === sub.path ||
+                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways')
+                                ? '#ffffff'
+                                : 'transparent',
+                            border:
+                              currentPath === sub.path ||
+                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways')
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,

@@ -62,6 +62,7 @@ import AdminSupportClosed from './pages/admin/AdminSupportClosed.jsx';
 import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
 import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
 import AdminTransactionLedger from './pages/admin/AdminTransactionLedger.jsx';
+import AdminPaymentMethods from './pages/admin/AdminPaymentMethods.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -185,6 +186,10 @@ export default function App() {
           <Route path="/admin/account-type" element={<AdminAccountTypes />} />
           <Route path="/admin/account-status" element={<AdminAccountStatuses />} />
           <Route path="/admin/account-statuses" element={<AdminAccountStatuses />} />
+
+          {/* System Settings Routes */}
+          <Route path="/admin/payment-methods" element={<AdminPaymentMethods />} />
+          <Route path="/admin/payment-gateways" element={<AdminPaymentMethods />} />
 
           {/* Transactions & Money Routes */}
           <Route path="/admin/account-ledger" element={<AdminTransactionLedger />} />
