@@ -62,8 +62,7 @@ import AdminSupportClosed from './pages/admin/AdminSupportClosed.jsx';
 import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
 import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
 import AdminTransactionLedger from './pages/admin/AdminTransactionLedger.jsx';
-import AdminPaymentMethods from './pages/admin/AdminPaymentMethods.jsx';
-import AdminPaymentLedger from './pages/admin/AdminPaymentLedger.jsx';
+import AdminAccountLedger from './pages/admin/AdminAccountLedger.jsx';
 import AdminPaymentMethods from './pages/admin/AdminPaymentMethods.jsx';
 import AdminPaymentLedger from './pages/admin/AdminPaymentLedger.jsx';
 
@@ -209,7 +208,7 @@ export default function App() {
           <Route path="/admin/payment-gateways" element={<AdminPaymentMethods />} />
 
           {/* Transactions & Money Routes */}
-          <Route path="/admin/account-ledger" element={<AdminTransactionLedger />} />
+          <Route path="/admin/account-ledger" element={<AdminAccountLedger />} />
           <Route path="/admin/daily-inflow" element={<AdminTransactionLedger />} />
           <Route path="/admin/deposit-history" element={<AdminTransactionLedger />} />
           <Route path="/admin/manual-deposit" element={<AdminTransactionLedger />} />
