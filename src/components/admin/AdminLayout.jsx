@@ -40,8 +40,8 @@ import { LanguageSelector } from '../route/Auth.jsx';
 export default function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [ibExpanded, setIbExpanded] = useState(false);
-  const [pammExpanded, setPammExpanded] = useState(false);
-  const [copyExpanded, setCopyExpanded] = useState(false);
+  const [pammExpanded, setPammExpanded] = useState(location.pathname.startsWith('/admin/pamm'));
+  const [copyExpanded, setCopyExpanded] = useState(location.pathname.startsWith('/admin/copy'));
   const [txExpanded, setTxExpanded] = useState(false);
   const [accountsExpanded, setAccountsExpanded] = useState(false);
   const [settingsExpanded, setSettingsExpanded] = useState(false);
@@ -923,7 +923,7 @@ export default function AdminLayout() {
                 <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                   {[
                     { label: 'Total PAMM Clients', path: '/admin/pamm-clients' },
-                    { label: 'Total PAMM Active Accounts', path: '/admin/pamm-accounts' },
+                    { label: 'Total PAMM Active Accounts', path: '/admin/pamm-active-accounts' },
                     { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
                     { label: 'PAMM Commission Report', path: '/admin/pamm-report' },
                   ].map((sub) => (
@@ -932,7 +932,10 @@ export default function AdminLayout() {
                       to={sub.path}
                       onClick={() => setMobileMenuOpen(false)}
                       style={({ isActive }) => {
-                        const active = isActive || (sub.path === '/admin/demo' && currentPath === '/admin');
+                        const active =
+                          isActive ||
+                          (sub.path === '/admin/demo' && currentPath === '/admin') ||
+                          (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
