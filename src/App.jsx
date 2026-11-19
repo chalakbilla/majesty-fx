@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Outlet, Route, Routes, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom';
 import TickerBar from './components/TickerBar.jsx';
 import Navbar from './components/Navbar.jsx';
 import Hero from './components/Hero.jsx';
@@ -26,6 +26,27 @@ import AccountType from './pages/AccountType.jsx';
 import AssetPage from './pages/AssetPage.jsx';
 import HelpDesk from './pages/HelpDesk.jsx';
 import { assetPages } from './data/assets.jsx';
+
+// Admin imports
+import AdminProtected from './components/admin/AdminProtected.jsx';
+import AdminLayout from './components/admin/AdminLayout.jsx';
+import AdminLogin from './pages/admin/AdminLogin.jsx';
+import AdminDemo from './pages/admin/AdminDemo.jsx';
+import AdminIBDashboard from './pages/admin/AdminIBDashboard.jsx';
+import AdminIBClients from './pages/admin/AdminIBClients.jsx';
+import AdminReferralTree from './pages/admin/AdminReferralTree.jsx';
+import AdminIBCommissionsSettings from './pages/admin/AdminIBCommissionsSettings.jsx';
+import AdminIBCommissionHistory from './pages/admin/AdminIBCommissionHistory.jsx';
+import AdminIBCommissionWithdrawalHistory from './pages/admin/AdminIBCommissionWithdrawalHistory.jsx';
+import AdminRankManagement from './pages/admin/AdminRankManagement.jsx';
+import AdminRebateAccounts from './pages/admin/AdminRebateAccounts.jsx';
+import AdminIBRewards from './pages/admin/AdminIBRewards.jsx';
+import AdminProfessionalEmail from './pages/admin/AdminProfessionalEmail.jsx';
+import AdminClients from './pages/admin/AdminClients.jsx';
+import AdminTradingAccounts from './pages/admin/AdminTradingAccounts.jsx';
+import AdminKYCDocuments from './pages/admin/AdminKYCDocuments.jsx';
+import AdminTradeReport from './pages/admin/AdminTradeReport.jsx';
+import AdminPAMMReport from './pages/admin/AdminPAMMReport.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -69,6 +90,7 @@ function Home() {
 export default function App() {
   return (
     <Routes>
+      {/* Public Client Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -88,6 +110,35 @@ export default function App() {
         {Object.entries(assetPages).map(([path, cfg]) => (
           <Route key={path} path={`/${path}`} element={<AssetPage {...cfg} />} />
         ))}
+      </Route>
+
+      {/* Admin Public Login Route */}
+      <Route path="/admin/login" element={<AdminLogin />} />
+
+      {/* Admin Protected Routes */}
+      <Route element={<AdminProtected />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin" element={<Navigate to="/admin/demo" replace />} />
+          <Route path="/admin/demo" element={<AdminDemo />} />
+          <Route path="/admin/ib/dashboard" element={<AdminIBDashboard />} />
+          <Route path="/admin/ib-clients" element={<AdminIBClients />} />
+          <Route path="/admin/referral-tree" element={<AdminReferralTree />} />
+          <Route path="/admin/ib-commissions-settings" element={<AdminIBCommissionsSettings />} />
+          <Route path="/admin/ib-commission-history" element={<AdminIBCommissionHistory />} />
+          <Route path="/admin/ib-commission-withdrawal-history" element={<AdminIBCommissionWithdrawalHistory />} />
+          <Route path="/admin/rank-management" element={<AdminRankManagement />} />
+          <Route path="/admin/rebate-accounts" element={<AdminRebateAccounts />} />
+          <Route path="/admin/ib-rewards" element={<AdminIBRewards />} />
+          <Route path="/admin/professional-email" element={<AdminProfessionalEmail />} />
+          <Route path="/admin/clients" element={<AdminClients />} />
+          <Route path="/admin/trading-accounts" element={<AdminTradingAccounts />} />
+          <Route path="/admin/kyc-documents" element={<AdminKYCDocuments />} />
+          <Route path="/admin/trade-report" element={<AdminTradeReport />} />
+          <Route path="/admin/pamm-clients" element={<AdminPAMMReport title="PAMM Clients" />} />
+          <Route path="/admin/pamm-accounts" element={<AdminPAMMReport title="PAMM Active Accounts" />} />
+          <Route path="/admin/pamm-referral-tree" element={<AdminPAMMReport title="PAMM Referral Tree" />} />
+          <Route path="/admin/pamm-report" element={<AdminPAMMReport title="PAMM Commission Report" />} />
+        </Route>
       </Route>
     </Routes>
   );
