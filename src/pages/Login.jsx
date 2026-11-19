@@ -123,12 +123,12 @@ export default function Login() {
                 <label className="text-xs sm:text-sm font-semibold text-[#0f172a]">
                   Password
                 </label>
-                <a
-                  href="#forgot"
+                <Link
+                  to="/forgot-password"
                   className="text-xs sm:text-sm font-bold text-[#ff5a0a] hover:underline"
                 >
                   Forgot Password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />

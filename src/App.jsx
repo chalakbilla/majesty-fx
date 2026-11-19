@@ -16,6 +16,7 @@ import Footer from './components/Footer.jsx';
 import FloatingDock from './components/FloatingDock.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
 import Markets from './pages/Markets.jsx';
 import Trading from './pages/Trading.jsx';
 import Platform from './pages/Platform.jsx';
@@ -70,6 +71,9 @@ export default function App() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/forgot" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ForgotPassword />} />
       <Route element={<Shell />}>
         <Route index element={<Home />} />
       </Route>
