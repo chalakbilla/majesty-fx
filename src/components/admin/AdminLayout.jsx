@@ -1337,14 +1337,18 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               currentPath === sub.path ||
+                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
                               (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses')
+                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
+                              (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               currentPath === sub.path ||
+                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
                               (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses')
+                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
+                              (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
