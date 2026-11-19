@@ -48,7 +48,9 @@ export default function AdminLayout() {
     location.pathname === '/admin/rank-management' ||
     location.pathname === '/admin/rebate-accounts'
   );
-  const [pammExpanded, setPammExpanded] = useState(location.pathname.startsWith('/admin/pamm'));
+  const [pammExpanded, setPammExpanded] = useState(
+    location.pathname.startsWith('/admin/pamm') || location.pathname.startsWith('/admin/total-pamm')
+  );
   const [copyExpanded, setCopyExpanded] = useState(location.pathname.startsWith('/admin/copy'));
   const [txExpanded, setTxExpanded] = useState(false);
   const [accountsExpanded, setAccountsExpanded] = useState(false);
@@ -928,7 +930,7 @@ export default function AdminLayout() {
               {pammExpanded && (
                 <div style={{ paddingLeft: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
                   {[
-                    { label: 'Total PAMM Clients', path: '/admin/pamm-clients' },
+                    { label: 'Total PAMM Clients', path: '/admin/total-pamm-clients' },
                     { label: 'Total PAMM Active Accounts', path: '/admin/pamm-active-accounts' },
                     { label: 'PAMM Referral Tree', path: '/admin/pamm-referral-tree' },
                     { label: 'PAMM Commission Report', path: '/admin/pamm-report' },
@@ -941,6 +943,7 @@ export default function AdminLayout() {
                         const active =
                           isActive ||
                           (sub.path === '/admin/demo' && currentPath === '/admin') ||
+                          (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
                           (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts'));
                         return {
                           display: 'flex',

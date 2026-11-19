@@ -48,6 +48,7 @@ import AdminKYCDocuments from './pages/admin/AdminKYCDocuments.jsx';
 import AdminTradeReport from './pages/admin/AdminTradeReport.jsx';
 import AdminPAMMReport from './pages/admin/AdminPAMMReport.jsx';
 import AdminPAMMActiveAccounts from './pages/admin/AdminPAMMActiveAccounts.jsx';
+import AdminTotalPAMMClients from './pages/admin/AdminTotalPAMMClients.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 
 function Shell({ className = '' }) {
@@ -139,7 +140,8 @@ export default function App() {
           <Route path="/admin/trade-report" element={<AdminTradeReport />} />
           <Route path="/admin/copy-trading-accounts" element={<AdminCopyTradingAccounts />} />
           <Route path="/admin/copy-trading" element={<AdminCopyTradingAccounts />} />
-          <Route path="/admin/pamm-clients" element={<AdminPAMMReport title="PAMM Clients" />} />
+          <Route path="/admin/total-pamm-clients" element={<AdminTotalPAMMClients />} />
+          <Route path="/admin/pamm-clients" element={<AdminTotalPAMMClients />} />
           <Route path="/admin/pamm-active-accounts" element={<AdminPAMMActiveAccounts />} />
           <Route path="/admin/pamm-accounts" element={<AdminPAMMActiveAccounts />} />
           <Route path="/admin/pamm-referral-tree" element={<AdminPAMMReport title="PAMM Referral Tree" />} />
