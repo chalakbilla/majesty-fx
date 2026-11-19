@@ -39,7 +39,12 @@ import { LanguageSelector } from '../route/Auth.jsx';
 
 export default function AdminLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [ibExpanded, setIbExpanded] = useState(false);
+  const [ibExpanded, setIbExpanded] = useState(
+    location.pathname.startsWith('/admin/ib') ||
+    location.pathname === '/admin/referral-tree' ||
+    location.pathname === '/admin/rank-management' ||
+    location.pathname === '/admin/rebate-accounts'
+  );
   const [pammExpanded, setPammExpanded] = useState(location.pathname.startsWith('/admin/pamm'));
   const [copyExpanded, setCopyExpanded] = useState(location.pathname.startsWith('/admin/copy'));
   const [txExpanded, setTxExpanded] = useState(false);
