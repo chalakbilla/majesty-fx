@@ -1,224 +1,734 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback, useEffect } from 'react';
 import {
+  AlertCircle,
   Award,
+  CheckCircle2,
   Download,
   Gift,
   Layers,
   Plus,
   RefreshCw,
+  Save,
   Search,
   Settings,
+  Trash2,
+  X,
 } from 'lucide-react';
 
+const REWARDS_STORAGE_KEY = 'majesty_admin_ib_rewards';
+const TIERS_STORAGE_KEY = 'majesty_admin_ib_reward_tiers';
+
+const defaultTiers = [
+  { tier: 1, lotsRequired: 50, rewardAmount: 25, active: true },
+  { tier: 2, lotsRequired: 150, rewardAmount: 60, active: true },
+  { tier: 3, lotsRequired: 400, rewardAmount: 120, active: true },
+  { tier: 4, lotsRequired: 800, rewardAmount: 250, active: true },
+  { tier: 5, lotsRequired: 1500, rewardAmount: 400, active: true },
+  { tier: 6, lotsRequired: 3000, rewardAmount: 650, active: true },
+  { tier: 7, lotsRequired: 5000, rewardAmount: 1500, active: true },
+  { tier: 8, lotsRequired: 7500, rewardAmount: 2000, active: true },
+  { tier: 9, lotsRequired: 10000, rewardAmount: 3000, active: true },
+  { tier: 10, lotsRequired: 13000, rewardAmount: 3500, active: true },
+  { tier: 11, lotsRequired: 17000, rewardAmount: 5000, active: true },
+  { tier: 12, lotsRequired: 20000, rewardAmount: 7500, active: true },
+];
+
+const initialRewardRecords = [
+  {
+    id: 1,
+    rawId: 'rw-101',
+    userEmail: 'alex.wright@demo.example.com',
+    partnerName: 'Alexander Wright',
+    tradeId: 'TRD-998241',
+    lotsDone: '52.40',
+    numericLots: 52.4,
+    rewardAmount: '$25.00',
+    numericAmount: 25,
+    createdAt: 'Nov 18, 2026, 16:30',
+  },
+  {
+    id: 2,
+    rawId: 'rw-102',
+    userEmail: 'marcus.chen@demo.example.com',
+    partnerName: 'Marcus Chen',
+    tradeId: 'TRD-884120',
+    lotsDone: '154.20',
+    numericLots: 154.2,
+    rewardAmount: '$60.00',
+    numericAmount: 60,
+    createdAt: 'Nov 17, 2026, 12:15',
+  },
+  {
+    id: 3,
+    rawId: 'rw-103',
+    userEmail: 'sophia.m@majestyfx.partner.com',
+    partnerName: 'Sophia Al-Mansoor',
+    tradeId: 'TRD-771923',
+    lotsDone: '410.80',
+    numericLots: 410.8,
+    rewardAmount: '$120.00',
+    numericAmount: 120,
+    createdAt: 'Nov 15, 2026, 18:40',
+  },
+  {
+    id: 4,
+    rawId: 'rw-104',
+    userEmail: 'marcus.chen@demo.example.com',
+    partnerName: 'Marcus Chen',
+    tradeId: 'TRD-665129',
+    lotsDone: '820.00',
+    numericLots: 820,
+    rewardAmount: '$250.00',
+    numericAmount: 250,
+    createdAt: 'Nov 12, 2026, 10:20',
+  },
+];
+
 export default function AdminIBRewards() {
-  const [activeTab, setActiveTab] = useState('ledger');
-  const [records, setRecords] = useState([]);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState('history'); // 'history' | 'settings'
 
-  const handleRefresh = () => {
-    setRefreshing(true);
-    setTimeout(() => {
-      setRefreshing(false);
-    }, 600);
-  };
-
-  const filtered = records.filter((r) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase();
-    return (
-      r.recordId.toLowerCase().includes(q) ||
-      r.userEmail.toLowerCase().includes(q) ||
-      r.tradeId.toLowerCase().includes(q)
-    );
+  const [records, setRecords] = useState(() => {
+    try {
+      const saved = localStorage.getItem(REWARDS_STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return initialRewardRecords;
   });
 
+  const [tiers, setTiers] = useState(() => {
+    try {
+      const saved = localStorage.getItem(TIERS_STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch {}
+    return defaultTiers;
+  });
+
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  // Sync tiers to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(TIERS_STORAGE_KEY, JSON.stringify(tiers));
+    } catch {}
+  }, [tiers]);
+
+  // Sync records to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(REWARDS_STORAGE_KEY, JSON.stringify(records));
+    } catch {}
+  }, [records]);
+
+  // Fetch live rewards data if API is available
+  const loadRewards = useCallback(async () => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    try {
+      let desk = 'all';
+      try {
+        const auth = localStorage.getItem('majesty_admin_auth');
+        if (auth) {
+          const parsed = JSON.parse(auth);
+          if (parsed.desk) desk = parsed.desk;
+        }
+      } catch {}
+
+      const res = await fetch(`/api/ib/rewards?desk=${desk}`, {
+        headers: { 'x-portal-scope': 'admin', 'x-admin-desk': desk },
+      })
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+
+      if (res?.success && Array.isArray(res.rewards) && res.rewards.length > 0) {
+        const mapped = res.rewards.map((item, idx) => {
+          const lots = parseFloat(String(item.lotsDone || 0));
+          const amt = parseFloat(String(item.rewardAmount || 0));
+          return {
+            id: idx + 1,
+            rawId: item.id || `rw-${idx + 1}`,
+            userEmail: item.userEmail || '-',
+            partnerName: item.userName || '',
+            tradeId: item.tradeId || '-',
+            lotsDone: lots.toFixed(2),
+            numericLots: lots,
+            rewardAmount: `$${amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+            numericAmount: amt,
+            createdAt: item.createdAt
+              ? new Date(item.createdAt).toLocaleString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })
+              : '-',
+          };
+        });
+        setRecords(mapped);
+      }
+    } catch (e) {
+      console.warn('Failed to fetch live IB rewards:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Fetch live tier settings if API is available
+  const loadTiers = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const res = await fetch('/api/ib/rewards/settings')
+        .then((r) => (r.ok ? r.json() : null))
+        .catch(() => null);
+
+      if (res?.success && Array.isArray(res.tiers) && res.tiers.length > 0) {
+        setTiers(res.tiers);
+      }
+    } catch (e) {
+      console.warn('Failed to load reward tier settings:', e);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const handleRefresh = () => {
+    if (activeTab === 'history') {
+      loadRewards();
+    } else {
+      loadTiers();
+    }
+  };
+
+  // Save Settings Action
+  const handleSaveSettings = async () => {
+    setIsSaving(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    try {
+      await fetch('/api/ib/rewards/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tiers }),
+      }).catch(() => null);
+
+      try {
+        localStorage.setItem(TIERS_STORAGE_KEY, JSON.stringify(tiers));
+      } catch {}
+
+      setSuccessMessage('Reward program milestone settings saved & published successfully.');
+      setTimeout(() => setSuccessMessage(null), 4000);
+    } catch (err) {
+      setErrorMessage(err.message || 'Error saving reward tiers');
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleTierChange = (index, field, value) => {
+    setTiers((prev) =>
+      prev.map((item, idx) => (idx === index ? { ...item, [field]: value } : item))
+    );
+  };
+
+  const handleAddTier = () => {
+    const nextTierNum = tiers.length + 1;
+    const lastTier = tiers[tiers.length - 1];
+    setTiers([
+      ...tiers,
+      {
+        tier: nextTierNum,
+        lotsRequired: lastTier ? lastTier.lotsRequired + 3000 : 500,
+        rewardAmount: lastTier ? lastTier.rewardAmount + 1000 : 250,
+        active: true,
+      },
+    ]);
+  };
+
+  const handleDeleteTier = (index) => {
+    setTiers((prev) =>
+      prev.filter((_, idx) => idx !== index).map((item, idx) => ({ ...item, tier: idx + 1 }))
+    );
+  };
+
+  // Filtered records
+  const filteredRecords = useMemo(() => {
+    if (!searchQuery.trim()) return records;
+    const q = searchQuery.toLowerCase();
+    return records.filter(
+      (r) =>
+        r.userEmail.toLowerCase().includes(q) ||
+        r.tradeId.toLowerCase().includes(q) ||
+        (r.partnerName && r.partnerName.toLowerCase().includes(q))
+    );
+  }, [records, searchQuery]);
+
+  // Statistics
+  const totalRecords = records.length;
+  const totalLotsDone = useMemo(() => {
+    return records.reduce((sum, r) => sum + (r.numericLots || 0), 0);
+  }, [records]);
+  const totalRewards = useMemo(() => {
+    return records.reduce((sum, r) => sum + (r.numericAmount || 0), 0);
+  }, [records]);
+
+  // Export CSV
+  const handleExportCSV = () => {
+    if (filteredRecords.length === 0) {
+      alert('No rewards records available to export.');
+      return;
+    }
+    const headers = [
+      '#',
+      'Record ID',
+      'User Email',
+      'Partner Name',
+      'Trade ID',
+      'Lots Done',
+      'Reward Amount (USD)',
+      'Created At',
+    ];
+    const rows = filteredRecords.map((r, idx) => [
+      idx + 1,
+      r.rawId,
+      r.userEmail,
+      `"${(r.partnerName || '-').replace(/"/g, '""')}"`,
+      r.tradeId,
+      r.lotsDone,
+      r.rewardAmount,
+      r.createdAt,
+    ]);
+    const csvContent =
+      'data:text/csv;charset=utf-8,' +
+      [headers.join(','), ...rows.map((r) => r.join(','))].join('\r\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `ib_rewards_report_${new Date().toISOString().slice(0, 10)}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
-    <div className="space-y-6 sm:space-y-7 w-full min-w-0">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-            <span className="text-slate-900">IB</span>{' '}
-            <span className="text-orange-600">Rewards</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Configure partner lot reward milestones, bonus rules, and monitor real-time distribution
-          </p>
-        </div>
-        <div className="flex items-center gap-2 flex-wrap">
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-          >
-            <Download className="w-3.5 h-3.5" />
-            <span>Export CSV</span>
-          </button>
-          <button
-            type="button"
-            onClick={handleRefresh}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-2xs transition-colors cursor-pointer"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? 'animate-spin' : ''}`} />
-            <span>Refresh</span>
-          </button>
+    <div className="space-y-6 pb-10">
+      {/* 1. Header Banner */}
+      <div className="relative bg-gradient-to-r from-white via-white to-orange-50/20 rounded-2xl border border-slate-200 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)] overflow-hidden transition-all duration-200">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 bg-orange-100/50 rounded-full blur-3xl -z-10 hidden sm:block"
+        />
+        <div className="flex flex-col gap-3.5 sm:gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
+            <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1 pr-10 sm:pr-0">
+              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
+                <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
+                  <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
+                    IB
+                  </span>{' '}
+                  <span className="inline-block font-black text-orange-600 tracking-tight" style={{ color: 'rgb(234, 88, 12)' }}>
+                    Rewards
+                  </span>
+                </h1>
+                <div className="shrink-0">
+                  <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border border-orange-200 bg-orange-50 text-orange-700 shadow-2xs">
+                    <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                    Milestone Program
+                  </span>
+                </div>
+              </div>
+              <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
+                Configure partner lot reward milestones, bonus rules, and monitor real-time distribution
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                {activeTab === 'history' ? (
+                  <button
+                    type="button"
+                    onClick={handleExportCSV}
+                    disabled={filteredRecords.length === 0}
+                    className="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <Download size={14} className="text-slate-500" />
+                    <span>Export CSV</span>
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={handleSaveSettings}
+                    disabled={isSaving}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white btn-orange rounded-lg transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+                  >
+                    <Save size={14} />
+                    <span>{isSaving ? 'Saving...' : 'Save Tier Settings'}</span>
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={handleRefresh}
+                  disabled={isLoading}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-sm cursor-pointer disabled:opacity-50"
+                  title="Refresh page data"
+                >
+                  <RefreshCw size={13} className={isLoading ? 'animate-spin text-orange-600' : 'text-slate-600'} />
+                  <span className="hidden sm:inline">Refresh</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tabs matching screenshot media_1795073441511_1568b2d0.jpg */}
-      <div className="flex items-center gap-3">
+      {/* 2. Tabs Switcher */}
+      <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
         <button
           type="button"
-          onClick={() => setActiveTab('ledger')}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-            activeTab === 'ledger'
-              ? 'bg-[#ea580c] text-white shadow-xs'
-              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+          onClick={() => setActiveTab('history')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+            activeTab === 'history'
+              ? 'bg-orange-600 text-white shadow-xs'
+              : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Gift className="w-3.5 h-3.5" />
+          <Gift size={14} />
           <span>Reward Payouts Ledger</span>
         </button>
         <button
           type="button"
           onClick={() => setActiveTab('settings')}
-          className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
             activeTab === 'settings'
-              ? 'bg-[#ea580c] text-white shadow-xs'
-              : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+              ? 'bg-orange-600 text-white shadow-xs'
+              : 'text-slate-600 hover:bg-slate-100'
           }`}
         >
-          <Settings className="w-3.5 h-3.5" />
+          <Settings size={14} />
           <span>Reward Program Settings & Tiers</span>
         </button>
       </div>
 
-      {activeTab === 'ledger' ? (
+      {/* Alert Notices */}
+      {successMessage && (
+        <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-3 flex items-center justify-between text-emerald-800 text-xs font-semibold shadow-xs">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 size={16} className="text-emerald-600" />
+            <span>{successMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSuccessMessage(null)}
+            className="text-slate-400 hover:text-slate-600 cursor-pointer"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 flex items-center justify-between text-rose-800 text-xs font-medium shadow-xs">
+          <div className="flex items-center gap-2">
+            <AlertCircle size={16} className="text-rose-600" />
+            <span>{errorMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setErrorMessage(null)}
+            className="text-slate-400 hover:text-slate-600 cursor-pointer"
+          >
+            <X size={14} />
+          </button>
+        </div>
+      )}
+
+      {/* TAB 1: Reward Payouts Ledger */}
+      {activeTab === 'history' && (
         <>
-          {/* 3 Stat Cards matching screenshot media_1795073441511_1568b2d0.jpg */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+          {/* 3 KPI Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-5 w-full">
             {/* Total Records */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0">
-                <Award className="w-5 h-5 text-white" />
+            <div className="admin-kpi-card" title="Total Records">
+              <div
+                className="admin-kpi-icon-squircle text-white"
+                style={{
+                  background: 'linear-gradient(135deg, rgb(167, 139, 250), rgb(124, 58, 237))',
+                  boxShadow: 'rgba(124, 58, 237, 0.22) 0px 3px 8px',
+                }}
+              >
+                <Award size={18} strokeWidth={2} />
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-black text-slate-900 leading-none">0</div>
-                <div className="text-xs font-bold text-slate-700 mt-1">Total Records</div>
-                <div className="text-[11px] text-slate-400">Volume Bonus Entries</div>
+              <div className="admin-kpi-content">
+                <div className="admin-kpi-value" title={String(totalRecords)}>
+                  {totalRecords}
+                </div>
+                <div className="admin-kpi-title">Total Records</div>
+                <div className="admin-kpi-sub">
+                  <span className="truncate">Volume Bonus Entries</span>
+                </div>
               </div>
             </div>
 
             {/* Total Lots Done */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0">
-                <Layers className="w-5 h-5 text-white" />
+            <div className="admin-kpi-card" title="Total Lots Done">
+              <div
+                className="admin-kpi-icon-squircle text-white"
+                style={{
+                  background: 'linear-gradient(135deg, rgb(96, 165, 250), rgb(37, 99, 235))',
+                  boxShadow: 'rgba(37, 99, 235, 0.22) 0px 3px 8px',
+                }}
+              >
+                <Layers size={18} strokeWidth={2} />
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-black text-slate-900 leading-none">0.00</div>
-                <div className="text-xs font-bold text-slate-700 mt-1">Total Lots Done</div>
-                <div className="text-[11px] text-slate-400">Processed Trading Volume</div>
+              <div className="admin-kpi-content">
+                <div className="admin-kpi-value" title={totalLotsDone.toFixed(2)}>
+                  {totalLotsDone.toFixed(2)}
+                </div>
+                <div className="admin-kpi-title">Total Lots Done</div>
+                <div className="admin-kpi-sub">
+                  <span className="truncate">Processed Trading Volume</span>
+                </div>
               </div>
             </div>
 
             {/* Total Rewards */}
-            <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-2xs flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
-                <Gift className="w-5 h-5 text-white" />
+            <div className="admin-kpi-card" title="Total Rewards">
+              <div
+                className="admin-kpi-icon-squircle text-white"
+                style={{
+                  background: 'linear-gradient(135deg, rgb(251, 191, 36), rgb(217, 119, 6))',
+                  boxShadow: 'rgba(217, 119, 6, 0.22) 0px 3px 8px',
+                }}
+              >
+                <Gift size={18} strokeWidth={2} />
               </div>
-              <div>
-                <div className="text-xl sm:text-2xl font-black text-slate-900 leading-none">$0.00</div>
-                <div className="text-xs font-bold text-slate-700 mt-1">Total Rewards</div>
-                <div className="text-[11px] text-slate-400">Disbursed Partner Bonuses</div>
+              <div className="admin-kpi-content">
+                <div
+                  className="admin-kpi-value"
+                  title={totalRewards.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                >
+                  {totalRewards.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                </div>
+                <div className="admin-kpi-title">Total Rewards</div>
+                <div className="admin-kpi-sub">
+                  <span className="truncate">Disbursed Partner Bonuses</span>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Table Container */}
-          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-            <div className="p-4 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="relative flex-1 max-w-md">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by email, partner, or trade ID..."
-                  className="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-lg outline-none"
-                />
-              </div>
-              <div className="text-xs text-slate-500">
-                Showing <strong className="text-slate-800">{filtered.length}</strong> of{' '}
-                <strong className="text-slate-800">{records.length}</strong> bonus records
-              </div>
+          {/* Search Card */}
+          <div className="bg-white rounded-lg border border-slate-200 p-4 shadow-xs flex items-center justify-between flex-wrap gap-3">
+            <div className="relative w-full max-w-sm">
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by email, partner, or trade ID..."
+                className="w-full border border-slate-300 rounded-lg pl-9 pr-3 py-1.5 text-xs outline-none focus:border-orange-500 text-slate-800"
+              />
             </div>
+            <div className="text-xs text-slate-500">
+              Showing <strong>{filteredRecords.length}</strong> of <strong>{records.length}</strong> bonus records
+            </div>
+          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs">
-                <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
-                    <th className="py-3 px-4">#</th>
-                    <th className="py-3 px-4">RECORD ID</th>
-                    <th className="py-3 px-4">USER EMAIL</th>
-                    <th className="py-3 px-4">TRADE ID</th>
-                    <th className="py-3 px-4">LOTS DONE</th>
-                    <th className="py-3 px-4">REWARD AMOUNT</th>
-                    <th className="py-3 px-4">CREATED AT</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 text-slate-700">
-                  {filtered.length === 0 ? (
+          {/* Table Card */}
+          <div className="bg-white rounded-lg border border-slate-200 shadow-xs overflow-hidden">
+            <div className="data-table data-table--plain">
+              <div className="data-table-scroll">
+                <table className="data-table-grid" data-cards="">
+                  <thead>
                     <tr>
-                      <td colSpan={7} className="py-16 text-center text-slate-400 font-medium">
-                        No IB reward records available.
-                      </td>
+                      <th>#</th>
+                      <th>RECORD ID</th>
+                      <th>USER EMAIL</th>
+                      <th>TRADE ID</th>
+                      <th>LOTS DONE</th>
+                      <th>REWARD AMOUNT</th>
+                      <th>CREATED AT</th>
                     </tr>
-                  ) : (
-                    filtered.map((r, i) => (
-                      <tr key={r.id}>
-                        <td className="py-3 px-4">{i + 1}</td>
-                        <td className="py-3 px-4 font-mono font-bold">{r.recordId}</td>
-                        <td className="py-3 px-4 font-mono">{r.userEmail}</td>
-                        <td className="py-3 px-4 font-mono">{r.tradeId}</td>
-                        <td className="py-3 px-4">{r.lotsDone}</td>
-                        <td className="py-3 px-4 font-bold text-emerald-600">{r.rewardAmount}</td>
-                        <td className="py-3 px-4 font-mono text-[11px]">{r.createdAt}</td>
+                  </thead>
+                  <tbody>
+                    {filteredRecords.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="data-table-empty">
+                          <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'rgb(51, 65, 85)', marginBottom: '0.25rem' }}>
+                            No IB reward records available
+                          </div>
+                          <div style={{ fontSize: '0.8rem', color: 'rgb(148, 163, 184)' }}>
+                            There are currently no volume reward payouts matching this search.
+                          </div>
+                        </td>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    ) : (
+                      filteredRecords.map((item, index) => (
+                        <tr
+                          key={item.rawId || item.id}
+                          className={`border-b border-slate-100 hover:bg-slate-50/80 transition-colors ${
+                            index % 2 === 0 ? 'bg-white' : 'bg-slate-50/40'
+                          }`}
+                        >
+                          <td className="py-3 px-3 text-slate-400 font-mono text-[11px]">{index + 1}</td>
+                          <td className="py-3 px-3 font-mono font-semibold text-slate-900">{item.rawId}</td>
+                          <td className="py-3 px-3 text-blue-600 font-medium">
+                            <div>{item.userEmail}</div>
+                            {item.partnerName && (
+                              <div className="text-[11px] text-slate-500 font-normal">{item.partnerName}</div>
+                            )}
+                          </td>
+                          <td className="py-3 px-3 font-mono text-slate-600">{item.tradeId}</td>
+                          <td className="py-3 px-3 font-bold text-emerald-600">{item.lotsDone}</td>
+                          <td className="py-3 px-3 font-bold text-orange-600">{item.rewardAmount}</td>
+                          <td className="py-3 px-3 text-slate-500">{item.createdAt}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </>
-      ) : (
-        /* Settings Tab */
-        <div className="bg-white rounded-2xl border border-slate-200 p-6 space-y-4">
-          <h2 className="font-sora font-extrabold text-base text-slate-900">
-            Milestone Bonus Thresholds
-          </h2>
-          <p className="text-xs text-slate-500">
-            Configure volume milestones that automatically credit bonuses into the IB partner balance.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
-              <div className="font-bold text-xs text-slate-800">Milestone 1: 50 Lots</div>
-              <div className="text-xl font-black text-orange-600">$250 Bonus</div>
-              <p className="text-[11px] text-slate-500">Awarded on completing 50 closed retail lots.</p>
+      )}
+
+      {/* TAB 2: Reward Program Settings & Tiers */}
+      {activeTab === 'settings' && (
+        <div className="bg-white rounded-lg border border-slate-200 shadow-xs p-6 space-y-5">
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 flex-wrap gap-3">
+            <div>
+              <h3 className="text-sm font-bold text-slate-900">Lots Reward Program Milestone Rules</h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Configure the cumulative trading lot thresholds and corresponding USD cash prizes awarded to partners.
+              </p>
             </div>
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
-              <div className="font-bold text-xs text-slate-800">Milestone 2: 150 Lots</div>
-              <div className="text-xl font-black text-orange-600">$1,000 Bonus</div>
-              <p className="text-[11px] text-slate-500">Awarded on completing 150 closed retail lots.</p>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleAddTier}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+              >
+                <Plus size={14} />
+                <span>Add Milestone Tier</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleSaveSettings}
+                disabled={isSaving}
+                className="inline-flex items-center gap-1.5 px-4 py-1.5 btn-orange text-white text-xs font-semibold rounded-lg transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+              >
+                <Save size={14} />
+                <span>{isSaving ? 'Saving...' : 'Save Settings'}</span>
+              </button>
             </div>
-            <div className="p-4 rounded-xl border border-slate-200 bg-slate-50/50 space-y-2">
-              <div className="font-bold text-xs text-slate-800">Milestone 3: 500 Lots</div>
-              <div className="text-xl font-black text-orange-600">$5,000 Bonus</div>
-              <p className="text-[11px] text-slate-500">Executive partner milestone incentive payout.</p>
-            </div>
+          </div>
+
+          <div className="border border-slate-200 rounded-lg overflow-x-auto">
+            <table className="w-full text-left text-xs whitespace-nowrap">
+              <thead>
+                <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold uppercase tracking-wider">
+                  <th className="py-2.5 px-3 w-16">Tier #</th>
+                  <th className="py-2.5 px-3">Milestone Volume (Lots Required)</th>
+                  <th className="py-2.5 px-3">Reward Amount (USD Cash Prize)</th>
+                  <th className="py-2.5 px-3 w-28">Status</th>
+                  <th className="py-2.5 px-3 text-right w-20">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tiers.map((t, idx) => (
+                  <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50/50">
+                    <td className="py-2.5 px-3 font-bold text-slate-900">Tier {t.tier}</td>
+                    <td className="py-2.5 px-3">
+                      <div className="flex items-center gap-1.5 max-w-xs">
+                        <input
+                          type="number"
+                          min={1}
+                          value={t.lotsRequired}
+                          onChange={(e) => handleTierChange(idx, 'lotsRequired', Number(e.target.value))}
+                          className="border border-slate-300 rounded px-2.5 py-1 text-xs outline-none focus:border-orange-500 font-semibold text-slate-800 w-32"
+                        />
+                        <span className="text-slate-400 font-medium">lots</span>
+                      </div>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <div className="flex items-center gap-1.5 max-w-xs">
+                        <span className="text-slate-400 font-bold">$</span>
+                        <input
+                          type="number"
+                          min={0}
+                          value={t.rewardAmount}
+                          onChange={(e) => handleTierChange(idx, 'rewardAmount', Number(e.target.value))}
+                          className="border border-slate-300 rounded px-2.5 py-1 text-xs outline-none focus:border-orange-500 font-bold text-emerald-600 w-32"
+                        />
+                        <span className="text-slate-400 font-medium">USD</span>
+                      </div>
+                    </td>
+                    <td className="py-2.5 px-3">
+                      <label className="inline-flex items-center gap-1.5 cursor-pointer select-none">
+                        <input
+                          type="checkbox"
+                          checked={t.active}
+                          onChange={(e) => handleTierChange(idx, 'active', e.target.checked)}
+                          className="rounded text-orange-600 focus:ring-orange-500"
+                        />
+                        <span className={`text-[11px] font-semibold ${t.active ? 'text-emerald-700' : 'text-slate-400'}`}>
+                          {t.active ? 'Active' : 'Disabled'}
+                        </span>
+                      </label>
+                    </td>
+                    <td className="py-2.5 px-3 text-right">
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteTier(idx)}
+                        className="p-1 rounded text-rose-500 hover:bg-rose-50 hover:text-rose-700 transition-colors cursor-pointer"
+                        title="Delete tier"
+                      >
+                        <Trash2 size={13} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="flex items-center justify-between pt-2 text-xs text-slate-400 flex-wrap gap-3">
+            <span>Partners can track progress toward these tiers directly in their Partner Dashboard &gt; Lots Reward page.</span>
+            <button
+              type="button"
+              onClick={handleSaveSettings}
+              disabled={isSaving}
+              className="inline-flex items-center gap-1.5 px-5 py-2 btn-orange text-white font-semibold rounded-lg transition-colors shadow-xs cursor-pointer disabled:opacity-50"
+            >
+              <Save size={14} />
+              <span>{isSaving ? 'Saving...' : 'Save & Publish Changes'}</span>
+            </button>
           </div>
         </div>
       )}
+
+      {/* Footer */}
+      <footer
+        style={{
+          marginTop: '1.5rem',
+          paddingTop: '1rem',
+          borderTop: '1px solid #e2e8f0',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: '0.8125rem',
+          color: '#64748b',
+          flexWrap: 'wrap',
+          gap: '0.5rem',
+        }}
+      >
+        <span>Majesty IB Portal v2.0 • Rewards & Milestone Distribution Desk</span>
+        <span>Real-time lot volume reconciliation active</span>
+      </footer>
     </div>
   );
 }
