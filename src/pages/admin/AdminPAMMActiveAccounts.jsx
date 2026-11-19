@@ -20,16 +20,12 @@ export default function AdminPAMMActiveAccounts() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
 
-  // New Master Account form state
+  // New Master Account form state matching exact UI in media_1795116980226_68fbbd32.png
   const [newAccount, setNewAccount] = useState({
     accountNo: '',
     strategyPool: '',
-    aum: '',
-    allTimeProfit: '+0.00%',
-    maxDrawdown: '0.00%',
-    fundManager: '',
-    status: 'Active',
-    investors: 0,
+    fundManager: 'Institutional Master',
+    balance: '$10,000',
   });
 
   const handleRefresh = () => {
@@ -39,22 +35,23 @@ export default function AdminPAMMActiveAccounts() {
     }, 400);
   };
 
-  const handleCreateAccount = (e) => {
+  const handleCreateAccount = async (e) => {
     e.preventDefault();
     if (!newAccount.accountNo || !newAccount.strategyPool || !newAccount.fundManager) return;
 
-    const parsedAum = parseFloat(newAccount.aum.replace(/[^0-9.]/g, '')) || 0;
+    const parsedAum = parseFloat(String(newAccount.balance || '').replace(/[^0-9.]/g, '')) || 10000;
     const accountEntry = {
       id: accounts.length + 1,
       accountNo: newAccount.accountNo,
       strategyPool: newAccount.strategyPool,
+      clientName: newAccount.strategyPool,
       aum: parsedAum,
-      allTimeProfit: newAccount.allTimeProfit.startsWith('+') ? newAccount.allTimeProfit : `+${newAccount.allTimeProfit}`,
-      maxDrawdown: newAccount.maxDrawdown,
+      allTimeProfit: '+0.00%',
+      maxDrawdown: '0.00%',
       fundManager: newAccount.fundManager,
-      status: newAccount.status,
+      status: 'Active',
       startDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-      investors: parseInt(newAccount.investors, 10) || 0,
+      investors: 0,
     };
 
     setAccounts([accountEntry, ...accounts]);
@@ -62,12 +59,8 @@ export default function AdminPAMMActiveAccounts() {
     setNewAccount({
       accountNo: '',
       strategyPool: '',
-      aum: '',
-      allTimeProfit: '+0.00%',
-      maxDrawdown: '0.00%',
-      fundManager: '',
-      status: 'Active',
-      investors: 0,
+      fundManager: 'Institutional Master',
+      balance: '$10,000',
     });
   };
 
@@ -410,140 +403,184 @@ export default function AdminPAMMActiveAccounts() {
         </div>
       </div>
 
-      {/* Create Master Account Modal */}
+      {/* Create Master PAMM Pool Modal matching media_1795116980226_68fbbd32.png exactly */}
       {createModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+          style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(15, 23, 42, 0.5)',
+            backdropFilter: 'blur(3px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '1rem',
+          }}
           onClick={() => setCreateModalOpen(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 space-y-4 animate-in zoom-in-95 duration-150"
+            style={{
+              backgroundColor: '#ffffff',
+              borderRadius: '0.75rem',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+              maxWidth: '460px',
+              width: '100%',
+              overflow: 'hidden',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <h3 className="font-extrabold text-base text-slate-900">
-                Create Master PAMM Account
+            <div
+              style={{
+                padding: '1rem 1.25rem',
+                borderBottom: '1px solid #e2e8f0',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#0f172a' }}>
+                Create Master PAMM Pool
               </h3>
               <button
                 type="button"
                 onClick={() => setCreateModalOpen(false)}
-                className="p-1 rounded-lg text-slate-400 hover:text-slate-600 cursor-pointer"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#64748b', padding: '0.25rem' }}
+                aria-label="Close"
               >
-                <X className="w-5 h-5" />
+                <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleCreateAccount} className="space-y-3.5 text-xs">
+            <form onSubmit={handleCreateAccount} style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  MT5 Master Account Number *
+                <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#334155', marginBottom: '0.35rem' }}>
+                  PAMM Pool Identifier / Account No
                 </label>
                 <input
                   type="text"
                   required
+                  placeholder="e.g. PAMM-185"
                   value={newAccount.accountNo}
                   onChange={(e) => setNewAccount({ ...newAccount, accountNo: e.target.value })}
-                  placeholder="e.g. 800108"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 font-mono focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
+                  style={{
+                    width: '100%',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '0.375rem',
+                    padding: '0.55rem 0.75rem',
+                    fontSize: '0.85rem',
+                    color: '#1e293b',
+                    boxSizing: 'border-box',
+                    outline: 'none',
+                  }}
+                  className="focus:border-violet-500"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Strategy Pool Name *
+                <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#334155', marginBottom: '0.35rem' }}>
+                  Strategy / Pool Name
                 </label>
                 <input
                   type="text"
                   required
+                  placeholder="e.g. Quantum Momentum Alpha"
                   value={newAccount.strategyPool}
                   onChange={(e) => setNewAccount({ ...newAccount, strategyPool: e.target.value })}
-                  placeholder="e.g. Alpha FX Master Pool"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
+                  style={{
+                    width: '100%',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '0.375rem',
+                    padding: '0.55rem 0.75rem',
+                    fontSize: '0.85rem',
+                    color: '#1e293b',
+                    boxSizing: 'border-box',
+                    outline: 'none',
+                  }}
+                  className="focus:border-violet-500"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                  Fund Manager Name *
+                <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#334155', marginBottom: '0.35rem' }}>
+                  Fund Manager
                 </label>
                 <input
                   type="text"
                   required
+                  placeholder="Fund manager name"
                   value={newAccount.fundManager}
                   onChange={(e) => setNewAccount({ ...newAccount, fundManager: e.target.value })}
-                  placeholder="e.g. Marcus Chen"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
+                  style={{
+                    width: '100%',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '0.375rem',
+                    padding: '0.55rem 0.75rem',
+                    fontSize: '0.85rem',
+                    color: '#1e293b',
+                    boxSizing: 'border-box',
+                    outline: 'none',
+                  }}
+                  className="focus:border-violet-500"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Initial AUM ($)
-                  </label>
-                  <input
-                    type="number"
-                    value={newAccount.aum}
-                    onChange={(e) => setNewAccount({ ...newAccount, aum: e.target.value })}
-                    placeholder="25000"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 font-mono focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Enrolled Investors
-                  </label>
-                  <input
-                    type="number"
-                    value={newAccount.investors}
-                    onChange={(e) => setNewAccount({ ...newAccount, investors: e.target.value })}
-                    placeholder="5"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 font-mono focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                  />
-                </div>
+              <div>
+                <label style={{ display: 'block', fontSize: '0.8125rem', fontWeight: 600, color: '#334155', marginBottom: '0.35rem' }}>
+                  Initial Master Capital Allocation ($)
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="$10,000"
+                  value={newAccount.balance}
+                  onChange={(e) => setNewAccount({ ...newAccount, balance: e.target.value })}
+                  style={{
+                    width: '100%',
+                    border: '1px solid #cbd5e1',
+                    borderRadius: '0.375rem',
+                    padding: '0.55rem 0.75rem',
+                    fontSize: '0.85rem',
+                    color: '#1e293b',
+                    boxSizing: 'border-box',
+                    outline: 'none',
+                  }}
+                  className="focus:border-violet-500"
+                />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    All-Time Profit (%)
-                  </label>
-                  <input
-                    type="text"
-                    value={newAccount.allTimeProfit}
-                    onChange={(e) => setNewAccount({ ...newAccount, allTimeProfit: e.target.value })}
-                    placeholder="+12.5%"
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 mb-1">
-                    Status
-                  </label>
-                  <select
-                    value={newAccount.status}
-                    onChange={(e) => setNewAccount({ ...newAccount, status: e.target.value })}
-                    className="w-full px-3 py-2 rounded-lg border border-slate-200 text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500 cursor-pointer"
-                  >
-                    <option value="Active">Active</option>
-                    <option value="Inactive">Inactive</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-slate-100">
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
                 <button
                   type="button"
                   onClick={() => setCreateModalOpen(false)}
-                  className="px-3.5 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 font-semibold cursor-pointer"
+                  style={{
+                    border: '1px solid #cbd5e1',
+                    background: '#ffffff',
+                    color: '#64748b',
+                    borderRadius: '0.375rem',
+                    padding: '0.5rem 1.25rem',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 rounded-lg bg-orange-600 hover:bg-orange-700 text-white font-bold cursor-pointer"
+                  style={{
+                    backgroundColor: 'rgb(139, 92, 246)',
+                    color: '#ffffff',
+                    borderRadius: '0.375rem',
+                    padding: '0.5rem 1.25rem',
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 1px 2px rgba(139, 92, 246, 0.2)',
+                  }}
                 >
-                  Create Master Pool
+                  Save Master Pool
                 </button>
               </div>
             </form>
