@@ -1530,6 +1530,7 @@ export default function AdminLayout() {
                 <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
                     { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
+                    { label: 'Account Types', path: '/admin/account-type' },
                   ].map((sub) => (
                     <NavLink
                       key={sub.path}
@@ -1540,7 +1541,10 @@ export default function AdminLayout() {
                           isActive ||
                           currentPath === sub.path ||
                           (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods');
+                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                          (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                          (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                          (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'));
                         return {
                           display: 'flex',
                           alignItems: 'center',
@@ -1564,12 +1568,20 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               currentPath === sub.path ||
-                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways')
+                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
+                              (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                              (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'))
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               currentPath === sub.path ||
-                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways')
+                              (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
+                              (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
+                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                              (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types'))
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,

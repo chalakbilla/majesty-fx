@@ -190,6 +190,8 @@ export default function App() {
           {/* System Settings Routes */}
           <Route path="/admin/payment-methods" element={<AdminPaymentMethods />} />
           <Route path="/admin/payment-gateways" element={<AdminPaymentMethods />} />
+          <Route path="/admin/settings/account-type" element={<AdminAccountTypes />} />
+          <Route path="/admin/settings/account-types" element={<AdminAccountTypes />} />
 
           {/* Transactions & Money Routes */}
           <Route path="/admin/account-ledger" element={<AdminTransactionLedger />} />
