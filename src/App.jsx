@@ -81,6 +81,8 @@ import AdminWithdrawHistory from './pages/admin/AdminWithdrawHistory.jsx';
 import AdminInternalTransfers from './pages/admin/AdminInternalTransfers.jsx';
 import AdminProfitCommissionWithdrawalHistory from './pages/admin/AdminProfitCommissionWithdrawalHistory.jsx';
 import AdminCreditInOut from './pages/admin/AdminCreditInOut.jsx';
+import AdminRejectedDeposits from './pages/admin/AdminRejectedDeposits.jsx';
+import AdminRejectedWithdrawals from './pages/admin/AdminRejectedWithdrawals.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -242,8 +244,10 @@ export default function App() {
           <Route path="/admin/profit-commission-withdrawal-history" element={<AdminProfitCommissionWithdrawalHistory />} />
           <Route path="/admin/profit-commission-history" element={<AdminProfitCommissionWithdrawalHistory />} />
           <Route path="/admin/credit-in-out" element={<AdminCreditInOut />} />
-          <Route path="/admin/rejected-deposits" element={<AdminTransactionLedger />} />
-          <Route path="/admin/rejected-withdrawals" element={<AdminTransactionLedger />} />
+          <Route path="/admin/rejected-deposits" element={<AdminRejectedDeposits />} />
+          <Route path="/admin/rejected-deposit" element={<AdminRejectedDeposits />} />
+          <Route path="/admin/rejected-withdrawals" element={<AdminRejectedWithdrawals />} />
+          <Route path="/admin/rejected-withdrawal" element={<AdminRejectedWithdrawals />} />
         </Route>
       </Route>
 
