@@ -53,6 +53,8 @@ import AdminPAMMReferralTree from './pages/admin/AdminPAMMReferralTree.jsx';
 import AdminPAMMCommissionReport from './pages/admin/AdminPAMMCommissionReport.jsx';
 import AdminPAMMCommissionSettings from './pages/admin/AdminPAMMCommissionSettings.jsx';
 import AdminPAMMWithdrawalHistory from './pages/admin/AdminPAMMWithdrawalHistory.jsx';
+import AdminPAMMAcceptWithdrawalHistory from './pages/admin/AdminPAMMAcceptWithdrawalHistory.jsx';
+import AdminPAMMRejectedWithdrawalHistory from './pages/admin/AdminPAMMRejectedWithdrawalHistory.jsx';
 import AdminPendingAccounts from './pages/admin/AdminPendingAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 
@@ -159,6 +161,9 @@ export default function App() {
           <Route path="/admin/pamm-settings" element={<AdminPAMMCommissionSettings />} />
           <Route path="/admin/pamm-withdrawal-history" element={<AdminPAMMWithdrawalHistory />} />
           <Route path="/admin/pamm-withdrawals" element={<AdminPAMMWithdrawalHistory />} />
+          <Route path="/admin/pamm-accept-withdrawal-history" element={<AdminPAMMAcceptWithdrawalHistory />} />
+          <Route path="/admin/pamm-accepted-withdrawal-history" element={<AdminPAMMAcceptWithdrawalHistory />} />
+          <Route path="/admin/pamm-rejected-withdrawal-history" element={<AdminPAMMRejectedWithdrawalHistory />} />
         </Route>
       </Route>
 
