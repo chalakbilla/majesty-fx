@@ -870,6 +870,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setIbExpanded((v) => !v)}
+                className={!ibExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -878,10 +879,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: ibExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: ibExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: ibExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: ibExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: ibExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: ibExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -964,6 +969,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setPammExpanded((v) => !v)}
+                className={!pammExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -972,10 +978,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: pammExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: pammExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: pammExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: pammExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: pammExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: pammExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1075,6 +1085,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setCopyExpanded((v) => !v)}
+                className={!copyExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -1083,10 +1094,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: copyExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: copyExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: copyExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: copyExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: copyExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: copyExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1170,6 +1185,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setTxExpanded((v) => !v)}
+                className={!txExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -1178,10 +1194,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: txExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: txExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: txExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: txExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: txExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: txExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1191,7 +1211,7 @@ export default function AdminLayout() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <span
                     style={{
-                      backgroundColor: 'var(--desk)',
+                      backgroundColor: 'rgb(139, 92, 246)',
                       color: 'rgb(255, 255, 255)',
                       fontSize: '0.675rem',
                       fontWeight: 700,
@@ -1307,6 +1327,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setSupportExpanded((v) => !v)}
+                className={!supportExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -1315,10 +1336,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: supportExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: supportExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: supportExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: supportExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: supportExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: supportExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1430,6 +1455,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setAccountsExpanded((v) => !v)}
+                className={!accountsExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -1438,10 +1464,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: accountsExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: accountsExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: accountsExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: accountsExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: accountsExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: accountsExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -1522,6 +1552,7 @@ export default function AdminLayout() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
               <div
                 onClick={() => setSettingsExpanded((v) => !v)}
+                className={!settingsExpanded ? 'hover:bg-white/40' : ''}
                 style={{
                   width: '100%',
                   display: 'flex',
@@ -1530,10 +1561,14 @@ export default function AdminLayout() {
                   padding: '0.65rem 0.85rem',
                   borderRadius: '0.5rem',
                   cursor: 'pointer',
-                  transition: '0.2s',
-                  backgroundColor: 'transparent',
-                  color: 'rgb(31, 41, 55)',
+                  transition: 'all 0.2s ease',
+                  backgroundColor: settingsExpanded ? 'rgba(255, 255, 255, 0.65)' : 'transparent',
+                  border: settingsExpanded ? '1px solid rgba(255, 255, 255, 0.6)' : '1px solid transparent',
+                  boxShadow: settingsExpanded ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none',
+                  color: settingsExpanded ? 'rgb(15, 23, 42)' : 'rgb(31, 41, 55)',
                   fontWeight: 600,
+                  backdropFilter: settingsExpanded ? 'blur(4px)' : 'none',
+                  WebkitBackdropFilter: settingsExpanded ? 'blur(4px)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
