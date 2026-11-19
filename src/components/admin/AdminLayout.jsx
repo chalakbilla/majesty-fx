@@ -60,6 +60,7 @@ export default function AdminLayout() {
     location.pathname === '/admin/approved-accounts' ||
     location.pathname === '/admin/master-accounts' ||
     location.pathname === '/admin/approved-followers' ||
+    location.pathname === '/admin/rejected-followers' ||
     location.pathname === '/admin/rejected-master-accounts' ||
     location.pathname === '/admin/rejected-accounts'
   );
