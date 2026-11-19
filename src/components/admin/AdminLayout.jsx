@@ -143,11 +143,11 @@ export default function AdminLayout() {
               style={{ height: '34px', width: 'auto', objectFit: 'contain' }}
             />
             <span
-              className="admin-brand-text"
+              className="admin-brand-text font-black"
               style={{
-                fontFamily: 'var(--font-montserrat), sans-serif',
-                fontWeight: 800,
-                fontSize: '1.2rem',
+                fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif",
+                fontWeight: 900,
+                fontSize: '1.25rem',
                 letterSpacing: '-0.02em',
                 color: 'var(--text-heading, #0f172a)',
                 display: 'inline-flex',
@@ -155,8 +155,7 @@ export default function AdminLayout() {
                 lineHeight: 1,
               }}
             >
-              Majesty
-              <span style={{ color: 'rgb(249, 115, 22)' }}>FX</span>
+              Majesty <span style={{ color: 'rgb(249, 115, 22)', fontWeight: 900, marginLeft: '0.2rem' }}>FX</span>
             </span>
           </Link>
 
@@ -560,8 +559,9 @@ export default function AdminLayout() {
               </div>
               <div className="admin-hide-mobile" style={{ fontSize: '0.8125rem', textAlign: 'left' }}>
                 <div
+                  className="font-extrabold"
                   style={{
-                    fontWeight: 600,
+                    fontWeight: 800,
                     color: 'rgb(15, 23, 42)',
                     lineHeight: 1.2,
                     maxWidth: '140px',
@@ -607,7 +607,7 @@ export default function AdminLayout() {
                 }}
               >
                 <div style={{ paddingBottom: '0.75rem', borderBottom: '1px solid #f1f5f9' }}>
-                  <div style={{ fontWeight: 700, fontSize: '0.875rem', color: '#0f172a' }}>demoadmin</div>
+                  <div className="font-extrabold" style={{ fontWeight: 800, fontSize: '0.875rem', color: '#0f172a' }}>demoadmin</div>
                   <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>demo@majestyfx.com</div>
                 </div>
                 <div style={{ paddingTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
@@ -712,7 +712,7 @@ export default function AdminLayout() {
                 <User className="w-4 h-4" />
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'rgb(51, 65, 85)', lineHeight: 1.2 }}>
+                <span className="font-extrabold" style={{ fontSize: '0.875rem', fontWeight: 800, color: 'rgb(15, 23, 42)', lineHeight: 1.2 }}>
                   demoadmin
                 </span>
                 <span style={{ fontSize: '0.7rem', color: 'var(--desk)', fontWeight: 600 }}>
@@ -1026,26 +1026,26 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
-                              (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
-                              (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
-                              (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
-                              (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
-                              (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
-                              (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
-                              (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
+                                (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
+                                (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
+                                (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
+                                (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
+                                (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
+                                (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
+                                (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
+                                (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
-                              (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
-                              (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
-                              (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
-                              (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
-                              (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
-                              (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
-                              (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
+                                (sub.path === '/admin/total-pamm-clients' && (currentPath === '/admin/pamm-clients' || currentPath === '/admin/total-pamm-clients')) ||
+                                (sub.path === '/admin/pamm-active-accounts' && (currentPath === '/admin/pamm-accounts' || currentPath === '/admin/pamm-active-accounts')) ||
+                                (sub.path === '/admin/pamm-referral-tree' && (currentPath === '/admin/pamm-tree' || currentPath === '/admin/pamm-referral-tree')) ||
+                                (sub.path === '/admin/pamm-commission-report' && (currentPath === '/admin/pamm-report' || currentPath === '/admin/pamm-commission-report')) ||
+                                (sub.path === '/admin/pamm-commission-settings' && (currentPath === '/admin/pamm-settings' || currentPath === '/admin/pamm-commission-settings')) ||
+                                (sub.path === '/admin/pamm-withdrawal-history' && (currentPath === '/admin/pamm-withdrawals' || currentPath === '/admin/pamm-withdrawal-history')) ||
+                                (sub.path === '/admin/pamm-accept-withdrawal-history' && (currentPath === '/admin/pamm-accept-withdrawal-history' || currentPath === '/admin/pamm-accepted-withdrawal-history')) ||
+                                (sub.path === '/admin/pamm-rejected-withdrawal-history' && currentPath === '/admin/pamm-rejected-withdrawal-history'))
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
@@ -1130,14 +1130,14 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
-                              (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
+                                (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
+                                (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
-                              (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
+                                (sub.path === '/admin/copy-trading-accounts' && (currentPath === '/admin/copy-trading' || currentPath === '/admin/copy-trading-accounts')) ||
+                                (sub.path === '/admin/pending-accounts' && (currentPath === '/admin/pending-accounts' || currentPath === '/admin/pending-master-accounts')))
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
@@ -1244,22 +1244,22 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
-                              (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
-                              (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
-                              (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
-                              (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
-                              (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
+                                (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
+                                (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
+                                (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
+                                (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
+                                (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
+                                (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
-                              (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
-                              (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
-                              (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
-                              (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
-                              (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
+                                (sub.path === '/admin/rejected-deposits' && currentPath === '/admin/rejected-deposit') ||
+                                (sub.path === '/admin/rejected-deposit' && currentPath === '/admin/rejected-deposits') ||
+                                (sub.path === '/admin/rejected-withdrawals' && currentPath === '/admin/rejected-withdrawal') ||
+                                (sub.path === '/admin/rejected-withdrawal' && currentPath === '/admin/rejected-withdrawals') ||
+                                (sub.path === '/admin/profit-commission-withdrawal-history' && currentPath === '/admin/profit-commission-history') ||
+                                (sub.path === '/admin/profit-commission-history' && currentPath === '/admin/profit-commission-withdrawal-history'))
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
@@ -1365,36 +1365,36 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/manage-priority' &&
-                                (currentPath === '/admin/manage-priority' ||
-                                  currentPath === '/admin/manage-ticket' ||
-                                  currentPath === '/admin/support-priority' ||
-                                  currentPath === '/admin/support/priority')) ||
-                              (sub.path === '/admin/support/open' &&
-                                (currentPath === '/admin/support/open' ||
-                                  currentPath === '/admin/support-open' ||
-                                  currentPath === '/admin/open')) ||
-                              (sub.path === '/admin/support/closed' &&
-                                (currentPath === '/admin/support/closed' ||
-                                  currentPath === '/admin/support-closed' ||
-                                  currentPath === '/admin/closed')))
+                                (sub.path === '/admin/manage-priority' &&
+                                  (currentPath === '/admin/manage-priority' ||
+                                    currentPath === '/admin/manage-ticket' ||
+                                    currentPath === '/admin/support-priority' ||
+                                    currentPath === '/admin/support/priority')) ||
+                                (sub.path === '/admin/support/open' &&
+                                  (currentPath === '/admin/support/open' ||
+                                    currentPath === '/admin/support-open' ||
+                                    currentPath === '/admin/open')) ||
+                                (sub.path === '/admin/support/closed' &&
+                                  (currentPath === '/admin/support/closed' ||
+                                    currentPath === '/admin/support-closed' ||
+                                    currentPath === '/admin/closed')))
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               (currentPath === sub.path ||
-                              (sub.path === '/admin/manage-priority' &&
-                                (currentPath === '/admin/manage-priority' ||
-                                  currentPath === '/admin/manage-ticket' ||
-                                  currentPath === '/admin/support-priority' ||
-                                  currentPath === '/admin/support/priority')) ||
-                              (sub.path === '/admin/support/open' &&
-                                (currentPath === '/admin/support/open' ||
-                                  currentPath === '/admin/support-open' ||
-                                  currentPath === '/admin/open')) ||
-                              (sub.path === '/admin/support/closed' &&
-                                (currentPath === '/admin/support/closed' ||
-                                  currentPath === '/admin/support-closed' ||
-                                  currentPath === '/admin/closed')))
+                                (sub.path === '/admin/manage-priority' &&
+                                  (currentPath === '/admin/manage-priority' ||
+                                    currentPath === '/admin/manage-ticket' ||
+                                    currentPath === '/admin/support-priority' ||
+                                    currentPath === '/admin/support/priority')) ||
+                                (sub.path === '/admin/support/open' &&
+                                  (currentPath === '/admin/support/open' ||
+                                    currentPath === '/admin/support-open' ||
+                                    currentPath === '/admin/open')) ||
+                                (sub.path === '/admin/support/closed' &&
+                                  (currentPath === '/admin/support/closed' ||
+                                    currentPath === '/admin/support-closed' ||
+                                    currentPath === '/admin/closed')))
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
@@ -1475,18 +1475,18 @@ export default function AdminLayout() {
                             borderRadius: '9999px',
                             backgroundColor:
                               currentPath === sub.path ||
-                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
-                              (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
+                                (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                                (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                                (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
+                                (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
                                 ? '#ffffff'
                                 : 'transparent',
                             border:
                               currentPath === sub.path ||
-                              (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                              (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                              (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
-                              (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
+                                (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
+                                (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
+                                (sub.path === '/admin/account-status' && currentPath === '/admin/account-statuses') ||
+                                (sub.path === '/admin/account-statuses' && currentPath === '/admin/account-status')
                                 ? '1.5px solid #ffffff'
                                 : '1.5px solid rgb(100, 116, 139)',
                             flexShrink: 0,
