@@ -59,6 +59,7 @@ import AdminPendingAccounts from './pages/admin/AdminPendingAccounts.jsx';
 import AdminApprovedAccounts from './pages/admin/AdminApprovedAccounts.jsx';
 import AdminApprovedFollowers from './pages/admin/AdminApprovedFollowers.jsx';
 import AdminRejectedFollowers from './pages/admin/AdminRejectedFollowers.jsx';
+import AdminProfitSharingData from './pages/admin/AdminProfitSharingData.jsx';
 import AdminRejectedMasterAccounts from './pages/admin/AdminRejectedMasterAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 import AdminManagePriority from './pages/admin/AdminManagePriority.jsx';
@@ -169,6 +170,8 @@ export default function App() {
           <Route path="/admin/master-accounts" element={<AdminApprovedAccounts />} />
           <Route path="/admin/approved-followers" element={<AdminApprovedFollowers />} />
           <Route path="/admin/rejected-followers" element={<AdminRejectedFollowers />} />
+          <Route path="/admin/profit-sharing-data" element={<AdminProfitSharingData />} />
+          <Route path="/admin/profit-sharing" element={<AdminProfitSharingData />} />
           <Route path="/admin/rejected-master-accounts" element={<AdminRejectedMasterAccounts />} />
           <Route path="/admin/rejected-accounts" element={<AdminRejectedMasterAccounts />} />
           <Route path="/admin/total-pamm-clients" element={<AdminTotalPAMMClients />} />

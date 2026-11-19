@@ -61,6 +61,8 @@ export default function AdminLayout() {
     location.pathname === '/admin/master-accounts' ||
     location.pathname === '/admin/approved-followers' ||
     location.pathname === '/admin/rejected-followers' ||
+    location.pathname === '/admin/profit-sharing-data' ||
+    location.pathname === '/admin/profit-sharing' ||
     location.pathname === '/admin/rejected-master-accounts' ||
     location.pathname === '/admin/rejected-accounts'
   );
