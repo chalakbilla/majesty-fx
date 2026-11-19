@@ -5,63 +5,41 @@ import {
   Download,
   RefreshCw,
   Search,
-  CheckCircle2,
-  AlertCircle,
   X,
-  CreditCard,
-  User,
-  Mail,
-  Clock,
-  ArrowRight,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'majesty_admin_withdraw_history';
+const STORAGE_KEY = 'majesty_admin_withdraw_history_v2';
 
 const DEFAULT_WITHDRAWALS = [
   {
-    id: '1',
+    id: 'TX-90123',
     txId: 'TX-90123',
     account: '800101',
     clientName: 'Marcus Chen',
     clientEmail: 'marcus.chen@demo.example.com',
     method: 'Bank Wire Transfer',
     amount: '$1,200.00',
-    amountValue: 1200.0,
+    amountNum: 1200.0,
     fee: '$15.00',
     status: 'Pending',
     date: '11/18/2026, 02:45 PM',
     destination: 'Chase Bank NA •••• 4819 (SWIFT: CHASUS33)',
-    notes: 'Client request via Web Trader',
+    notes: 'Client withdrawal request submitted via Web Trader client portal.',
   },
   {
-    id: '2',
+    id: 'TX-90119',
     txId: 'TX-90119',
     account: '800103',
     clientName: 'David Miller',
     clientEmail: 'david.m@demo.example.com',
     method: 'Crypto BTC',
     amount: '$800.00',
-    amountValue: 800.0,
+    amountNum: 800.0,
     fee: '$8.00',
     status: 'Rejected',
     date: '11/16/2026, 05:22 PM',
-    destination: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq',
-    notes: 'Address mismatch with verified profile wallet',
-  },
-  {
-    id: '3',
-    txId: 'TX-90115',
-    account: '800106',
-    clientName: 'Demo Trader',
-    clientEmail: 'democlient@majestyfx.com',
-    method: 'USDT TRC20',
-    amount: '$2,500.00',
-    amountValue: 2500.0,
-    fee: '$5.00',
-    status: 'Approved',
-    date: '11/15/2026, 11:30 AM',
-    destination: 'TRX7xK9921bF43aD90cE124567890abcdef12345678',
-    notes: 'Settled via automated gateway batch #4910',
+    destination: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
+    notes: 'Unmet trading turnover requirement on credit bonus or verification flag.',
   },
 ];
 
@@ -79,7 +57,7 @@ function exportToCSV(filename, headers, rows) {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.setAttribute('href', url);
-  a.setAttribute('download', `${filename}_${new Date().toISOString().slice(0, 10)}.csv`);
+  a.setAttribute('download', `${filename}.csv`);
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
@@ -88,24 +66,27 @@ function exportToCSV(filename, headers, rows) {
 
 export default function AdminWithdrawHistory() {
   const [withdrawals, setWithdrawals] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-  // Load from local storage or defaults
+  // Initialize from LocalStorage or exact reference defaults
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        setWithdrawals(JSON.parse(saved));
-      } else {
-        setWithdrawals(DEFAULT_WITHDRAWALS);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_WITHDRAWALS));
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setWithdrawals(parsed);
+          return;
+        }
       }
-    } catch {
-      setWithdrawals(DEFAULT_WITHDRAWALS);
-    }
+    } catch {}
+    setWithdrawals(DEFAULT_WITHDRAWALS);
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_WITHDRAWALS));
+    } catch {}
   }, []);
 
   const handleRefresh = () => {
@@ -114,47 +95,49 @@ export default function AdminWithdrawHistory() {
       try {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
-          setWithdrawals(JSON.parse(saved));
-        } else {
-          setWithdrawals(DEFAULT_WITHDRAWALS);
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setWithdrawals(parsed);
+            setIsRefreshing(false);
+            return;
+          }
         }
-      } catch {
-        setWithdrawals(DEFAULT_WITHDRAWALS);
-      }
+      } catch {}
+      setWithdrawals(DEFAULT_WITHDRAWALS);
       setIsRefreshing(false);
     }, 400);
   };
 
-  const handleUpdateStatus = (id, newStatus) => {
-    const updated = withdrawals.map((w) =>
-      w.id === id ? { ...w, status: newStatus } : w
+  const handleUpdateStatus = (txId, newStatus) => {
+    const updated = withdrawals.map((item) =>
+      item.txId === txId ? { ...item, status: newStatus } : item
     );
     setWithdrawals(updated);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch {}
-    if (selectedRecord && selectedRecord.id === id) {
+    if (selectedRecord && selectedRecord.txId === txId) {
       setSelectedRecord({ ...selectedRecord, status: newStatus });
     }
   };
 
   const filteredRecords = useMemo(() => {
     return withdrawals.filter((item) => {
-      const query = searchTerm.toLowerCase().trim();
+      const q = search.toLowerCase().trim();
       const matchesSearch =
-        !query ||
-        item.txId.toLowerCase().includes(query) ||
-        item.account.toLowerCase().includes(query) ||
-        item.clientName.toLowerCase().includes(query) ||
-        item.clientEmail.toLowerCase().includes(query) ||
-        item.method.toLowerCase().includes(query);
+        !q ||
+        item.txId.toLowerCase().includes(q) ||
+        item.account.toLowerCase().includes(q) ||
+        item.clientName.toLowerCase().includes(q) ||
+        item.clientEmail.toLowerCase().includes(q) ||
+        item.method.toLowerCase().includes(q);
 
       const matchesStatus =
         statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
 
       return matchesSearch && matchesStatus;
     });
-  }, [withdrawals, searchTerm, statusFilter]);
+  }, [withdrawals, search, statusFilter]);
 
   const handleExportCSV = () => {
     const rows = filteredRecords.map((item) => [
@@ -171,8 +154,8 @@ export default function AdminWithdrawHistory() {
     exportToCSV(`Withdrawals_${new Date().toISOString().slice(0, 10)}`, [
       'TX ID',
       'Account',
-      'Client Name',
-      'Client Email',
+      'Client',
+      'Email',
       'Method',
       'Amount',
       'Fee',
@@ -238,7 +221,7 @@ export default function AdminWithdrawHistory() {
         </div>
       </div>
 
-      {/* 2. Filter Bar matching reference */}
+      {/* 2. Controls & Search Filter Bar matching reference */}
       <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3 w-full sm:w-auto flex-1">
           <div className="relative flex-1 max-w-md">
@@ -246,9 +229,9 @@ export default function AdminWithdrawHistory() {
             <input
               type="text"
               placeholder="Search by TX ID, Account, Client, Method..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-full pl-9 pr-3 py-2 text-xs sm:text-sm bg-slate-50 border border-slate-200 rounded-lg outline-none focus:border-orange-500 focus:bg-white transition-colors"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
           <select
@@ -267,7 +250,7 @@ export default function AdminWithdrawHistory() {
         </div>
       </div>
 
-      {/* 3. Table matching reference */}
+      {/* 3. Data Table matching reference */}
       <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse text-xs sm:text-sm">
@@ -293,13 +276,18 @@ export default function AdminWithdrawHistory() {
               ) : (
                 filteredRecords.map((item) => (
                   <tr
-                    key={item.id}
-                    onClick={() => setSelectedRecord(item)}
-                    className="hover:bg-slate-50/80 transition-colors cursor-pointer"
-                    title="Click to view details"
+                    key={item.txId}
+                    className="hover:bg-slate-50/80 transition-colors"
                   >
                     <td className="py-3.5 px-4 font-mono font-bold text-blue-600 text-xs">
-                      {item.txId}
+                      <button
+                        type="button"
+                        onClick={() => setSelectedRecord(item)}
+                        className="hover:underline text-blue-600 cursor-pointer text-left font-mono font-bold"
+                        title="Click to view withdrawal details"
+                      >
+                        {item.txId}
+                      </button>
                     </td>
                     <td className="py-3.5 px-4 font-mono font-semibold text-slate-800">
                       {item.account}
@@ -348,149 +336,127 @@ export default function AdminWithdrawHistory() {
         </div>
       </div>
 
-      {/* Detail / Action Modal */}
+      {/* 4. Detail Audit Modal */}
       {selectedRecord && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 9999,
-            backgroundColor: 'rgba(15, 23, 42, 0.7)',
-            backdropFilter: 'blur(4px)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '24px 16px',
-          }}
-        >
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '520px',
-              backgroundColor: '#ffffff',
-              borderRadius: '1rem',
-              boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.35)',
-              border: '1px solid #e2e8f0',
-              overflow: 'hidden',
-            }}
-          >
-            <div
-              style={{
-                backgroundColor: '#0f172a',
-                color: '#ffffff',
-                padding: '1.25rem 1.5rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <div>
-                <h3 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 800 }}>
-                  Withdrawal Details
-                </h3>
-                <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.75rem', color: '#94a3b8' }}>
-                  {selectedRecord.txId} • MT5 #{selectedRecord.account}
-                </p>
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full border border-slate-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 bg-slate-50/50">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-orange-100 text-orange-600 flex items-center justify-center font-bold text-xs">
+                  TX
+                </div>
+                <div>
+                  <h3 className="font-bold text-slate-900 text-sm sm:text-base leading-tight">
+                    Withdrawal Audit Detail
+                  </h3>
+                  <p className="text-xs text-slate-500 font-mono">{selectedRecord.txId}</p>
+                </div>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedRecord(null)}
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                  border: 'none',
-                  borderRadius: '0.5rem',
-                  padding: '0.4rem',
-                  color: '#94a3b8',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+                className="p-1 rounded-lg hover:bg-slate-100 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
               >
                 <X size={18} />
               </button>
             </div>
 
-            <div style={{ padding: '1.5rem' }} className="space-y-4">
-              <div className="grid grid-cols-2 gap-3 text-xs">
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <div className="text-slate-400 font-semibold mb-1">Client</div>
-                  <div className="font-bold text-slate-900">{selectedRecord.clientName}</div>
-                  <div className="text-slate-500 text-[11px] truncate">{selectedRecord.clientEmail}</div>
+            <div className="p-4 sm:p-5 space-y-3.5 text-xs sm:text-sm">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                  <span className="text-[11px] text-slate-400 block font-medium">Client</span>
+                  <span className="font-bold text-slate-800 block mt-0.5">{selectedRecord.clientName}</span>
+                  <span className="text-[11px] text-slate-500 truncate block">{selectedRecord.clientEmail}</span>
                 </div>
-                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-                  <div className="text-slate-400 font-semibold mb-1">Status</div>
-                  <div>
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                  <span className="text-[11px] text-slate-400 block font-medium">Account</span>
+                  <span className="font-mono font-bold text-slate-800 block mt-0.5">#{selectedRecord.account}</span>
+                  <span className="text-[11px] text-slate-500 block">MT5 Live</span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 space-y-2">
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-slate-500">Amount</span>
+                  <span className="font-black text-slate-900 text-base">{selectedRecord.amount}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-slate-500">Processing Fee</span>
+                  <span className="font-mono text-slate-700">{selectedRecord.fee}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-slate-500">Method</span>
+                  <span className="font-medium text-slate-800">{selectedRecord.method}</span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-slate-500">Status</span>
+                  <span>
                     {selectedRecord.status.toLowerCase() === 'pending' && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border bg-amber-50 text-amber-700 border-amber-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                        <span>Pending</span>
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                        Pending
                       </span>
                     )}
                     {selectedRecord.status.toLowerCase() === 'rejected' && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border bg-rose-50 text-rose-700 border-rose-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
-                        <span>Rejected</span>
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-rose-50 text-rose-700 border border-rose-200">
+                        Rejected
                       </span>
                     )}
                     {selectedRecord.status.toLowerCase() === 'approved' && (
-                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border bg-emerald-50 text-emerald-700 border-emerald-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                        <span>Approved</span>
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        Approved
                       </span>
                     )}
-                  </div>
+                  </span>
+                </div>
+                <div className="flex justify-between items-center py-0.5">
+                  <span className="text-slate-500">Timestamp</span>
+                  <span className="text-slate-600 text-xs">{selectedRecord.date}</span>
                 </div>
               </div>
 
-              <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 text-xs space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Requested Amount:</span>
-                  <span className="font-black text-slate-900 text-sm">{selectedRecord.amount}</span>
+              {selectedRecord.destination && (
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                  <span className="text-[11px] text-slate-400 block font-medium mb-1">Destination Address / Wire Info</span>
+                  <span className="font-mono text-[11px] text-slate-800 break-all select-all block bg-white p-2 rounded-lg border border-slate-200">
+                    {selectedRecord.destination}
+                  </span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Processing Fee:</span>
-                  <span className="font-mono text-slate-700">{selectedRecord.fee}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Method:</span>
-                  <span className="font-semibold text-slate-800">{selectedRecord.method}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-500">Date:</span>
-                  <span className="text-slate-600">{selectedRecord.date}</span>
-                </div>
-                {selectedRecord.destination && (
-                  <div className="pt-2 border-t border-slate-200">
-                    <span className="text-slate-500 block mb-1">Destination Address / Bank:</span>
-                    <span className="font-mono text-[11px] text-slate-800 break-all select-all block bg-white p-2 rounded border border-slate-200">
-                      {selectedRecord.destination}
-                    </span>
-                  </div>
-                )}
-                {selectedRecord.notes && (
-                  <div className="pt-1">
-                    <span className="text-slate-500 block mb-0.5">Notes:</span>
-                    <span className="text-[11px] text-slate-600">{selectedRecord.notes}</span>
-                  </div>
-                )}
-              </div>
+              )}
 
-              {selectedRecord.status.toLowerCase() === 'pending' && (
-                <div className="pt-2 flex items-center justify-end gap-2.5">
+              {selectedRecord.notes && (
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80">
+                  <span className="text-[11px] text-slate-400 block font-medium mb-1">Compliance Notes</span>
+                  <span className="text-xs text-slate-600 block">{selectedRecord.notes}</span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between p-4 sm:p-5 border-t border-slate-100 bg-slate-50/50">
+              {selectedRecord.status.toLowerCase() === 'pending' ? (
+                <div className="flex items-center gap-2 w-full justify-between">
                   <button
                     type="button"
-                    onClick={() => handleUpdateStatus(selectedRecord.id, 'Rejected')}
-                    className="px-4 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-colors cursor-pointer"
+                    onClick={() => handleUpdateStatus(selectedRecord.txId, 'Rejected')}
+                    className="px-3.5 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-lg transition-colors cursor-pointer"
                   >
                     Reject Withdrawal
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleUpdateStatus(selectedRecord.id, 'Approved')}
-                    className="px-4 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors cursor-pointer shadow-sm"
+                    onClick={() => handleUpdateStatus(selectedRecord.txId, 'Approved')}
+                    className="px-3.5 py-2 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg transition-colors cursor-pointer shadow-xs"
                   >
                     Approve Withdrawal
+                  </button>
+                </div>
+              ) : (
+                <div className="w-full flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedRecord(null)}
+                    className="px-4 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
+                  >
+                    Close
                   </button>
                 </div>
               )}

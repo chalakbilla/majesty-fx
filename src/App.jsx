@@ -239,6 +239,8 @@ export default function App() {
           <Route path="/admin/deposits" element={<AdminDepositHistory />} />
           <Route path="/admin/manual-deposit" element={<AdminManualDeposit />} />
           <Route path="/admin/withdraw-history" element={<AdminWithdrawHistory />} />
+          <Route path="/admin/withdrawals" element={<AdminWithdrawHistory />} />
+          <Route path="/admin/withdrawal" element={<AdminWithdrawHistory />} />
           <Route path="/admin/internal-transfer" element={<AdminInternalTransfers />} />
           <Route path="/admin/internal-transfers" element={<AdminInternalTransfers />} />
           <Route path="/admin/profit-commission-withdrawal-history" element={<AdminProfitCommissionWithdrawalHistory />} />
