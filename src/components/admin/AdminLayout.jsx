@@ -83,7 +83,8 @@ export default function AdminLayout() {
     location.pathname.startsWith('/admin/payment-method') ||
     location.pathname.startsWith('/admin/payment-gateway') ||
     location.pathname.startsWith('/admin/payment-ledger') ||
-    location.pathname.startsWith('/admin/settings')
+    location.pathname.startsWith('/admin/settings') ||
+    location.pathname.startsWith('/admin/email-notifications')
   );
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -1535,9 +1536,11 @@ export default function AdminLayout() {
                     { label: 'IB & Rebate Rules', path: '/admin/ib-commissions-settings' },
                     { label: 'Payment Ledger', path: '/admin/payment-ledger' },
                     { label: 'Payment Method History', path: '/admin/payment-method-history' },
+                    { label: 'Email & Notifications', path: '/admin/settings' },
                   ].map((sub) => {
                     const active =
                       currentPath === sub.path ||
+                      (sub.path === '/admin/settings' && currentPath === '/admin/email-notifications') ||
                       (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
                       (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
                       (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
