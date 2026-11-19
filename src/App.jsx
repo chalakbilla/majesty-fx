@@ -68,6 +68,7 @@ import AdminPaymentMethods from './pages/admin/AdminPaymentMethods.jsx';
 import AdminPaymentLedger from './pages/admin/AdminPaymentLedger.jsx';
 import AdminPaymentMethodHistory from './pages/admin/AdminPaymentMethodHistory.jsx';
 import AdminSettings from './pages/admin/AdminSettings.jsx';
+import AdminDataExport from './pages/admin/AdminDataExport.jsx';
 
 function Shell({ className = '' }) {
   const { pathname, hash } = useLocation();
@@ -201,6 +202,8 @@ export default function App() {
           <Route path="/admin/settings/payment-method-history" element={<AdminPaymentMethodHistory />} />
           <Route path="/admin/settings" element={<AdminSettings />} />
           <Route path="/admin/email-notifications" element={<AdminSettings />} />
+          <Route path="/admin/clients/export" element={<AdminDataExport />} />
+          <Route path="/admin/data-export" element={<AdminDataExport />} />
           <Route path="/admin/settings/account-type" element={<AdminAccountTypes />} />
           <Route path="/admin/settings/account-types" element={<AdminAccountTypes />} />
           <Route path="/admin/settings/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />

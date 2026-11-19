@@ -84,7 +84,9 @@ export default function AdminLayout() {
     location.pathname.startsWith('/admin/payment-gateway') ||
     location.pathname.startsWith('/admin/payment-ledger') ||
     location.pathname.startsWith('/admin/settings') ||
-    location.pathname.startsWith('/admin/email-notifications')
+    location.pathname.startsWith('/admin/email-notifications') ||
+    location.pathname.startsWith('/admin/clients/export') ||
+    location.pathname.startsWith('/admin/data-export')
   );
 
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
@@ -1537,16 +1539,20 @@ export default function AdminLayout() {
                     { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
                     { label: 'Email & Notifications', path: '/admin/settings' },
                     { label: 'Language Settings', path: '/admin/settings?tab=language' },
+                    { label: 'Data Export', path: '/admin/clients/export' },
                     { label: 'Payment Method History', path: '/admin/payment-method-history' },
                   ].map((sub) => {
                     const isLang = sub.path === '/admin/settings?tab=language';
                     const isEmail = sub.path === '/admin/settings';
+                    const isExport = sub.path === '/admin/clients/export';
                     const hasLangTab = location.pathname === '/admin/settings' && location.search.includes('tab=language');
 
                     const active = isLang
                       ? hasLangTab
                       : isEmail
                       ? (location.pathname === '/admin/settings' && !hasLangTab) || location.pathname === '/admin/email-notifications'
+                      : isExport
+                      ? currentPath === '/admin/clients/export' || currentPath === '/admin/data-export'
                       : currentPath === sub.path ||
                         (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
                         (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
