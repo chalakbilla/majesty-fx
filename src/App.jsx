@@ -63,6 +63,7 @@ import AdminProfitSharingData from './pages/admin/AdminProfitSharingData.jsx';
 import AdminRejectedMasterAccounts from './pages/admin/AdminRejectedMasterAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 import AdminManagePriority from './pages/admin/AdminManagePriority.jsx';
+import AdminOpenTickets from './pages/admin/AdminOpenTickets.jsx';
 import AdminSupportClosed from './pages/admin/AdminSupportClosed.jsx';
 import AdminAccountTypes from './pages/admin/AdminAccountTypes.jsx';
 import AdminAccountStatuses from './pages/admin/AdminAccountStatuses.jsx';
@@ -194,9 +195,10 @@ export default function App() {
           <Route path="/admin/manage-ticket" element={<AdminManagePriority />} />
           <Route path="/admin/support/priority" element={<AdminManagePriority />} />
           <Route path="/admin/support-priority" element={<AdminManagePriority />} />
-          <Route path="/admin/support-open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
-          <Route path="/admin/support/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
-          <Route path="/admin/open" element={<AdminManagePriority defaultStatusFilter="Open" />} />
+          <Route path="/admin/support-open" element={<AdminOpenTickets />} />
+          <Route path="/admin/support/open" element={<AdminOpenTickets />} />
+          <Route path="/admin/open-tickets" element={<AdminOpenTickets />} />
+          <Route path="/admin/open" element={<AdminOpenTickets />} />
           <Route path="/admin/support/closed" element={<AdminSupportClosed />} />
           <Route path="/admin/support-closed" element={<AdminSupportClosed />} />
           <Route path="/admin/closed" element={<AdminSupportClosed />} />

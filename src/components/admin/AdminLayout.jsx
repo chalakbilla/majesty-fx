@@ -1352,6 +1352,7 @@ export default function AdminLayout() {
                           (sub.path === '/admin/support/open' &&
                             (currentPath === '/admin/support/open' ||
                               currentPath === '/admin/support-open' ||
+                              currentPath === '/admin/open-tickets' ||
                               currentPath === '/admin/open')) ||
                           (sub.path === '/admin/support/closed' &&
                             (currentPath === '/admin/support/closed' ||
@@ -1388,6 +1389,7 @@ export default function AdminLayout() {
                                 (sub.path === '/admin/support/open' &&
                                   (currentPath === '/admin/support/open' ||
                                     currentPath === '/admin/support-open' ||
+                                    currentPath === '/admin/open-tickets' ||
                                     currentPath === '/admin/open')) ||
                                 (sub.path === '/admin/support/closed' &&
                                   (currentPath === '/admin/support/closed' ||
@@ -1405,6 +1407,7 @@ export default function AdminLayout() {
                                 (sub.path === '/admin/support/open' &&
                                   (currentPath === '/admin/support/open' ||
                                     currentPath === '/admin/support-open' ||
+                                    currentPath === '/admin/open-tickets' ||
                                     currentPath === '/admin/open')) ||
                                 (sub.path === '/admin/support/closed' &&
                                   (currentPath === '/admin/support/closed' ||
