@@ -416,13 +416,7 @@ export default function AdminClients() {
                   gap: '1.15rem',
                 }}
               >
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-                    gap: '1rem',
-                  }}
-                >
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {/* Full Name */}
                   <div>
                     <label
@@ -697,50 +691,86 @@ export default function AdminClients() {
                 <div
                   style={{
                     display: 'flex',
-                    gap: '1.5rem',
-                    padding: '0.85rem 1rem',
+                    gap: '2rem',
+                    padding: '0.85rem 1.15rem',
                     backgroundColor: '#f8fafc',
                     border: '1px solid #e2e8f0',
                     borderRadius: '10px',
                     flexWrap: 'wrap',
+                    alignItems: 'center',
                   }}
                 >
                   <label
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.5rem',
+                      gap: '0.6rem',
                       cursor: 'pointer',
                       fontSize: '0.825rem',
                       color: '#1e293b',
                       fontWeight: 500,
+                      userSelect: 'none',
                     }}
                   >
                     <input
                       type="checkbox"
                       checked={newClient.markEmailVerified}
                       onChange={(e) => setNewClient({ ...newClient, markEmailVerified: e.target.checked })}
-                      style={{ accentColor: '#16a34a', width: '16px', height: '16px', cursor: 'pointer' }}
+                      className="sr-only"
                     />
+                    <div
+                      style={{
+                        width: '18px',
+                        height: '18px',
+                        borderRadius: '4px',
+                        backgroundColor: newClient.markEmailVerified ? '#16a34a' : '#ffffff',
+                        border: newClient.markEmailVerified ? '1px solid #16a34a' : '1px solid #cbd5e1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {newClient.markEmailVerified && <Check size={13} color="#ffffff" strokeWidth={3} />}
+                    </div>
                     <span>Mark Email as Verified</span>
                   </label>
+
                   <label
                     style={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: '0.5rem',
+                      gap: '0.6rem',
                       cursor: 'pointer',
                       fontSize: '0.825rem',
                       color: '#1e293b',
                       fontWeight: 500,
+                      userSelect: 'none',
                     }}
                   >
                     <input
                       type="checkbox"
                       checked={newClient.markKycVerified}
                       onChange={(e) => setNewClient({ ...newClient, markKycVerified: e.target.checked })}
-                      style={{ accentColor: '#16a34a', width: '16px', height: '16px', cursor: 'pointer' }}
+                      className="sr-only"
                     />
+                    <div
+                      style={{
+                        width: '18px',
+                        height: '18px',
+                        borderRadius: '4px',
+                        backgroundColor: newClient.markKycVerified ? '#16a34a' : '#ffffff',
+                        border: newClient.markKycVerified ? '1px solid #16a34a' : '1px solid #cbd5e1',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {newClient.markKycVerified && <Check size={13} color="#ffffff" strokeWidth={3} />}
+                    </div>
                     <span>Mark KYC as Verified</span>
                   </label>
                 </div>

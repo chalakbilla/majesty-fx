@@ -145,88 +145,58 @@ export default function AdminApprovedAccounts() {
       )}
 
       {/* Top Header Card */}
-      <div className="relative bg-gradient-to-r from-white via-white to-orange-50/20 rounded-2xl border border-slate-200 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.07),0_1px_3px_rgba(15,23,42,0.04)] overflow-hidden transition-all duration-200">
-        <div
-          className="pointer-events-none absolute -top-16 -right-16 w-56 h-56 bg-orange-100/50 rounded-full blur-3xl -z-10 hidden sm:block"
-          aria-hidden="true"
-        />
-        <div className="flex flex-col gap-3.5 sm:gap-4">
-          {/* Breadcrumbs */}
-          <nav
-            aria-label="Breadcrumbs"
-            className="flex items-center gap-1.5 text-xs text-slate-500 font-medium overflow-x-auto pb-0.5 scrollbar-none"
-          >
-            <Link to="/admin/demo" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
-              Admin Console
-            </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
-            <Link to="/admin/copy-trading-accounts" className="hover:text-slate-900 text-slate-500 transition-colors whitespace-nowrap">
-              Copy Trading
-            </Link>
-            <ChevronRight className="w-3 h-3 text-slate-400 shrink-0 mx-0.5" />
-            <span className="whitespace-nowrap text-slate-800 font-semibold">Master Accounts</span>
-          </nav>
-
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5 lg:gap-6">
-            <div className="space-y-1 sm:space-y-1.5 min-w-0 flex-1">
-              <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap">
-                <h1 className="page-title text-[1.375rem] sm:text-2xl md:text-[1.75rem] lg:text-[2rem] font-extrabold tracking-tight leading-tight">
-                  <span className="text-slate-900 font-extrabold" style={{ color: 'rgb(15, 23, 42)' }}>
-                    Master
-                  </span>{' '}
-                  <span
-                    className="inline-block font-black text-orange-600 tracking-tight"
-                    style={{ color: 'rgb(234, 88, 12)' }}
-                  >
-                    Accounts
-                  </span>
-                </h1>
-                <span className="text-xs sm:text-sm font-semibold text-slate-500 ml-1">
-                  Verified Marketplace
+      <div className="relative bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 lg:p-6 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.05)] overflow-hidden transition-all duration-200">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+          <div className="space-y-1 min-w-0 flex-1">
+            <div className="flex items-baseline gap-2 flex-wrap">
+              <h1 className="text-[1.5rem] sm:text-2xl md:text-[1.85rem] font-extrabold tracking-tight leading-tight text-slate-900 m-0">
+                <span>Master</span>{' '}
+                <span className="text-orange-600 font-extrabold" style={{ color: 'rgb(234, 88, 12)' }}>
+                  Accounts
                 </span>
-              </div>
-              <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed max-w-3xl">
-                All verified and active master strategies operating on the copy trading marketplace
-              </div>
+              </h1>
+              <span className="text-xs sm:text-sm font-normal text-slate-500">
+                Verified Marketplace
+              </span>
             </div>
-
-            <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap self-stretch sm:self-auto shrink-0 pt-1 lg:pt-0">
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handleRefresh}
-                  disabled={loading}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
-                >
-                  <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
-                  <span className="hidden sm:inline">Refresh</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleExportCSV}
-                  disabled={filteredMasters.length === 0}
-                  style={{
-                    backgroundColor: filteredMasters.length === 0 ? 'rgba(168, 85, 247, 0.45)' : 'rgb(168, 85, 247)',
-                    color: '#ffffff',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    padding: '0.375rem 0.875rem',
-                    borderRadius: '0.5rem',
-                    fontSize: '0.75rem',
-                    fontWeight: 600,
-                    border: 'none',
-                    cursor: filteredMasters.length === 0 ? 'not-allowed' : 'pointer',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                    transition: 'all 0.15s ease',
-                  }}
-                >
-                  <FileSpreadsheet size={13} />
-                  <span>Export CSV</span>
-                </button>
-              </div>
+            <div className="text-xs sm:text-sm text-slate-500 font-normal leading-relaxed">
+              All verified and active master strategies operating on the copy trading marketplace
             </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 flex-wrap shrink-0">
+            <button
+              type="button"
+              onClick={handleRefresh}
+              disabled={loading}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg border border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
+              <span>Refresh</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={handleExportCSV}
+              style={{
+                backgroundColor: 'rgb(192, 132, 252)',
+                color: '#ffffff',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.4rem 0.95rem',
+                borderRadius: '0.5rem',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                border: 'none',
+                cursor: 'pointer',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <FileSpreadsheet size={13} />
+              <span>Export CSV</span>
+            </button>
           </div>
         </div>
       </div>
@@ -340,9 +310,8 @@ export default function AdminApprovedAccounts() {
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-medium text-slate-500">
-              Showing <strong className="text-slate-800">{filteredMasters.length}</strong> master{' '}
-              {filteredMasters.length === 1 ? 'account' : 'accounts'}
+            <span className="text-xs font-normal text-slate-500">
+              Showing <strong className="text-slate-800 font-bold">{filteredMasters.length}</strong> master accounts
             </span>
           </div>
         </div>
