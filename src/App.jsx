@@ -57,6 +57,7 @@ import AdminPAMMAcceptWithdrawalHistory from './pages/admin/AdminPAMMAcceptWithd
 import AdminPAMMRejectedWithdrawalHistory from './pages/admin/AdminPAMMRejectedWithdrawalHistory.jsx';
 import AdminPendingAccounts from './pages/admin/AdminPendingAccounts.jsx';
 import AdminApprovedAccounts from './pages/admin/AdminApprovedAccounts.jsx';
+import AdminApprovedFollowers from './pages/admin/AdminApprovedFollowers.jsx';
 import AdminRejectedMasterAccounts from './pages/admin/AdminRejectedMasterAccounts.jsx';
 import AdminCopyTradingAccounts from './pages/admin/AdminCopyTradingAccounts.jsx';
 import AdminManagePriority from './pages/admin/AdminManagePriority.jsx';
@@ -165,6 +166,7 @@ export default function App() {
           <Route path="/admin/pending-master-accounts" element={<AdminPendingAccounts />} />
           <Route path="/admin/approved-accounts" element={<AdminApprovedAccounts />} />
           <Route path="/admin/master-accounts" element={<AdminApprovedAccounts />} />
+          <Route path="/admin/approved-followers" element={<AdminApprovedFollowers />} />
           <Route path="/admin/rejected-master-accounts" element={<AdminRejectedMasterAccounts />} />
           <Route path="/admin/rejected-accounts" element={<AdminRejectedMasterAccounts />} />
           <Route path="/admin/total-pamm-clients" element={<AdminTotalPAMMClients />} />
