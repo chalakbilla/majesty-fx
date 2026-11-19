@@ -1545,14 +1545,14 @@ export default function AdminLayout() {
               {settingsExpanded && (
                 <div style={{ paddingLeft: '1rem', paddingRight: '0px', display: 'flex', flexDirection: 'column', gap: '0.2rem', marginTop: '0.15rem' }}>
                   {[
+                    { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
                     { label: 'Account Types', path: '/admin/account-type' },
                     { label: 'IB & Rebate Rules', path: '/admin/ib-commissions-settings' },
                     { label: 'Payment Ledger', path: '/admin/payment-ledger' },
-                    { label: 'Payment & Bank Gateways', path: '/admin/payment-methods' },
+                    { label: 'Payment & Bank Gateways', path: '/admin/payment-method-history' },
                     { label: 'Email & Notifications', path: '/admin/settings' },
                     { label: 'Language Settings', path: '/admin/settings?tab=language' },
                     { label: 'Data Export', path: '/admin/clients/export' },
-                    { label: 'Payment Method History', path: '/admin/payment-method-history' },
                   ].map((sub) => {
                     const isLang = sub.path === '/admin/settings?tab=language';
                     const isEmail = sub.path === '/admin/settings';
@@ -1566,17 +1566,14 @@ export default function AdminLayout() {
                         : isExport
                           ? currentPath === '/admin/clients/export' || currentPath === '/admin/data-export'
                           : currentPath === sub.path ||
-                          (sub.path === '/admin/payment-methods' && currentPath === '/admin/payment-gateways') ||
-                          (sub.path === '/admin/payment-gateways' && currentPath === '/admin/payment-methods') ||
-                          (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger')) ||
-                          (sub.path === '/admin/payment-method-history' && (currentPath === '/admin/settings/payment-method-history')) ||
-                          (sub.path === '/admin/account-type' && currentPath === '/admin/account-types') ||
-                          (sub.path === '/admin/account-types' && currentPath === '/admin/account-type') ||
-                          (sub.path === '/admin/account-type' && (currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
-                          (sub.path === '/admin/ib-commissions-settings' && (currentPath === '/admin/settings/ib-rebate-rules' || currentPath === '/admin/ib-rebate-rules'));
+                          (sub.path === '/admin/payment-methods' && (currentPath === '/admin/payment-gateways' || currentPath === '/admin/payment-methods')) ||
+                          (sub.path === '/admin/payment-method-history' && (currentPath === '/admin/settings/payment-method-history' || currentPath === '/admin/payment-method-history')) ||
+                          (sub.path === '/admin/payment-ledger' && (currentPath === '/admin/settings/payment-ledger' || currentPath === '/admin/payment-ledger')) ||
+                          (sub.path === '/admin/account-type' && (currentPath === '/admin/account-types' || currentPath === '/admin/account-type' || currentPath === '/admin/settings/account-type' || currentPath === '/admin/settings/account-types')) ||
+                          (sub.path === '/admin/ib-commissions-settings' && (currentPath === '/admin/settings/ib-rebate-rules' || currentPath === '/admin/ib-rebate-rules' || currentPath === '/admin/ib-commissions-settings'));
                     return (
                       <NavLink
-                        key={sub.label}
+                        key={sub.path}
                         to={sub.path}
                         onClick={() => setMobileMenuOpen(false)}
                         style={{

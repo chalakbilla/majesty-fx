@@ -222,14 +222,6 @@ export default function App() {
           <Route path="/admin/settings/account-types" element={<AdminAccountTypes />} />
           <Route path="/admin/settings/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />
           <Route path="/admin/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />
-          <Route path="/admin/settings/account-type" element={<AdminAccountTypes />} />
-          <Route path="/admin/settings/account-types" element={<AdminAccountTypes />} />
-          <Route path="/admin/settings/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />
-          <Route path="/admin/ib-rebate-rules" element={<AdminIBCommissionsSettings />} />
-
-          {/* System Settings Routes */}
-          <Route path="/admin/payment-methods" element={<AdminPaymentMethods />} />
-          <Route path="/admin/payment-gateways" element={<AdminPaymentMethods />} />
 
           {/* Transactions & Money Routes */}
           <Route path="/admin/account-ledger" element={<AdminAccountLedger />} />
