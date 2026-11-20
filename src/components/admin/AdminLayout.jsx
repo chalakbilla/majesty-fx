@@ -746,6 +746,15 @@ export default function AdminLayout() {
         {mobileMenuOpen && (
           <div
             className="dashboard-sidebar-backdrop lg:hidden"
+            style={{
+              position: 'fixed',
+              top: '70px',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: 'rgba(0, 0, 0, 0.4)',
+              zIndex: 35,
+            }}
             onClick={() => setMobileMenuOpen(false)}
           />
         )}
@@ -764,8 +773,8 @@ export default function AdminLayout() {
             borderLeftWidth: 'medium',
             borderLeftStyle: 'none',
             borderLeftColor: 'currentcolor',
-            boxShadow: 'rgba(0, 0, 0, 0.05) 0px 1px 3px',
-            zIndex: 40,
+            boxShadow: 'rgba(0, 0, 0, 0.15) 4px 0px 24px',
+            zIndex: 45,
             background: 'linear-gradient(rgb(219, 234, 254), rgb(243, 232, 255), rgb(252, 231, 243), rgb(255, 228, 230))',
             display: 'flex',
             flexDirection: 'column',
