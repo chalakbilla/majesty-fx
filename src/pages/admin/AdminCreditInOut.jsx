@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -16,38 +17,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_credit_adjustments';
 
-const DEFAULT_CREDIT_RECORDS = [
-  {
-    id: 'CR-101',
-    accountName: 'Alexander Wright',
-    email: 'alex.wright@demo.example.com',
-    tradeId: '800101',
-    amount: 500.0,
-    type: 'Credit In',
-    comment: 'Welcome promotional margin credit bonus',
-    date: '11/18/2026, 03:30 PM',
-  },
-  {
-    id: 'CR-102',
-    accountName: 'Sofia Al-Mansoor',
-    email: 'sofia.mansoor@demo.example.com',
-    tradeId: '800103',
-    amount: 250.0,
-    type: 'Credit In',
-    comment: 'VIP volume tier loyalty incentive credit',
-    date: '11/17/2026, 11:15 AM',
-  },
-  {
-    id: 'CR-103',
-    accountName: 'David Miller',
-    email: 'david.miller@demo.example.com',
-    tradeId: '800105',
-    amount: 100.0,
-    type: 'Credit Out',
-    comment: 'Expired promotion credit deduction',
-    date: '11/15/2026, 09:45 AM',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_CREDIT_RECORDS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -71,7 +41,8 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminCreditInOut() {
-  const [adjustments, setAdjustments] = useState([]);
+  const { items: adjustments, create } = useCollection('creditAdjustments');
+  const { items: tradingAccounts } = useCollection('tradingAccounts');
   const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -86,64 +57,10 @@ export default function AdminCreditInOut() {
   const [comment, setComment] = useState('');
   const idempotencyRef = useRef(null);
 
-  const fetchAdjustments = async () => {
-    try {
-      let apiLoaded = false;
-      try {
-        let desk = '';
-        try {
-          const auth = localStorage.getItem('majesty_admin_auth');
-          if (auth) {
-            const parsed = JSON.parse(auth);
-            desk = parsed.desk || parsed.role || '';
-          }
-        } catch {}
-
-        const res = await fetch('/api/admin/credit-adjustments', {
-          headers: {
-            'x-portal-scope': 'admin',
-            ...(desk ? { 'x-admin-desk': desk } : {}),
-          },
-        });
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.adjustments)) {
-          setAdjustments(
-            data.adjustments.map((a) => ({
-              id: a.id,
-              accountName: a.client_name || 'Client',
-              email: a.client_email || '',
-              tradeId: a.account_login != null ? String(a.account_login) : '',
-              amount: Number(a.amount) || 0,
-              type: a.type === 'credit' ? 'Credit In' : 'Credit Out',
-              comment: a.description || '',
-              date: a.created_at ? new Date(a.created_at).toLocaleString() : '',
-            }))
-          );
-          setErrorMessage('');
-          apiLoaded = true;
-        }
-      } catch {}
-
-      if (!apiLoaded) {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) {
-            setAdjustments(JSON.parse(saved));
-          } else {
-            setAdjustments(DEFAULT_CREDIT_RECORDS);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_CREDIT_RECORDS));
-          }
-        } catch {
-          setAdjustments(DEFAULT_CREDIT_RECORDS);
-        }
-        setErrorMessage('');
-      }
-    } catch (err) {
-      setErrorMessage(err.message || 'Unable to load credit adjustments.');
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+    // READ: the list comes straight from the JSON-backed store; "refresh" just re-syncs the view.
+  const fetchAdjustments = () => {
+    setLoading(false);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {
@@ -185,7 +102,8 @@ export default function AdminCreditInOut() {
 
   const netAmount = totalAdded - totalRemoved;
 
-  const handleFormSubmit = async (e) => {
+    // CREATE: credit-in / credit-out adjustment (prepended to the list)
+  const handleFormSubmit = (e) => {
     e.preventDefault();
     const numAmount = parseFloat(amount);
     if (!tradeId.trim() || isNaN(numAmount) || numAmount <= 0) {
@@ -196,73 +114,24 @@ export default function AdminCreditInOut() {
     setSubmitting(true);
     setErrorMessage('');
 
-    try {
-      const fingerprint = `${tradeId}:${amount}:${actionType}`;
-      if (!idempotencyRef.current || idempotencyRef.current.fingerprint !== fingerprint) {
-        idempotencyRef.current = { fingerprint, key: crypto.randomUUID() };
-      }
+    const login = tradeId.trim();
+    const account = tradingAccounts.find((a) => String(a.accountNo) === login);
+    create({
+      id: `CR-${Date.now().toString().slice(-6)}`,
+      accountName: account?.clientName || `Trader #${login}`,
+      email: account?.email || `client${login}@majestyfx.com`,
+      tradeId: login,
+      amount: numAmount,
+      type: actionType,
+      comment: comment.trim() || 'Manual credit adjustment',
+      date: new Date().toLocaleString(),
+    });
 
-      let apiSuccess = false;
-      try {
-        const res = await fetch('/api/admin/credit-adjustments', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Idempotency-Key': idempotencyRef.current.key,
-          },
-          body: JSON.stringify({
-            accountLogin: tradeId,
-            amount: numAmount,
-            type: actionType === 'Credit In' ? 'credit' : 'debit',
-            comment,
-          }),
-        });
-        const data = await res.json();
-        if (res.ok && data.success && data.adjustment) {
-          const newRec = {
-            id: data.adjustment.id,
-            accountName: data.adjustment.client_name || 'Client',
-            email: data.adjustment.client_email || '',
-            tradeId: String(data.adjustment.account_login || tradeId),
-            amount: numAmount,
-            type: actionType,
-            comment,
-            date: new Date().toLocaleString(),
-          };
-          setAdjustments((prev) => [newRec, ...prev]);
-          apiSuccess = true;
-        }
-      } catch {}
-
-      if (!apiSuccess) {
-        const newRec = {
-          id: `CR-${Date.now().toString().slice(-4)}`,
-          accountName: `Trader #${tradeId}`,
-          email: `client${tradeId}@majestyfx.com`,
-          tradeId: tradeId.trim(),
-          amount: numAmount,
-          type: actionType,
-          comment: comment.trim() || 'Manual credit adjustment',
-          date: new Date().toLocaleString(),
-        };
-
-        const updated = [newRec, ...adjustments];
-        setAdjustments(updated);
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-        } catch {}
-      }
-
-      idempotencyRef.current = null;
-      setIsModalOpen(false);
-      setTradeId('');
-      setAmount('');
-      setComment('');
-    } catch (err) {
-      setErrorMessage(err.message || 'Unable to apply credit adjustment.');
-    } finally {
-      setSubmitting(false);
-    }
+    setIsModalOpen(false);
+    setTradeId('');
+    setAmount('');
+    setComment('');
+    setSubmitting(false);
   };
 
   const handleExportCSV = () => {

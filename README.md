@@ -59,3 +59,18 @@ src/assets/                  images taken from Resource.zip
 - Stocks, Indices and Crypto cards use the images in the zip where one matched. The Crypto card has no matching image in the zip, so it uses a gradient placeholder.
 - Review text in the top row is rewritten, because the PDF's text there was overlapped and unreadable.
 - The forex (1)/(2)/(3) duplicates and `mobile.avif` in the zip are not used.
+
+## Admin dashboard – mock-data CRUD
+
+The admin area (`/admin/*`) runs entirely on JSON mock data – no backend.
+
+- `src/data/json/*.json` – seed data, one file per "table".
+- `src/data/collections.js` – registers every collection (seed + localStorage key). Add a new JSON file here to create a new table.
+- `src/services/mockDb.js` – shared store: `create / update / remove / move / reset`, persisted to `localStorage`.
+- `src/hooks/useCollection.js` – `const { items, create, update, remove } = useCollection('clients')`.
+- `src/hooks/useTableControls.js` + `components/admin/TablePager.jsx` – shared search, filter and pagination.
+- `components/admin/ConfirmDialog.jsx`, `RowActions.jsx` – shared delete confirmation and edit/delete buttons.
+- `src/utils/dashboardMetrics.js` – computes the Dashboard KPI cards from the collections.
+
+Collections are shared between pages, so changes show up everywhere (e.g. approving a pending deposit on the Dashboard
+updates Deposit History and the KPI cards). Clear site data in the browser to restore the original JSON.

@@ -1,0 +1,59 @@
+[
+  {
+    "id": "pw-1",
+    "requestId": "PW-30011",
+    "clientName": "Alexander Wright",
+    "clientEmail": "alex.wright@demo.example.com",
+    "pammAccountName": "Pool 1001 \u2013 Balanced",
+    "pammAccountNumber": "PM-1001",
+    "amount": "$2,500.00",
+    "paymentMethod": "Crypto USDT",
+    "paymentDetails": "TRX7xK\u2026cD6e",
+    "requestDate": "2026-11-17",
+    "processDate": null,
+    "status": "Pending"
+  },
+  {
+    "id": "pw-2",
+    "requestId": "PW-30012",
+    "clientName": "David Miller",
+    "clientEmail": "david.miller@demo.example.com",
+    "pammAccountName": "Pool 1001 \u2013 Balanced",
+    "pammAccountNumber": "PM-1001",
+    "amount": "$5,000.00",
+    "paymentMethod": "Bank Wire",
+    "paymentDetails": "HSBC-\u20262211",
+    "requestDate": "2026-11-16",
+    "processDate": "2026-11-17",
+    "status": "Completed"
+  },
+  {
+    "id": "pw-3",
+    "requestId": "PW-30013",
+    "clientName": "Priya Nair",
+    "clientEmail": "priya.nair@demo.example.com",
+    "pammAccountName": "Pool 1003 \u2013 FX Income",
+    "pammAccountNumber": "PM-1003",
+    "amount": "$900.00",
+    "paymentMethod": "Crypto USDT",
+    "paymentDetails": "TQ9a\u20269fLm",
+    "requestDate": "2026-11-15",
+    "processDate": "2026-11-16",
+    "status": "Rejected",
+    "rejectionReason": "Withdrawal exceeds available balance after lock-in period."
+  },
+  {
+    "id": "pw-4",
+    "requestId": "PW-30014",
+    "clientName": "Sofia Al-Mansoor",
+    "clientEmail": "sofia.mansoor@demo.example.com",
+    "pammAccountName": "Pool 1002 \u2013 Aggressive Gold",
+    "pammAccountNumber": "PM-1002",
+    "amount": "$1,200.00",
+    "paymentMethod": "Crypto USDT",
+    "paymentDetails": "TRX1a\u202677bc",
+    "requestDate": "2026-11-19",
+    "processDate": null,
+    "status": "Pending"
+  }
+]

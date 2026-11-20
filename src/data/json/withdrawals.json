@@ -1,0 +1,32 @@
+[
+  {
+    "id": "TX-90123",
+    "txId": "TX-90123",
+    "account": "800101",
+    "clientName": "Marcus Chen",
+    "clientEmail": "marcus.chen@demo.example.com",
+    "method": "Bank Wire Transfer",
+    "amount": "$1,200.00",
+    "amountNum": 1200,
+    "fee": "$15.00",
+    "status": "Pending",
+    "date": "11/18/2026, 02:45 PM",
+    "destination": "Chase Bank NA •••• 4819 (SWIFT: CHASUS33)",
+    "notes": "Client withdrawal request submitted via Web Trader client portal."
+  },
+  {
+    "id": "TX-90119",
+    "txId": "TX-90119",
+    "account": "800103",
+    "clientName": "David Miller",
+    "clientEmail": "david.m@demo.example.com",
+    "method": "Crypto BTC",
+    "amount": "$800.00",
+    "amountNum": 800,
+    "fee": "$8.00",
+    "status": "Rejected",
+    "date": "11/16/2026, 05:22 PM",
+    "destination": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    "notes": "Unmet trading turnover requirement on credit bonus or verification flag."
+  }
+]

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -15,59 +16,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_internal_transfers';
 
-const DEFAULT_TRANSFERS = [
-  {
-    id: 'IT-10024',
-    ticket: 'TRF-90812',
-    dateKey: '2026-11-18',
-    createdAt: '2026-11-18T14:25:00.000Z',
-    clientName: 'Alexander Wright',
-    clientEmail: 'alex.wright@demo.example.com',
-    amount: 1500.0,
-    fromLogin: '800101',
-    fromInfo: 'ECN (1:500)',
-    toLogin: '800102',
-    toInfo: 'Standard (1:200)',
-    remark: 'Rebalancing trading capital',
-    leverageChange: '1:500 → 1:200',
-    isCrossCategory: false,
-    status: 'Completed',
-  },
-  {
-    id: 'IT-10023',
-    ticket: 'TRF-90805',
-    dateKey: '2026-11-17',
-    createdAt: '2026-11-17T09:12:00.000Z',
-    clientName: 'Sofia Al-Mansoor',
-    clientEmail: 'sofia.mansoor@demo.example.com',
-    amount: 500.0,
-    fromLogin: '800103',
-    fromInfo: 'Raw Spread (1:500)',
-    toLogin: '800106',
-    toInfo: 'Demo Sandbox (1:500)',
-    remark: 'Demo strategy test transfer',
-    leverageChange: '',
-    isCrossCategory: false,
-    status: 'Pending',
-  },
-  {
-    id: 'IT-10020',
-    ticket: 'TRF-90791',
-    dateKey: '2026-11-15',
-    createdAt: '2026-11-15T16:40:00.000Z',
-    clientName: 'David Miller',
-    clientEmail: 'david.miller@demo.example.com',
-    amount: 2000.0,
-    fromLogin: '800105',
-    fromInfo: 'Standard (1:400)',
-    toLogin: '800104',
-    toInfo: 'Pro (1:100)',
-    remark: 'Cross-account margin adjustment',
-    leverageChange: '1:400 → 1:100',
-    isCrossCategory: true,
-    status: 'Needs Review',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_TRANSFERS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -91,7 +40,7 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminInternalTransfers() {
-  const [transfers, setTransfers] = useState([]);
+  const { items: transfers, update: updateTransfer } = useCollection('internalTransfers');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('All');
   const [startDate, setStartDate] = useState('');
@@ -103,33 +52,9 @@ export default function AdminInternalTransfers() {
   const [actionLoading, setActionLoading] = useState(false);
   const [actionError, setActionError] = useState('');
 
-  // Load transfers
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        setTransfers(JSON.parse(saved));
-      } else {
-        setTransfers(DEFAULT_TRANSFERS);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_TRANSFERS));
-      }
-    } catch {
-      setTransfers(DEFAULT_TRANSFERS);
-    }
-  }, []);
-
   const handleRefresh = () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) setTransfers(JSON.parse(saved));
-        else setTransfers(DEFAULT_TRANSFERS);
-      } catch {
-        setTransfers(DEFAULT_TRANSFERS);
-      }
-      setIsRefreshing(false);
-    }, 400);
+    setTimeout(() => setIsRefreshing(false), 400);
   };
 
   const handleConfirmAction = async () => {
@@ -144,22 +69,14 @@ export default function AdminInternalTransfers() {
 
     try {
       const newStatus = actionDialog.action === 'approve' ? 'Completed' : 'Rejected';
-      const updated = transfers.map((t) =>
-        t.id === actionDialog.item.id
-          ? {
-              ...t,
-              status: newStatus,
-              remark:
-                actionDialog.action === 'reject'
-                  ? `${t.remark || ''} [Rejected: ${rejectReason.trim()}]`.trim()
-                  : t.remark,
-            }
-          : t
-      );
-      setTransfers(updated);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      } catch {}
+      // UPDATE: approve -> Completed, reject -> Rejected (+ reason in remark)
+      updateTransfer(actionDialog.item.id, (t) => ({
+        status: newStatus,
+        remark:
+          actionDialog.action === 'reject'
+            ? `${t.remark || ''} [Rejected: ${rejectReason.trim()}]`.trim()
+            : t.remark,
+      }));
 
       setActionDialog(null);
       setRejectReason('');

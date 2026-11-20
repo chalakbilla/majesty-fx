@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import ConfirmDialog from '../../components/admin/ConfirmDialog.jsx';
+import RowActions from '../../components/admin/RowActions.jsx';
+import useTableControls from '../../hooks/useTableControls.js';
+import TablePager from '../../components/admin/TablePager.jsx';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ArrowUpRight,
@@ -15,151 +20,11 @@ import {
   Users,
 } from 'lucide-react';
 
-const initialAccounts = [
-  {
-    id: 1,
-    initials: 'GA',
-    name: 'Ghulam Abbas',
-    email: 'ghulam.abas6533@gmail.com',
-    role: 'follower',
-    roleLabel: 'COPIER / FOLLOWER',
-    strategy: 'Test Trader',
-    mode: 'Mode: proportional',
-    login: '#9009095877833',
-    allocated: '$500.00',
-    equity: '$500.00',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(2, 132, 199), rgb(3, 105, 161))',
-  },
-  {
-    id: 2,
-    initials: 'MH',
-    name: 'Mohammad Hamid',
-    email: 'maharshdoshi42@gmail.com',
-    role: 'follower',
-    roleLabel: 'COPIER / FOLLOWER',
-    strategy: 'SHAHIL AHMED',
-    mode: 'Mode: equal',
-    login: '#9009095877279',
-    allocated: '$1,000.00',
-    equity: '$678.79',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(2, 132, 199), rgb(3, 105, 161))',
-  },
-  {
-    id: 3,
-    initials: 'S',
-    name: 'SignalFX',
-    email: 'tradeworld2475@gmail.com',
-    role: 'follower',
-    roleLabel: 'COPIER / FOLLOWER',
-    strategy: 'SHAHIL AHMED',
-    mode: 'Mode: proportional',
-    login: '#9009095877271',
-    allocated: '$500.00',
-    equity: '$338.75',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'PAUSED',
-    statusBg: 'rgb(254, 243, 199)',
-    statusColor: 'rgb(180, 83, 9)',
-    statusBorder: 'rgb(253, 230, 138)',
-    avatarGradient: 'linear-gradient(135deg, rgb(2, 132, 199), rgb(3, 105, 161))',
-  },
-  {
-    id: 4,
-    initials: 'VF',
-    name: 'Valued Follower',
-    email: 'ID: cli_1792137355291',
-    role: 'follower',
-    roleLabel: 'COPIER / FOLLOWER',
-    strategy: 'Test Trader',
-    mode: 'Mode: proportional',
-    login: '#9009095877267',
-    allocated: '$500.00',
-    equity: '$500.00',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(2, 132, 199), rgb(3, 105, 161))',
-  },
-  {
-    id: 5,
-    initials: 'VF',
-    name: 'Valued Follower',
-    email: 'ID: cli_1791610855289',
-    role: 'follower',
-    roleLabel: 'COPIER / FOLLOWER',
-    strategy: 'Alpha Pro Trader',
-    mode: 'Mode: proportional',
-    login: '#9009095877068',
-    allocated: '$500.00',
-    equity: '$500.00',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(2, 132, 199), rgb(3, 105, 161))',
-  },
-  {
-    id: 6,
-    initials: 'DP',
-    name: 'Demo Partner (IB)',
-    email: 'demoib@majestyfx.com',
-    role: 'master',
-    roleLabel: 'MASTER PROVIDER',
-    strategy: 'Master Strategy',
-    mode: '',
-    login: '#800107',
-    allocated: '$15,000.00',
-    equity: '$15,000.00',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(245, 158, 11), rgb(217, 119, 6))',
-  },
-  {
-    id: 7,
-    initials: 'MC',
-    name: 'Marcus Chen',
-    email: 'marcus.chen@demo.example.com',
-    role: 'master',
-    roleLabel: 'MASTER PROVIDER',
-    strategy: 'Master Strategy',
-    mode: '',
-    login: '#800104',
-    allocated: '$24,100.00',
-    equity: '$24,100.00',
-    gain: '+$0.00',
-    gainColor: 'rgb(22, 163, 74)',
-    status: 'ACTIVE',
-    statusBg: 'rgb(220, 252, 231)',
-    statusColor: 'rgb(22, 101, 52)',
-    statusBorder: 'rgb(187, 247, 208)',
-    avatarGradient: 'linear-gradient(135deg, rgb(245, 158, 11), rgb(217, 119, 6))',
-  },
-];
+// seed data lives in src/data/json (initialAccounts)
 
 export default function AdminCopyTradingAccounts() {
-  const [accounts, setAccounts] = useState(initialAccounts);
+  const { items: accounts, remove: removeAccount } = useCollection('copyTradingAccounts');
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'followers' | 'masters'
   const [searchQuery, setSearchQuery] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState('10');
@@ -186,10 +51,11 @@ export default function AdminCopyTradingAccounts() {
     }
     return true;
   });
+  const table = useTableControls(filtered, { pageSize: 10, resetKey: `${activeTab}|${searchQuery}` });
 
   const handleExportCSV = () => {
     const headers = ['#', 'Client Name', 'Email', 'Role', 'Strategy', 'Mode', 'MT5 Login', 'Allocated', 'Live Equity', 'Gain P&L', 'Status'];
-    const rows = filtered.map((a, i) => [
+    const rows = table.rows.map((a, i) => [
       i + 1,
       `"${a.name}"`,
       `"${a.email}"`,
@@ -581,6 +447,7 @@ export default function AdminCopyTradingAccounts() {
                           >
                             <ArrowUpRight className="w-3.5 h-3.5" />
                           </Link>
+                          <RowActions onDelete={() => setDeleteTarget(acc)} deleteTitle="Delete account" />
                         </div>
                       </td>
                     </tr>
@@ -591,41 +458,19 @@ export default function AdminCopyTradingAccounts() {
           </div>
 
           {/* Table Pager matching exported template */}
-          <div className="table-pager">
-            <span className="table-pager-info">
-              Showing <strong>1</strong> to <strong>{filtered.length}</strong> of <strong>{filtered.length}</strong> entries
-            </span>
-            <div className="table-pager-controls">
-              <label className="table-pager-size">
-                <span>Rows</span>
-                <select
-                  aria-label="Rows per page"
-                  value={rowsPerPage}
-                  onChange={(e) => setRowsPerPage(e.target.value)}
-                >
-                  <option value="10">10</option>
-                  <option value="25">25</option>
-                  <option value="50">50</option>
-                  <option value="100">100</option>
-                </select>
-              </label>
-              <nav className="table-pager-pages" aria-label="Pages">
-                <button type="button" className="table-pager-btn" disabled aria-label="Previous page">
-                  <ChevronLeft className="w-3.5 h-3.5" />
-                  <span>Prev</span>
-                </button>
-                <button type="button" className="table-pager-btn table-pager-num" aria-current="page">
-                  1
-                </button>
-                <button type="button" className="table-pager-btn" disabled aria-label="Next page">
-                  <span>Next</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              </nav>
-            </div>
-          </div>
+          <TablePager table={table} />
         </div>
       </div>
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete copy-trading account?"
+        message={deleteTarget ? `${deleteTarget.name+' ('+deleteTarget.login+')'} will be removed permanently.` : ''}
+        onConfirm={() => {
+          removeAccount(deleteTarget.id);
+          setDeleteTarget(null);
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

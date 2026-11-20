@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Award,
   ChevronLeft,
@@ -11,56 +12,10 @@ import {
   Users,
 } from 'lucide-react';
 
-const initialAccounts = [
-  {
-    id: 1,
-    partnerName: 'Demo Partner (IB)',
-    email: 'demoib@majestyfx.com',
-    referralCode: 'MJDEMO999',
-    tier: 'Tier demo',
-    forex: '$6',
-    metals: '$8',
-    crypto: '$12',
-    indices: '$4',
-    clients: 12,
-    volume: '240.00',
-    totalRebate: '$2400.00',
-    status: 'approved',
-  },
-  {
-    id: 2,
-    partnerName: 'Alexander Wright',
-    email: 'alex.wright@demo.example.com',
-    referralCode: 'MJDEMO1001',
-    tier: 'Tier demo',
-    forex: '$6',
-    metals: '$8',
-    crypto: '$12',
-    indices: '$4',
-    clients: 8,
-    volume: '142.50',
-    totalRebate: '$1425.00',
-    status: 'approved',
-  },
-  {
-    id: 3,
-    partnerName: 'Marcus Chen',
-    email: 'marcus.chen@demo.example.com',
-    referralCode: 'MJDEMO2002',
-    tier: 'Tier demo',
-    forex: '$6',
-    metals: '$8',
-    crypto: '$12',
-    indices: '$4',
-    clients: 15,
-    volume: '385.00',
-    totalRebate: '$3850.00',
-    status: 'approved',
-  },
-];
+// seed data lives in src/data/json (initialAccounts)
 
 export default function AdminRebateAccounts() {
-  const [accounts, setAccounts] = useState(initialAccounts);
+  const { items: accounts, setItems: setAccounts } = useCollection('rebateAccounts');
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);

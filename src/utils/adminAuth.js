@@ -1,4 +1,4 @@
-import { adminCredentials } from '../data/adminData.js';
+import adminCredentials from '../data/json/adminCredentials.json';
 
 const ADMIN_STORAGE_KEY = 'majesty_admin_auth';
 

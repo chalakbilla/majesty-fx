@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pamm-1",
+    "accountNo": "PM-1001",
+    "strategyPool": "Pool 1001 \u2013 Balanced",
+    "fundManager": "Marcus Chen",
+    "aum": 285000,
+    "investors": 18,
+    "allTimeProfit": "+24.60%",
+    "maxDrawdown": "8.20%",
+    "startDate": "01 Jun 2026",
+    "status": "Active",
+    "managerEmail": "marcus.chen@demo.example.com",
+    "balanceNum": 285000,
+    "clientName": "Pool 1001 \u2013 Balanced"
+  },
+  {
+    "id": "pamm-2",
+    "accountNo": "PM-1002",
+    "strategyPool": "Pool 1002 \u2013 Aggressive Gold",
+    "fundManager": "Elena Petrova",
+    "aum": 142500,
+    "investors": 9,
+    "allTimeProfit": "+41.30%",
+    "maxDrawdown": "17.90%",
+    "startDate": "15 Jul 2026",
+    "status": "Active",
+    "managerEmail": "elena.petrova@demo.example.com",
+    "balanceNum": 142500,
+    "clientName": "Pool 1002 \u2013 Aggressive Gold"
+  },
+  {
+    "id": "pamm-3",
+    "accountNo": "PM-1003",
+    "strategyPool": "Pool 1003 \u2013 FX Income",
+    "fundManager": "Rahul Verma",
+    "aum": 96300,
+    "investors": 11,
+    "allTimeProfit": "+9.80%",
+    "maxDrawdown": "3.40%",
+    "startDate": "10 Aug 2026",
+    "status": "Active",
+    "managerEmail": "rahul.verma@demo.example.com",
+    "balanceNum": 96300,
+    "clientName": "Pool 1003 \u2013 FX Income"
+  },
+  {
+    "id": "pamm-4",
+    "accountNo": "PM-1004",
+    "strategyPool": "Pool 1004 \u2013 Index Alpha",
+    "fundManager": "Jonas Keller",
+    "aum": 0,
+    "investors": 0,
+    "allTimeProfit": "+0.00%",
+    "maxDrawdown": "0.00%",
+    "startDate": "30 Oct 2026",
+    "status": "Paused",
+    "managerEmail": "jonas.keller@demo.example.com",
+    "balanceNum": 0,
+    "clientName": "Pool 1004 \u2013 Index Alpha"
+  }
+]

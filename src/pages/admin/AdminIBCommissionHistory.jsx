@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Clock,
   Download,
@@ -13,7 +14,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminIBCommissionHistory() {
-  const [transactions, setTransactions] = useState([]);
+  const { items: transactions, setItems: setTransactions } = useCollection('ibCommissionHistory');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [refreshing, setRefreshing] = useState(false);
@@ -30,7 +31,7 @@ export default function AdminIBCommissionHistory() {
     e.preventDefault();
     const amount = (parseFloat(volume) * parseFloat(rate)).toFixed(2);
     const newTx = {
-      id: transactions.length + 1,
+      id: `ibc-${Date.now().toString(36)}`,
       txId: `TX-IB${Date.now().toString().slice(-6)}`,
       partner,
       client,

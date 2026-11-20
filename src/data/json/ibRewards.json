@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "rawId": "rw-101",
+    "userEmail": "alex.wright@demo.example.com",
+    "partnerName": "Alexander Wright",
+    "tradeId": "TRD-998241",
+    "lotsDone": "52.40",
+    "numericLots": 52.4,
+    "rewardAmount": "$25.00",
+    "numericAmount": 25,
+    "createdAt": "Nov 18, 2026, 16:30"
+  },
+  {
+    "id": 2,
+    "rawId": "rw-102",
+    "userEmail": "marcus.chen@demo.example.com",
+    "partnerName": "Marcus Chen",
+    "tradeId": "TRD-884120",
+    "lotsDone": "154.20",
+    "numericLots": 154.2,
+    "rewardAmount": "$60.00",
+    "numericAmount": 60,
+    "createdAt": "Nov 17, 2026, 12:15"
+  },
+  {
+    "id": 3,
+    "rawId": "rw-103",
+    "userEmail": "sophia.m@majestyfx.partner.com",
+    "partnerName": "Sophia Al-Mansoor",
+    "tradeId": "TRD-771923",
+    "lotsDone": "410.80",
+    "numericLots": 410.8,
+    "rewardAmount": "$120.00",
+    "numericAmount": 120,
+    "createdAt": "Nov 15, 2026, 18:40"
+  },
+  {
+    "id": 4,
+    "rawId": "rw-104",
+    "userEmail": "marcus.chen@demo.example.com",
+    "partnerName": "Marcus Chen",
+    "tradeId": "TRD-665129",
+    "lotsDone": "820.00",
+    "numericLots": 820,
+    "rewardAmount": "$250.00",
+    "numericAmount": 250,
+    "createdAt": "Nov 12, 2026, 10:20"
+  }
+]

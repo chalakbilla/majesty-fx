@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   CheckCircle,
   TrendingUp,
@@ -16,84 +17,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_profit_sharing_data';
 
-const INITIAL_RECORDS = [
-  {
-    id: 'ps_1',
-    startDate: '2026-11-09T12:13:25.474Z',
-    masterName: 'Test Trader',
-    copierAccountLogin: '9009095877833',
-    clientName: 'Ghulam Abbas',
-    clientEmail: 'ghulam.abas6533@gmail.com',
-    clientId: 'cli_ghulam_abbas',
-    allocatedAmount: 500.0,
-    realizedPnL: 0.0,
-    profitShare: 20,
-    status: 'active',
-  },
-  {
-    id: 'ps_2',
-    startDate: '2026-10-28',
-    masterName: 'SHAHIL AHMED',
-    copierAccountLogin: '9009095877279',
-    clientName: 'Mohammad Hamid',
-    clientEmail: 'maharshdoshi42@gmail.com',
-    clientId: 'cli_mohammad_hamid',
-    allocatedAmount: 1000.0,
-    realizedPnL: 0.0,
-    profitShare: 20,
-    status: 'stopped',
-  },
-  {
-    id: 'ps_3',
-    startDate: '2026-10-24',
-    masterName: 'SHAHIL AHMED',
-    copierAccountLogin: '9009095877271',
-    clientName: 'SignalFX',
-    clientEmail: 'tradeworld2475@gmail.com',
-    clientId: 'cli_signalfx',
-    allocatedAmount: 500.0,
-    realizedPnL: 0.0,
-    profitShare: 20,
-    status: 'paused',
-  },
-  {
-    id: 'ps_4',
-    startDate: '2026-10-16T08:56:52.606Z',
-    masterName: 'Test Trader',
-    copierAccountLogin: '9009095877267',
-    clientName: 'Valued Follower',
-    clientEmail: 'cli_1792137355291',
-    clientId: 'cli_1792137355291',
-    allocatedAmount: 500.0,
-    realizedPnL: 0.0,
-    profitShare: 20,
-    status: 'active',
-  },
-  {
-    id: 'ps_5',
-    startDate: '2026-10-10',
-    masterName: 'Alpha Pro Trader',
-    copierAccountLogin: '9009095877068',
-    clientName: 'Valued Follower',
-    clientEmail: 'cli_1791610855289',
-    clientId: 'cli_1791610855289',
-    allocatedAmount: 500.0,
-    realizedPnL: 0.0,
-    profitShare: 20,
-    status: 'active',
-  },
-];
+// seed data lives in src/data/json (INITIAL_RECORDS)
 
 export default function AdminProfitSharingData() {
-  const [records, setRecords] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return INITIAL_RECORDS;
-  });
+  const { items: records, setItems: setRecords } = useCollection('profitSharing');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -101,14 +28,6 @@ export default function AdminProfitSharingData() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    } catch {
-      // ignore
-    }
-  }, [records]);
 
   const showToast = (text, type = 'success') => {
     setToastMsg({ text, type });

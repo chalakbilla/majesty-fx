@@ -1,0 +1,67 @@
+[
+  {
+    "id": "silver",
+    "name": "Silver Partner",
+    "ibCount": 0,
+    "desc": "Entry-level partner status assigned to every new IB by default.",
+    "minVolume": "0 Lots",
+    "minClients": "0 Clients",
+    "minTrades": "0 Trades",
+    "forexRebate": "$4.00/Lot",
+    "metalsRebate": "$6.00/Lot",
+    "subSplit": "10%",
+    "color": "slate"
+  },
+  {
+    "id": "gold",
+    "name": "Gold Partner",
+    "ibCount": 0,
+    "desc": "Achieved through consistent client referral flow and active lots.",
+    "minVolume": "50 Lots",
+    "minClients": "5 Clients",
+    "minTrades": "100 Trades",
+    "forexRebate": "$8.00/Lot",
+    "metalsRebate": "$10.00/Lot",
+    "subSplit": "15%",
+    "color": "amber"
+  },
+  {
+    "id": "platinum",
+    "name": "Platinum Partner",
+    "ibCount": 0,
+    "desc": "Tier for professional multi-tier IB operators and funds.",
+    "minVolume": "150 Lots",
+    "minClients": "15 Clients",
+    "minTrades": "300 Trades",
+    "forexRebate": "$10.00/Lot",
+    "metalsRebate": "$12.00/Lot",
+    "subSplit": "20%",
+    "color": "blue"
+  },
+  {
+    "id": "diamond",
+    "name": "Diamond Partner",
+    "ibCount": 0,
+    "desc": "High-volume institutional introducers with dedicated support.",
+    "minVolume": "400 Lots",
+    "minClients": "35 Clients",
+    "minTrades": "800 Trades",
+    "forexRebate": "$12.00/Lot",
+    "metalsRebate": "$15.00/Lot",
+    "subSplit": "25%",
+    "color": "purple"
+  },
+  {
+    "id": "vip",
+    "name": "VIP Partner",
+    "ibCount": 0,
+    "desc": "Executive bespoke tier with customized rebate payout contracts.",
+    "minVolume": "1000 Lots",
+    "minClients": "75 Clients",
+    "minTrades": "2000 Trades",
+    "forexRebate": "$15.00/Lot",
+    "metalsRebate": "$20.00/Lot",
+    "subSplit": "30%",
+    "color": "emerald"
+  }
+]

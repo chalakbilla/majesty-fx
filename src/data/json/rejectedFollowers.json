@@ -1,0 +1,15 @@
+[
+  {
+    "id": "sub_stopped_1",
+    "clientName": "Mohammad Hamid",
+    "clientEmail": "maharshdoshi42@gmail.com",
+    "clientId": "cli_mohammad_hamid",
+    "masterName": "SHAHIL AHMED",
+    "copierAccountLogin": "9009095877279",
+    "allocatedAmount": 1000,
+    "realizedPnL": -321.21,
+    "copyMode": "equal",
+    "startDate": "2026-10-28",
+    "status": "stopped"
+  }
+]

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "ticketId": "9901",
+    "email": "alex.wright@demo.example.com",
+    "subject": "Inquiry about MT5 Expert Advisor setup",
+    "department": "technical",
+    "priority": "Medium",
+    "message": "Hello Support, I need assistance setting up my custom EA on the institutional MT5 terminal.",
+    "status": "Open",
+    "date": "11/17/2026, 11:12:59 AM",
+    "adminRemark": ""
+  },
+  {
+    "id": 2,
+    "ticketId": "9902",
+    "email": "marcus.chen@demo.example.com",
+    "subject": "PAMM Investor allocation reporting question",
+    "department": "pamm",
+    "priority": "Medium",
+    "message": "Can you provide the detailed performance and drawdown logs for PAMM Pool 1001 for last month?",
+    "status": "Resolved",
+    "date": "11/15/2026, 3:12:59 PM",
+    "adminRemark": "Detailed reporting statement sent to client via secure ledger email."
+  },
+  {
+    "id": 3,
+    "ticketId": "9903",
+    "email": "sophia.m@majestyfx.partner.com",
+    "subject": "Multi-tier sub-IB rebate calculation query",
+    "department": "billing",
+    "priority": "High",
+    "message": "Requesting verification of Tier 3 rebate accrual rates for direct downline trading volume.",
+    "status": "In-Progress",
+    "date": "11/18/2026, 09:45:20 AM",
+    "adminRemark": "Auditing rebate transaction hashes."
+  },
+  {
+    "id": 4,
+    "ticketId": "9904",
+    "email": "elena.rostova@demo.example.com",
+    "subject": "KYC Document verification status",
+    "department": "compliance",
+    "priority": "Low",
+    "message": "Uploaded proof of address document yesterday, please confirm if approved.",
+    "status": "Closed",
+    "date": "11/14/2026, 02:15:30 PM",
+    "adminRemark": "Account verified successfully."
+  }
+]

@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "name": "Demo Partner (IB)",
+    "email": "demoib@majestyfx.com",
+    "code": "MJDEMO999",
+    "phone": "+971 50 998 8776",
+    "country": "United Arab Emirates",
+    "joined": "11/17/2026",
+    "clientsCount": 12,
+    "volume": "240.00 Lots",
+    "totalCommission": "$2,400.00",
+    "balance": "$850.00",
+    "tier": "demo IB",
+    "currentRank": "Gold Partner",
+    "rebateRate": "$10.00 / Lot",
+    "status": "active"
+  },
+  {
+    "id": 2,
+    "name": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "code": "MJALEX101",
+    "phone": "+44 7700 900222",
+    "country": "United Kingdom",
+    "joined": "11/12/2026",
+    "clientsCount": 8,
+    "volume": "142.50 Lots",
+    "totalCommission": "$1,425.00",
+    "balance": "$425.00",
+    "tier": "demo IB",
+    "currentRank": "Gold Partner",
+    "rebateRate": "$10.00 / Lot",
+    "status": "active"
+  },
+  {
+    "id": 3,
+    "name": "Marcus Chen",
+    "email": "marcus.chen@demo.example.com",
+    "code": "MJMCH888",
+    "phone": "+65 6789 0123",
+    "country": "Singapore",
+    "joined": "11/05/2026",
+    "clientsCount": 15,
+    "volume": "385.00 Lots",
+    "totalCommission": "$3,850.00",
+    "balance": "$1,200.00",
+    "tier": "demo IB",
+    "currentRank": "Platinum Partner",
+    "rebateRate": "$10.00 / Lot",
+    "status": "active"
+  }
+]

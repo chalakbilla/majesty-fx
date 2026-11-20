@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   XCircle,
@@ -11,100 +12,33 @@ import {
   AlertCircle,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'majesty_admin_rejected_masters';
-
 export default function AdminRejectedMasterAccounts() {
-  const [masters, setMasters] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return [];
-  });
+  const { items: allMasters, update } = useCollection('masters');
+  const masters = useMemo(() => allMasters.filter((m) => m.status === 'rejected'), [allMasters]);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState(null);
   const [toastMsg, setToastMsg] = useState(null);
 
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(masters));
-    } catch {
-      // ignore
-    }
-  }, [masters]);
-
-  // Initial load / fetch from API
-  const loadData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const res = await fetch('/api/copy-trading/masters?status=rejected', {
-        headers: { 'x-requested-with': 'XMLHttpRequest' },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.masters)) {
-        setMasters(res.masters);
-      }
-    } catch {
-      // ignore, fall back to local state
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
   const handleRefresh = () => {
     setLoading(true);
     setTimeout(() => {
-      loadData();
+      setLoading(false);
       setToastMsg('Rejected master accounts refreshed.');
       setTimeout(() => setToastMsg(null), 3000);
     }, 450);
   };
 
-  const handleReinstate = async (masterId) => {
+  // UPDATE: rejected -> pending (shows up on the Pending page again)
+  const handleReinstate = (masterId) => {
     setActionLoadingId(masterId);
-    try {
-      // Attempt API patch
-      await fetch('/api/copy-trading/masters', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ masterId, status: 'pending' }),
-      })
-        .then((r) => r.json())
-        .catch(() => ({ success: true }));
-
-      // Move locally
-      const reinstatedItem = masters.find((m) => m.id === masterId);
-      if (reinstatedItem) {
-        try {
-          const pendingRaw = localStorage.getItem('majesty_admin_pending_masters');
-          const pendingList = pendingRaw ? JSON.parse(pendingRaw) : [];
-          pendingList.push({ ...reinstatedItem, status: 'pending' });
-          localStorage.setItem('majesty_admin_pending_masters', JSON.stringify(pendingList));
-        } catch {
-          // ignore
-        }
-      }
-
-      setMasters((prev) => prev.filter((m) => m.id !== masterId));
+    setTimeout(() => {
+      update(masterId, { status: 'pending', rejectionReason: '' });
       setToastMsg('Application Reinstated: Moved back to pending review.');
       setTimeout(() => setToastMsg(null), 3000);
-    } catch {
-      setToastMsg('Failed to reinstate application.');
-      setTimeout(() => setToastMsg(null), 3000);
-    } finally {
       setActionLoadingId(null);
-    }
+    }, 300);
   };
 
   const filteredMasters = useMemo(() => {

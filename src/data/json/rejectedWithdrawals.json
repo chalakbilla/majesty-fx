@@ -1,0 +1,17 @@
+[
+  {
+    "id": "TX-90119",
+    "txId": "TX-90119",
+    "account": "800103",
+    "clientName": "David Miller",
+    "clientEmail": "david.m@demo.example.com",
+    "method": "Crypto BTC",
+    "amount": "$800.00",
+    "amountNum": 800,
+    "fee": "$8.00",
+    "status": "Rejected",
+    "date": "11/16/2026, 05:22 PM",
+    "walletAddress": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+    "rejectionReason": "Unmet trading turnover requirement on credit bonus or verification flag"
+  }
+]

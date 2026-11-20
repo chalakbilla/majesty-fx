@@ -1,0 +1,114 @@
+[
+  {
+    "id": 1,
+    "tradingAccounts": [
+      "800106"
+    ],
+    "fullName": "Demo Trader",
+    "email": "democlient@majestyfx.com",
+    "portalTier": "Standard",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+1 (555) 019-2831",
+    "country": "United States",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 2,
+    "tradingAccounts": [
+      "800107"
+    ],
+    "fullName": "Demo Partner (IB)",
+    "email": "demoib@majestyfx.com",
+    "portalTier": "Master IB",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+971 50 998 8776",
+    "country": "United Arab Emirates",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 3,
+    "tradingAccounts": [
+      "800105"
+    ],
+    "fullName": "Elena Rostova",
+    "email": "elena.rostova@demo.example.com",
+    "portalTier": "Standard",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+49 151 23456789",
+    "country": "Germany",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 4,
+    "tradingAccounts": [
+      "800103"
+    ],
+    "fullName": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "portalTier": "VIP Raw",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+971 55 123 4567",
+    "country": "United Arab Emirates",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 5,
+    "tradingAccounts": [
+      "800102"
+    ],
+    "fullName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "portalTier": "Standard",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+44 7700 900222",
+    "country": "United Kingdom",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 6,
+    "tradingAccounts": [
+      "800101"
+    ],
+    "fullName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "portalTier": "Pro Zero",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+44 7700 900222",
+    "country": "United Kingdom",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  },
+  {
+    "id": 7,
+    "tradingAccounts": [
+      "800104"
+    ],
+    "fullName": "Marcus Chen",
+    "email": "marcus.chen@demo.example.com",
+    "portalTier": "VIP Raw",
+    "mt5Server": "MajestyFX-Demo",
+    "mobile": "+65 6789 0123",
+    "country": "Singapore",
+    "kycStatus": "Approved",
+    "password": "••••••••",
+    "emailKyc": "Verified",
+    "cri": "Low"
+  }
+]

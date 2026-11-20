@@ -1,0 +1,86 @@
+[
+  {
+    "id": "TX-90124",
+    "type": "deposit",
+    "method": "USDT (TRC-20)",
+    "account": "800104",
+    "client": "Alex Wright",
+    "email": "alex.wright@demo.example.com",
+    "amount": "$2,500.00",
+    "fee": "$0.00",
+    "status": "Approved",
+    "date": "11/18/2026, 04:12 PM"
+  },
+  {
+    "id": "TX-90123",
+    "type": "withdrawal",
+    "method": "Bank Wire Transfer",
+    "account": "800101",
+    "client": "Marcus Chen",
+    "email": "marcus.chen@demo.example.com",
+    "amount": "$1,200.00",
+    "fee": "$15.00",
+    "status": "Pending",
+    "date": "11/18/2026, 02:45 PM"
+  },
+  {
+    "id": "TX-90122",
+    "type": "transfer",
+    "method": "Internal Transfer",
+    "account": "800104 -> 800108",
+    "client": "Alex Wright",
+    "email": "alex.wright@demo.example.com",
+    "amount": "$500.00",
+    "fee": "$0.00",
+    "status": "Approved",
+    "date": "11/18/2026, 01:20 PM"
+  },
+  {
+    "id": "TX-90121",
+    "type": "profit_commission",
+    "method": "PAMM High-Water Payout",
+    "account": "800102",
+    "client": "Sophia M.",
+    "email": "sophia.m@majestyfx.partner.com",
+    "amount": "$3,450.00",
+    "fee": "$0.00",
+    "status": "Approved",
+    "date": "11/17/2026, 06:10 PM"
+  },
+  {
+    "id": "TX-90120",
+    "type": "credit",
+    "method": "Trading Bonus Credit In",
+    "account": "800107",
+    "client": "Elena Rostova",
+    "email": "elena.rostova@demo.example.com",
+    "amount": "$200.00",
+    "fee": "$0.00",
+    "status": "Approved",
+    "date": "11/17/2026, 11:30 AM"
+  },
+  {
+    "id": "TX-90119",
+    "type": "withdrawal",
+    "method": "Crypto BTC",
+    "account": "800103",
+    "client": "David Miller",
+    "email": "david.m@demo.example.com",
+    "amount": "$800.00",
+    "fee": "$8.00",
+    "status": "Rejected",
+    "date": "11/16/2026, 05:22 PM"
+  },
+  {
+    "id": "TX-90118",
+    "type": "deposit",
+    "method": "Credit Card / Visa",
+    "account": "800105",
+    "client": "John Doe",
+    "email": "john.doe@demo.example.com",
+    "amount": "$150.00",
+    "fee": "$0.00",
+    "status": "Rejected",
+    "date": "11/16/2026, 09:14 AM"
+  }
+]

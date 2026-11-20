@@ -1,0 +1,74 @@
+[
+  {
+    "tier": 1,
+    "lotsRequired": 50,
+    "rewardAmount": 25,
+    "active": true
+  },
+  {
+    "tier": 2,
+    "lotsRequired": 150,
+    "rewardAmount": 60,
+    "active": true
+  },
+  {
+    "tier": 3,
+    "lotsRequired": 400,
+    "rewardAmount": 120,
+    "active": true
+  },
+  {
+    "tier": 4,
+    "lotsRequired": 800,
+    "rewardAmount": 250,
+    "active": true
+  },
+  {
+    "tier": 5,
+    "lotsRequired": 1500,
+    "rewardAmount": 400,
+    "active": true
+  },
+  {
+    "tier": 6,
+    "lotsRequired": 3000,
+    "rewardAmount": 650,
+    "active": true
+  },
+  {
+    "tier": 7,
+    "lotsRequired": 5000,
+    "rewardAmount": 1500,
+    "active": true
+  },
+  {
+    "tier": 8,
+    "lotsRequired": 7500,
+    "rewardAmount": 2000,
+    "active": true
+  },
+  {
+    "tier": 9,
+    "lotsRequired": 10000,
+    "rewardAmount": 3000,
+    "active": true
+  },
+  {
+    "tier": 10,
+    "lotsRequired": 13000,
+    "rewardAmount": 3500,
+    "active": true
+  },
+  {
+    "tier": 11,
+    "lotsRequired": 17000,
+    "rewardAmount": 5000,
+    "active": true
+  },
+  {
+    "tier": 12,
+    "lotsRequired": 20000,
+    "rewardAmount": 7500,
+    "active": true
+  }
+]

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Download,
   RefreshCw,
@@ -11,41 +12,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_profit_commission_withdrawals';
 
-const DEFAULT_WITHDRAWALS = [
-  {
-    id: 'CW-8001',
-    requestId: 'REQ-PC-9102',
-    dateTime: '11/18/2026, 04:15 PM',
-    email: 'marcus.chen@demo.example.com',
-    accountLogin: '800104',
-    commissionAmount: 420.50,
-    status: 'Pending',
-    adminComment: 'Awaiting manager sign-off on PAMM profit split',
-    paymentMethod: 'USDT TRC20',
-  },
-  {
-    id: 'CW-8002',
-    requestId: 'REQ-PC-9098',
-    dateTime: '11/17/2026, 01:20 PM',
-    email: 'sofia.mansoor@demo.example.com',
-    accountLogin: '800103',
-    commissionAmount: 850.00,
-    status: 'Approved',
-    adminComment: 'Batch settlement processed via gateway',
-    paymentMethod: 'Bank Wire Transfer',
-  },
-  {
-    id: 'CW-8003',
-    requestId: 'REQ-PC-9085',
-    dateTime: '11/15/2026, 10:45 AM',
-    email: 'alex.wright@demo.example.com',
-    accountLogin: '800101',
-    commissionAmount: 310.00,
-    status: 'Rejected',
-    adminComment: 'Incomplete KYC profile for withdrawal routing',
-    paymentMethod: 'Crypto BTC',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_WITHDRAWALS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -69,7 +36,7 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminProfitCommissionWithdrawalHistory() {
-  const [withdrawals, setWithdrawals] = useState([]);
+  const { items: withdrawals } = useCollection('profitCommissionWithdrawals');
   const [activeTab, setActiveTab] = useState('Pending');
   const [search, setSearch] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);
@@ -77,58 +44,9 @@ export default function AdminProfitCommissionWithdrawalHistory() {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const fetchWithdrawals = async () => {
-    try {
-      let apiLoaded = false;
-      try {
-        const res = await fetch('/api/admin/profit-commission-withdrawals');
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.withdrawals)) {
-          setWithdrawals(
-            data.withdrawals.map((w) => {
-              const st = (w.status || '').toLowerCase();
-              return {
-                id: w.id,
-                requestId: w.reference_id || w.id,
-                dateTime: w.created_at ? new Date(w.created_at).toLocaleString() : '',
-                email: w.client_email || '',
-                accountLogin: w.account_login != null ? String(w.account_login) : '',
-                commissionAmount: Number(w.amount) || 0,
-                status:
-                  st === 'completed' || st === 'approved'
-                    ? 'Approved'
-                    : st === 'rejected'
-                    ? 'Rejected'
-                    : 'Pending',
-                adminComment: w.description || '',
-                paymentMethod: w.method || '',
-              };
-            })
-          );
-          setErrorMessage('');
-          apiLoaded = true;
-        }
-      } catch {}
-
-      if (!apiLoaded) {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) setWithdrawals(JSON.parse(saved));
-          else {
-            setWithdrawals(DEFAULT_WITHDRAWALS);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_WITHDRAWALS));
-          }
-        } catch {
-          setWithdrawals(DEFAULT_WITHDRAWALS);
-        }
-        setErrorMessage('');
-      }
-    } catch (err) {
-      setErrorMessage(err.message || 'Unable to load commission withdrawals.');
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+    const fetchWithdrawals = () => {
+    setLoading(false);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {

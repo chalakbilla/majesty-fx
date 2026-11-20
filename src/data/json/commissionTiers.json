@@ -1,0 +1,20 @@
+[
+  {
+    "id": "tier_1",
+    "level": "Level 1 (Direct)",
+    "forex": "8.00",
+    "metals": "12.00",
+    "indices": "6.00",
+    "crypto": "10.00",
+    "isBase": true
+  },
+  {
+    "id": "tier_2",
+    "level": "Level 2 (Sub-IB)",
+    "forex": "3.00",
+    "metals": "5.00",
+    "indices": "2.50",
+    "crypto": "4.00",
+    "isBase": false
+  }
+]

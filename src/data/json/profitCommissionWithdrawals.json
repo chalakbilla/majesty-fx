@@ -1,0 +1,35 @@
+[
+  {
+    "id": "CW-8001",
+    "requestId": "REQ-PC-9102",
+    "dateTime": "11/18/2026, 04:15 PM",
+    "email": "marcus.chen@demo.example.com",
+    "accountLogin": "800104",
+    "commissionAmount": 420.5,
+    "status": "Pending",
+    "adminComment": "Awaiting manager sign-off on PAMM profit split",
+    "paymentMethod": "USDT TRC20"
+  },
+  {
+    "id": "CW-8002",
+    "requestId": "REQ-PC-9098",
+    "dateTime": "11/17/2026, 01:20 PM",
+    "email": "sofia.mansoor@demo.example.com",
+    "accountLogin": "800103",
+    "commissionAmount": 850,
+    "status": "Approved",
+    "adminComment": "Batch settlement processed via gateway",
+    "paymentMethod": "Bank Wire Transfer"
+  },
+  {
+    "id": "CW-8003",
+    "requestId": "REQ-PC-9085",
+    "dateTime": "11/15/2026, 10:45 AM",
+    "email": "alex.wright@demo.example.com",
+    "accountLogin": "800101",
+    "commissionAmount": 310,
+    "status": "Rejected",
+    "adminComment": "Incomplete KYC profile for withdrawal routing",
+    "paymentMethod": "Crypto BTC"
+  }
+]

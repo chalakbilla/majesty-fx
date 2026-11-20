@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   DollarSign,
   Download,
@@ -11,7 +12,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminTotalPAMMClients() {
-  const [clients, setClients] = useState([]);
+  const { items: clients } = useCollection('pammClients');
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
 

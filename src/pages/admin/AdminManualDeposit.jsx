@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   PlusCircle,
@@ -22,30 +23,9 @@ import {
 const STORAGE_KEY = 'majesty_admin_manual_deposits';
 const ACCOUNTS_STORAGE_KEY = 'majesty_admin_trading_accounts';
 
-const INITIAL_ACCOUNTS = [
-  { login: '800106', clientName: 'Demo Trader', clientEmail: 'democlient@majestyfx.com', desk: 'demo', accountType: 'Standard Account', balance: 10000.00, currency: 'USD' },
-  { login: '800103', clientName: 'Sofia Al-Mansoor', clientEmail: 'sofia.mansoor@demo.example.com', desk: 'referral', accountType: 'Raw Spread Account', balance: 3500.00, currency: 'USD' },
-  { login: '800105', clientName: 'David Miller', clientEmail: 'david.miller@demo.example.com', desk: 'referral', accountType: 'Standard Account', balance: 2500.00, currency: 'USD' },
-  { login: '800101', clientName: 'Alexander Wright', clientEmail: 'alex.wright@demo.example.com', desk: 'ib1', accountType: 'ECN Account', balance: 5000.00, currency: 'USD' },
-  { login: '800104', clientName: 'Marcus Chen', clientEmail: 'marcus.chen@demo.example.com', desk: 'ib2', accountType: 'Pro Account', balance: 10000.00, currency: 'USD' },
-];
+// seed data lives in src/data/json (INITIAL_ACCOUNTS)
 
-const INITIAL_MANUAL_DEPOSITS = [
-  {
-    id: 'MAN_DEP_01',
-    createdAt: new Date(Date.now() - 3600000 * 3).toISOString(),
-    accountLogin: '800106',
-    clientName: 'Demo Trader',
-    clientEmail: 'democlient@majestyfx.com',
-    amount: 10000.00,
-    currency: 'USD',
-    paymentMethod: 'USDT TRC20',
-    txHash: 'TRX7xK9921bF43aD90cE124567890abcdef12345678',
-    adminComment: 'Initial Sandbox Liquidity Provision',
-    remarks: 'Initial Sandbox Liquidity Provision',
-    status: 'Completed',
-  },
-];
+// seed data lives in src/data/json (INITIAL_MANUAL_DEPOSITS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -69,7 +49,8 @@ function exportToCSV(filename, headers, rows) {
 }
 
 function ManualDepositModal({ isOpen, onClose, onSuccess, preselectedLogin, preselectedEmail, preselectedAmount, preselectedTxHash }) {
-  const [accounts, setAccounts] = useState([]);
+  const { items: accounts, update: updateAccount } = useCollection('manualDepositAccounts');
+  const manualDeposits = useCollection('manualDeposits');
   const [loadingAccounts, setLoadingAccounts] = useState(false);
   const [accountSearch, setAccountSearch] = useState('');
   const [selectedAccount, setSelectedAccount] = useState(null);
@@ -90,70 +71,21 @@ function ManualDepositModal({ isOpen, onClose, onSuccess, preselectedLogin, pres
     setErrorMessage(null);
     setSuccessResult(null);
 
-    let desk = '';
-    try {
-      const auth = localStorage.getItem('majesty_admin_auth');
-      if (auth) {
-        const parsed = JSON.parse(auth);
-        const r = (parsed.role || '').toLowerCase().trim();
-        const d = (parsed.desk || '').toLowerCase().trim();
-        const superRoles = ['super_admin', 'superadmin', 'master', 'super', 'owner', 'admin', 'all'];
-        if (d && !superRoles.includes(d)) desk = d;
-        else if (r && !superRoles.includes(r)) desk = r.endsWith('_admin') ? r.replace(/_admin$/, '') : r;
-      }
-    } catch {}
-
-    const loadAccounts = async () => {
-      try {
-        const res = await fetch('/api/admin/manual-deposit', {
-          headers: {
-            'x-portal-scope': 'admin',
-            ...(desk ? { 'x-admin-desk': desk } : {}),
-          },
-        });
-        const data = await res.json();
-        if (isMounted && data.success && Array.isArray(data.accounts)) {
-          setAccounts(data.accounts);
-          if (preselectedLogin) {
-            const acc = data.accounts.find((a) => a.login === preselectedLogin);
-            if (acc) setSelectedAccount(acc);
-          } else if (preselectedEmail) {
-            const acc = data.accounts.find((a) => a.clientEmail.toLowerCase() === preselectedEmail.toLowerCase());
-            if (acc) setSelectedAccount(acc);
-          }
-          return;
-        }
-      } catch {}
-
-      // Fallback to local storage or mock accounts
-      try {
-        const saved = localStorage.getItem(ACCOUNTS_STORAGE_KEY);
-        const accList = saved ? JSON.parse(saved) : INITIAL_ACCOUNTS;
-        if (isMounted) {
-          setAccounts(accList);
-          if (preselectedLogin) {
-            const acc = accList.find((a) => a.login === preselectedLogin);
-            if (acc) setSelectedAccount(acc);
-          } else if (preselectedEmail) {
-            const acc = accList.find((a) => a.clientEmail.toLowerCase() === preselectedEmail.toLowerCase());
-            if (acc) setSelectedAccount(acc);
-          }
-        }
-      } catch {
-        if (isMounted) setAccounts(INITIAL_ACCOUNTS);
-      } finally {
-        if (isMounted) setLoadingAccounts(false);
-      }
-    };
-
-    loadAccounts();
+    // Accounts come from the JSON-backed store; just resolve any preselected account.
+    const pre = preselectedLogin
+      ? accounts.find((a) => a.login === preselectedLogin)
+      : preselectedEmail
+        ? accounts.find((a) => a.clientEmail.toLowerCase() === preselectedEmail.toLowerCase())
+        : null;
+    if (pre) setSelectedAccount(pre);
+    setLoadingAccounts(false);
     if (preselectedAmount) setAmountStr(String(preselectedAmount));
     if (preselectedTxHash) setTxHash(preselectedTxHash);
 
     return () => {
       isMounted = false;
     };
-  }, [isOpen, preselectedLogin, preselectedEmail, preselectedAmount, preselectedTxHash]);
+  }, [isOpen, preselectedLogin, preselectedEmail, preselectedAmount, preselectedTxHash, accounts]);
 
   const filteredAccounts = useMemo(() => {
     if (!accountSearch.trim()) return accounts.slice(0, 50);
@@ -186,64 +118,14 @@ function ManualDepositModal({ isOpen, onClose, onSuccess, preselectedLogin, pres
     setSubmitting(true);
     setErrorMessage(null);
 
-    let desk = '';
     try {
-      const auth = localStorage.getItem('majesty_admin_auth');
-      if (auth) {
-        const parsed = JSON.parse(auth);
-        const r = (parsed.role || '').toLowerCase().trim();
-        const d = (parsed.desk || '').toLowerCase().trim();
-        const superRoles = ['super_admin', 'superadmin', 'master', 'super', 'owner', 'admin', 'all'];
-        if (d && !superRoles.includes(d)) desk = d;
-        else if (r && !superRoles.includes(r)) desk = r.endsWith('_admin') ? r.replace(/_admin$/, '') : r;
-      }
-    } catch {}
-
-    try {
-      const fingerprint = `${selectedAccount.login}:${depositAmount}`;
-      if (!idempotencyRef.current || idempotencyRef.current.fingerprint !== fingerprint) {
-        idempotencyRef.current = { fingerprint, key: crypto.randomUUID() };
-      }
-
-      let resOk = false;
-      let apiResult = null;
-      try {
-        const res = await fetch('/api/admin/manual-deposit', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Idempotency-Key': idempotencyRef.current.key,
-            'x-portal-scope': 'admin',
-            ...(desk ? { 'x-admin-desk': desk } : {}),
-          },
-          body: JSON.stringify({
-            accountLogin: selectedAccount.login,
-            amount: depositAmount,
-            paymentMethod,
-            txHash: txHash.trim() || undefined,
-            remarks: remarks.trim() || undefined,
-            sendEmail,
-          }),
-        });
-        apiResult = await res.json();
-        resOk = res.ok && apiResult.success;
-      } catch {}
-
       const updatedBalance = selectedAccount.balance + depositAmount;
 
-      // Update local storage accounts
-      try {
-        const saved = localStorage.getItem(ACCOUNTS_STORAGE_KEY);
-        const accList = saved ? JSON.parse(saved) : INITIAL_ACCOUNTS;
-        const updated = accList.map((a) =>
-          a.login === selectedAccount.login ? { ...a, balance: updatedBalance } : a
-        );
-        localStorage.setItem(ACCOUNTS_STORAGE_KEY, JSON.stringify(updated));
-        setAccounts(updated);
-      } catch {}
+      // UPDATE: credit the trading account balance
+      updateAccount(selectedAccount.login, { balance: updatedBalance });
 
-      // Save to manual deposit records
-      const record = {
+      // CREATE: manual deposit history record
+      manualDeposits.create({
         id: `DEP_${Date.now()}`,
         createdAt: new Date().toISOString(),
         accountLogin: selectedAccount.login,
@@ -256,21 +138,12 @@ function ManualDepositModal({ isOpen, onClose, onSuccess, preselectedLogin, pres
         adminComment: remarks.trim() || 'Manual deposit credited by admin',
         remarks: remarks.trim() || 'Manual deposit credited by admin',
         status: 'Completed',
-      };
-
-      try {
-        const savedDeposits = localStorage.getItem(STORAGE_KEY);
-        const currentDeposits = savedDeposits ? JSON.parse(savedDeposits) : INITIAL_MANUAL_DEPOSITS;
-        const updatedDeposits = [record, ...currentDeposits];
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedDeposits));
-      } catch {}
+      });
 
       idempotencyRef.current = null;
       setSuccessResult({
-        message:
-          apiResult?.message ||
-          `Successfully credited $${depositAmount.toFixed(2)} to account #${selectedAccount.login}!`,
-        newBalance: apiResult?.newBalance ?? updatedBalance,
+        message: `Successfully credited $${depositAmount.toFixed(2)} to account #${selectedAccount.login}!`,
+        newBalance: updatedBalance,
       });
 
       if (onSuccess) onSuccess();
@@ -791,7 +664,7 @@ function ManualDepositModal({ isOpen, onClose, onSuccess, preselectedLogin, pres
 }
 
 export default function AdminManualDeposit() {
-  const [deposits, setDeposits] = useState([]);
+  const { items: deposits } = useCollection('manualDeposits');
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [search, setSearch] = useState('');
@@ -799,56 +672,10 @@ export default function AdminManualDeposit() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const fetchDeposits = useCallback(async () => {
-    try {
-      let desk = '';
-      try {
-        const auth = localStorage.getItem('majesty_admin_auth');
-        if (auth) {
-          const parsed = JSON.parse(auth);
-          desk = parsed.desk || parsed.role || '';
-        }
-      } catch {}
-
-      let apiLoaded = false;
-      try {
-        const res = await fetch('/api/admin/manual-deposit', {
-          headers: {
-            'x-portal-scope': 'admin',
-            ...(desk ? { 'x-admin-desk': desk } : {}),
-          },
-        });
-        const data = await res.json();
-        if (res.ok && data.success) {
-          setDeposits(data.recentDeposits || []);
-          setDeskScope(data.desk || 'all');
-          setErrorMessage(null);
-          apiLoaded = true;
-        }
-      } catch {}
-
-      if (!apiLoaded) {
-        // Load from local storage
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) {
-            setDeposits(JSON.parse(saved));
-          } else {
-            setDeposits(INITIAL_MANUAL_DEPOSITS);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(INITIAL_MANUAL_DEPOSITS));
-          }
-        } catch {
-          setDeposits(INITIAL_MANUAL_DEPOSITS);
-        }
-        setDeskScope(desk && desk !== 'super_admin' ? desk : 'demo');
-        setErrorMessage(null);
-      }
-    } catch (err) {
-      setErrorMessage(err.message || 'Error loading manual deposit history.');
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+  const fetchDeposits = useCallback(() => {
+    setDeskScope('demo');
+    setLoading(false);
+    setIsRefreshing(false);
   }, []);
 
   useEffect(() => {

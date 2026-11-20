@@ -1,0 +1,8 @@
+[
+  {
+    "id": "settings",
+    "mode": "Per Lot Traded (USD)",
+    "minPayout": "50.00",
+    "autoSettle": true
+  }
+]

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   CheckCircle2,
   ChevronLeft,
@@ -15,141 +16,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_account_types';
 
-const defaultAccountTypes = [
-  {
-    id: 1,
-    name: 'Basic',
-    badge: 'Starter',
-    description: 'Perfect for beginners entering financial markets with zero commission and high leverage.',
-    category: 'live',
-    mt5Group: 'real\\PRO B',
-    minDeposit: 50,
-    maxLeverage: '1:1000',
-    spread: '2.40 pips',
-    commission: 'Zero',
-    executionMode: 'STP Execution',
-    swapTerms: 'Free 15 days',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: false,
-  },
-  {
-    id: 2,
-    name: 'Standard',
-    badge: 'Most Popular',
-    description: 'Ideal for active day traders requiring institutional execution and balanced margins.',
-    category: 'live',
-    mt5Group: 'real\\PRO B',
-    minDeposit: 100,
-    maxLeverage: '1:500',
-    spread: '2.00 pips',
-    commission: 'Zero',
-    executionMode: 'STP Execution',
-    swapTerms: 'Free 15 days',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: false,
-  },
-  {
-    id: 3,
-    name: 'ECN Pro',
-    badge: 'Raw Spread',
-    description: 'Direct Tier-1 institutional liquidity with ultra-tight 0.0 pip raw interbank spreads.',
-    category: 'live',
-    mt5Group: 'real\\PRO A',
-    minDeposit: 1000,
-    maxLeverage: '1:500',
-    spread: '0.00 pips',
-    commission: '$12/lot',
-    executionMode: 'True Raw ECN',
-    swapTerms: 'Islamic swap-free',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: false,
-  },
-  {
-    id: 4,
-    name: 'ECN',
-    badge: 'High Leverage',
-    description: 'Ultra-fast execution with low fixed markups and complete market depth access.',
-    category: 'live',
-    mt5Group: 'real\\PRO A',
-    minDeposit: 500,
-    maxLeverage: '1:1000',
-    spread: '1.00 pips',
-    commission: 'Zero',
-    executionMode: 'STP Execution',
-    swapTerms: 'Free 15 days',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: false,
-  },
-  {
-    id: 5,
-    name: 'PAMM',
-    badge: 'Managed Strategy',
-    description: 'Connect to verified fund managers with automatic, proportional profit distributions.',
-    category: 'managed',
-    mt5Group: 'real\\PRO B',
-    minDeposit: 50,
-    maxLeverage: '1:1000',
-    spread: '2.40 pips',
-    commission: 'Zero',
-    executionMode: 'PAMM Multi-Account',
-    swapTerms: 'Free 15 days',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: false,
-  },
-  {
-    id: 6,
-    name: 'Demo Account',
-    badge: 'Risk Free',
-    description: 'Master your trading strategies on live markets with $100,000 virtual balance and zero financial risk.',
-    category: 'demo',
-    mt5Group: 'demo\\forex-hedge-usd-01',
-    minDeposit: 100000,
-    maxLeverage: '1:2000',
-    spread: '2.00 pips',
-    commission: 'Zero',
-    executionMode: 'Demo Simulation',
-    swapTerms: 'Unlimited',
-    visible: true,
-    internalTransfer: false,
-    depositBonus: false,
-  },
-  {
-    id: 7,
-    name: 'VVIP',
-    badge: 'Institutional',
-    description: 'Exclusive tier with institutional multi-level rebates and white-glove service.',
-    category: 'live',
-    mt5Group: 'real\\PRO A',
-    minDeposit: 5000,
-    maxLeverage: '1:500',
-    spread: '0.00 pips',
-    commission: '$12/lot',
-    executionMode: 'Prime Brokerage',
-    swapTerms: 'VIP Bespoke',
-    visible: true,
-    internalTransfer: true,
-    depositBonus: true,
-  },
-];
+// seed data lives in src/data/json (defaultAccountTypes)
 
 export default function AdminAccountTypes() {
-  const [types, setTypes] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {
-      // ignore
-    }
-    return defaultAccountTypes;
-  });
+  const { items: types, setItems: setTypes } = useCollection('accountTypes');
 
   const [search, setSearch] = useState('');
   const [activeTab, setActiveTab] = useState('all');
@@ -178,14 +48,6 @@ export default function AdminAccountTypes() {
   const [formInternalTransfer, setFormInternalTransfer] = useState(true);
   const [formDepositBonus, setFormDepositBonus] = useState(false);
 
-  // Persist to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(types));
-    } catch {
-      // ignore
-    }
-  }, [types]);
 
   const handleRefresh = () => {
     setRefreshing(true);

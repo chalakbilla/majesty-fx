@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   ChevronRight,
   Download,
@@ -11,52 +12,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_account_statuses';
 
-const initialStatuses = [
-  {
-    id: 1,
-    statusName: 'Active',
-    description: 'Account in full operational status. Trading, deposits, and automated withdrawals permitted.',
-    active: true,
-  },
-  {
-    id: 2,
-    statusName: 'Pending KYC',
-    description: 'Account awaiting identity & residence documents verification. Trading enabled, withdrawals restricted.',
-    active: true,
-  },
-  {
-    id: 3,
-    statusName: 'Read Only',
-    description: 'Account restricted to view-only. Open orders can be closed, new trades & deposits locked.',
-    active: true,
-  },
-  {
-    id: 4,
-    statusName: 'Suspended',
-    description: 'Account fully locked due to compliance audit or negative balance safeguard trigger.',
-    active: false,
-  },
-  {
-    id: 5,
-    statusName: 'Archived',
-    description: 'Zero balance dormant account decommissioned from active MT5 routing tables.',
-    active: false,
-  },
-];
+// seed data lives in src/data/json (initialStatuses)
 
 export default function AdminAccountStatuses() {
-  const [statuses, setStatuses] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {
-      // ignore JSON parse error
-    }
-    return initialStatuses;
-  });
+  const { items: statuses, setItems: setStatuses } = useCollection('accountStatuses');
 
   const [search, setSearch] = useState('');
   const [copied, setCopied] = useState(false);
@@ -65,14 +24,6 @@ export default function AdminAccountStatuses() {
   const [newDescription, setNewDescription] = useState('');
   const [error, setError] = useState('');
 
-  // Persist statuses to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(statuses));
-    } catch {
-      // ignore storage error
-    }
-  }, [statuses]);
 
   // Filtered rows based on search input
   const filtered = useMemo(() => {

@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "clientName": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "referredBy": "Majesty Demo Partner 1",
+    "documentType": "national_id",
+    "frontSide": null,
+    "backSide": null,
+    "status": "PENDING",
+    "registeredDate": "2026-11-16 09:42",
+    "remark": "-"
+  },
+  {
+    "id": 2,
+    "clientName": "David Miller",
+    "email": "david.miller@demo.example.com",
+    "referredBy": "Majesty Demo Partner 2",
+    "documentType": "passport",
+    "frontSide": null,
+    "backSide": null,
+    "status": "PENDING",
+    "registeredDate": "2026-11-15 09:42",
+    "remark": "-"
+  },
+  {
+    "id": 3,
+    "clientName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "referredBy": "Majesty Demo Partner 1",
+    "documentType": "passport",
+    "frontSide": null,
+    "backSide": null,
+    "status": "APPROVED",
+    "registeredDate": "2026-10-18 09:42",
+    "remark": "-"
+  }
+]

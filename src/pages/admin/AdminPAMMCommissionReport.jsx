@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Award,
   CheckCircle,
@@ -12,38 +13,14 @@ import {
 } from 'lucide-react';
 
 export default function AdminPAMMCommissionReport() {
-  const [reports, setReports] = useState([]);
+  const { items: reports } = useCollection('pammCommissions');
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStatement, setSelectedStatement] = useState(null);
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/pamm/commissions', {
-        headers: { 'x-requested-with': 'XMLHttpRequest' },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.reports)) {
-        setReports(res.reports);
-      } else {
-        setReports([]);
-      }
-    } catch (err) {
-      console.error('Failed to load PAMM commission reports:', err);
-      setReports([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   const handleRefresh = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      loadData();
-    }, 400);
+    setTimeout(() => setIsLoading(false), 350);
   };
 
   const filteredReports = useMemo(() => {

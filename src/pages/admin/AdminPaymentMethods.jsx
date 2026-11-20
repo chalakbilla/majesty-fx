@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   RefreshCw,
@@ -25,52 +26,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_payment_methods';
 
-const INITIAL_METHODS = [
-  {
-    id: 'pm-1',
-    desk: 'referral',
-    walletName: 'BTC (Bitcoin) - Referral Vault',
-    walletBankInfo: 'bc1qu9fuu65ppjp6mea8ev0n5x9v2rv0tzzjtec5y0',
-    paymentType: 'Crypto (BTC)',
-    status: 'Active',
-    qrCodeUrl: '/images/qr_btc_referral_1793380767633.png',
-    createdAt: '10/30/2026, 10:49:29 PM',
-  },
-  {
-    id: 'pm-2',
-    desk: 'referral',
-    walletName: 'USDT (BEP20) - Referral Vault',
-    walletBankInfo: '0xb0a5CEbb9341F8dA1C157F5A7434288d8aAC0fC3',
-    paymentType: 'Crypto (BEP20)',
-    status: 'Inactive',
-    qrCodeUrl: '/images/v1_create-qr-code.png',
-    createdAt: '10/14/2026, 3:02:58 PM',
-  },
-  {
-    id: 'pm-3',
-    desk: 'referral',
-    walletName: 'USDT (TRC20) - REFERRAL Hot Wallet',
-    walletBankInfo: 'TTSLU7pSt3ry9m2AYYJWJRnXoiRug1stCc',
-    paymentType: 'Crypto (TRC20)',
-    status: 'Active',
-    qrCodeUrl: '/images/qr_usdt_trc20_1791971822496.png',
-    createdAt: '10/14/2026, 3:02:57 PM',
-  },
-];
+// seed data lives in src/data/json (INITIAL_METHODS)
 
 export default function AdminPaymentMethods() {
-  const [methods, setMethods] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {
-      // ignore
-    }
-    return INITIAL_METHODS;
-  });
+  const { items: methods, setItems: setMethods } = useCollection('paymentMethods');
 
   const [loading, setLoading] = useState(false);
   const [deskScope, setDeskScope] = useState('all'); // 'all', 'referral', 'ib1', 'ib2'
@@ -108,14 +67,6 @@ export default function AdminPaymentMethods() {
 
   const fileInputRef = useRef(null);
 
-  // Persist to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(methods));
-    } catch {
-      // ignore
-    }
-  }, [methods]);
 
   // Flash messages timeout
   useEffect(() => {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -10,38 +11,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_withdraw_history_v2';
 
-const DEFAULT_WITHDRAWALS = [
-  {
-    id: 'TX-90123',
-    txId: 'TX-90123',
-    account: '800101',
-    clientName: 'Marcus Chen',
-    clientEmail: 'marcus.chen@demo.example.com',
-    method: 'Bank Wire Transfer',
-    amount: '$1,200.00',
-    amountNum: 1200.0,
-    fee: '$15.00',
-    status: 'Pending',
-    date: '11/18/2026, 02:45 PM',
-    destination: 'Chase Bank NA •••• 4819 (SWIFT: CHASUS33)',
-    notes: 'Client withdrawal request submitted via Web Trader client portal.',
-  },
-  {
-    id: 'TX-90119',
-    txId: 'TX-90119',
-    account: '800103',
-    clientName: 'David Miller',
-    clientEmail: 'david.m@demo.example.com',
-    method: 'Crypto BTC',
-    amount: '$800.00',
-    amountNum: 800.0,
-    fee: '$8.00',
-    status: 'Rejected',
-    date: '11/16/2026, 05:22 PM',
-    destination: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-    notes: 'Unmet trading turnover requirement on credit bonus or verification flag.',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_WITHDRAWALS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -65,57 +35,20 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminWithdrawHistory() {
-  const [withdrawals, setWithdrawals] = useState([]);
+  const { items: withdrawals, update: updateWithdrawal } = useCollection('withdrawals');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState(null);
 
-  // Initialize from LocalStorage or exact reference defaults
-  useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          setWithdrawals(parsed);
-          return;
-        }
-      }
-    } catch {}
-    setWithdrawals(DEFAULT_WITHDRAWALS);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_WITHDRAWALS));
-    } catch {}
-  }, []);
-
   const handleRefresh = () => {
     setIsRefreshing(true);
-    setTimeout(() => {
-      try {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            setWithdrawals(parsed);
-            setIsRefreshing(false);
-            return;
-          }
-        }
-      } catch {}
-      setWithdrawals(DEFAULT_WITHDRAWALS);
-      setIsRefreshing(false);
-    }, 400);
+    setTimeout(() => setIsRefreshing(false), 400);
   };
 
+  // UPDATE: change the status of a withdrawal request (Pending / Approved / Rejected …)
   const handleUpdateStatus = (txId, newStatus) => {
-    const updated = withdrawals.map((item) =>
-      item.txId === txId ? { ...item, status: newStatus } : item
-    );
-    setWithdrawals(updated);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-    } catch {}
+    updateWithdrawal(txId, { status: newStatus });
     if (selectedRecord && selectedRecord.txId === txId) {
       setSelectedRecord({ ...selectedRecord, status: newStatus });
     }

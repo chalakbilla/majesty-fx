@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -10,23 +11,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_rejected_withdrawals';
 
-const DEFAULT_REJECTED_WITHDRAWALS = [
-  {
-    id: 'TX-90119',
-    txId: 'TX-90119',
-    account: '800103',
-    clientName: 'David Miller',
-    clientEmail: 'david.m@demo.example.com',
-    method: 'Crypto BTC',
-    amount: '$800.00',
-    amountNum: 800.0,
-    fee: '$8.00',
-    status: 'Rejected',
-    date: '11/16/2026, 05:22 PM',
-    walletAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-    rejectionReason: 'Unmet trading turnover requirement on credit bonus or verification flag',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_REJECTED_WITHDRAWALS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -50,58 +35,16 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminRejectedWithdrawals() {
-  const [withdrawals, setWithdrawals] = useState([]);
+  const { items: withdrawals } = useCollection('rejectedWithdrawals');
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [selectedAudit, setSelectedAudit] = useState(null);
 
-  const fetchWithdrawals = async () => {
-    try {
-      let apiLoaded = false;
-      try {
-        const res = await fetch('/api/admin/rejected-withdrawals');
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.withdrawals)) {
-          setWithdrawals(
-            data.withdrawals.map((w) => ({
-              id: w.id || w.txId,
-              txId: w.tx_id || w.id,
-              account: String(w.account_login || w.account || ''),
-              clientName: w.client_name || w.name || 'Client',
-              clientEmail: w.client_email || w.email || '',
-              method: w.method || w.payment_method || 'Crypto',
-              amount: typeof w.amount === 'number' ? `$${w.amount.toFixed(2)}` : String(w.amount || '$0.00'),
-              amountNum: Number(w.amount) || 0,
-              fee: typeof w.fee === 'number' ? `$${w.fee.toFixed(2)}` : String(w.fee || '$0.00'),
-              status: w.status || 'Rejected',
-              date: w.created_at ? new Date(w.created_at).toLocaleString() : w.date || '',
-              walletAddress: w.destination || w.wallet_address || '',
-              rejectionReason: w.rejection_reason || w.admin_comment || 'Compliance or policy review rejection',
-            }))
-          );
-          apiLoaded = true;
-        }
-      } catch {}
-
-      if (!apiLoaded) {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) {
-            setWithdrawals(JSON.parse(saved));
-          } else {
-            setWithdrawals(DEFAULT_REJECTED_WITHDRAWALS);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_REJECTED_WITHDRAWALS));
-          }
-        } catch {
-          setWithdrawals(DEFAULT_REJECTED_WITHDRAWALS);
-        }
-      }
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+    const fetchWithdrawals = () => {
+    setLoading(false);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {

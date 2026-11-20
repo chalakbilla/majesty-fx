@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Download,
   MessageSquare,
@@ -9,43 +10,15 @@ import {
   ChevronDown,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'majesty_admin_support_tickets';
 
-const defaultMockOpenTickets = [
-  {
-    id: '9901',
-    rawId: 'tck_demo_9901',
-    client: 'Alexander Wright',
-    email: 'alexander.wright@demo.example.com',
-    subject: 'Inquiry about MT5 Expert Advisor setup',
-    department: 'technical',
-    priority: 'NORMAL',
-    assignedTo: 'Support Desk Lead',
-    created: '11/17/2026, 11:12:59 AM',
-    status: 'OPEN',
-    message:
-      'Hello Support, I need assistance setting up my custom EA on the institutional MT5 terminal. Please confirm if DLL imports are supported on the demo and live clusters.',
-  },
-];
+// seed data lives in src/data/json (defaultMockOpenTickets)
 
 export default function AdminOpenTickets() {
-  const [tickets, setTickets] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          // Filter to only open/in-progress tickets
-          return parsed.filter(
-            (t) => (t.status || 'OPEN').toUpperCase() !== 'RESOLVED' && (t.status || 'OPEN').toUpperCase() !== 'CLOSED'
-          );
-        }
-      }
-    } catch {
-      // fallback
-    }
-    return defaultMockOpenTickets;
-  });
+  const { items: allTickets, update: updateTicket } = useCollection('supportTickets');
+  const tickets = useMemo(
+    () => allTickets.filter((t) => !['RESOLVED', 'CLOSED'].includes(String(t.status).toUpperCase())),
+    [allTickets]
+  );
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -54,24 +27,12 @@ export default function AdminOpenTickets() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sync to localStorage
-  const syncStorage = useCallback((updatedList) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedList));
-    } catch {
-      // ignore
-    }
-  }, []);
-
+  // UPDATE: resolving moves the ticket to the Closed Support page
   const handleResolveTicket = (ticketId) => {
     const target = tickets.find((t) => t.id === ticketId);
     if (!target) return;
 
-    const updated = tickets.map((t) =>
-      t.id === ticketId ? { ...t, status: 'RESOLVED' } : t
-    );
-    setTickets(updated.filter((t) => t.status !== 'RESOLVED'));
-    syncStorage(updated);
+    updateTicket(ticketId, { status: 'Resolved', lastReply: new Date().toLocaleString() });
 
     setSuccessToast('Ticket marked as Resolved and email confirmation sent!');
     setTimeout(() => {

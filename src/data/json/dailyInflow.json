@@ -1,0 +1,52 @@
+[
+  {
+    "id": "DIF-1",
+    "date": "2026-11-17",
+    "totalDeposit": 10000,
+    "totalWithdrawal": 0,
+    "netInflow": 10000,
+    "depositCount": 1,
+    "withdrawalCount": 0,
+    "topMethod": "crypto_usdt"
+  },
+  {
+    "id": "DIF-2",
+    "date": "2026-11-10",
+    "totalDeposit": 0,
+    "totalWithdrawal": 750,
+    "netInflow": -750,
+    "depositCount": 0,
+    "withdrawalCount": 1,
+    "topMethod": "crypto_usdt"
+  },
+  {
+    "id": "DIF-3",
+    "date": "2026-11-05",
+    "totalDeposit": 0,
+    "totalWithdrawal": 2975,
+    "netInflow": -2975,
+    "depositCount": 0,
+    "withdrawalCount": 1,
+    "topMethod": "bank_wire"
+  },
+  {
+    "id": "DIF-4",
+    "date": "2026-10-20",
+    "totalDeposit": 5000,
+    "totalWithdrawal": 0,
+    "netInflow": 5000,
+    "depositCount": 1,
+    "withdrawalCount": 0,
+    "topMethod": "crypto_usdt"
+  },
+  {
+    "id": "DIF-5",
+    "date": "2026-10-08",
+    "totalDeposit": 10000,
+    "totalWithdrawal": 0,
+    "netInflow": 10000,
+    "depositCount": 1,
+    "withdrawalCount": 0,
+    "topMethod": "crypto_btc"
+  }
+]

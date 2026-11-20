@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import useTableControls from '../../hooks/useTableControls.js';
+import TablePager from '../../components/admin/TablePager.jsx';
+import useCollection from '../../hooks/useCollection.js';
+import ConfirmDialog from '../../components/admin/ConfirmDialog.jsx';
+import RowActions from '../../components/admin/RowActions.jsx';
 import {
   Check,
   ChevronLeft,
@@ -12,44 +17,8 @@ import {
 } from 'lucide-react';
 
 export default function AdminKYCDocuments() {
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      clientName: 'Sofia Al-Mansoor',
-      email: 'sofia.mansoor@demo.example.com',
-      referredBy: 'Majesty Demo Partner 1',
-      documentType: 'national_id',
-      frontSide: null,
-      backSide: null,
-      status: 'PENDING',
-      registeredDate: '2026-11-16 09:42',
-      remark: '-',
-    },
-    {
-      id: 2,
-      clientName: 'David Miller',
-      email: 'david.miller@demo.example.com',
-      referredBy: 'Majesty Demo Partner 2',
-      documentType: 'passport',
-      frontSide: null,
-      backSide: null,
-      status: 'PENDING',
-      registeredDate: '2026-11-15 09:42',
-      remark: '-',
-    },
-    {
-      id: 3,
-      clientName: 'Alexander Wright',
-      email: 'alex.wright@demo.example.com',
-      referredBy: 'Majesty Demo Partner 1',
-      documentType: 'passport',
-      frontSide: null,
-      backSide: null,
-      status: 'APPROVED',
-      registeredDate: '2026-10-18 09:42',
-      remark: '-',
-    },
-  ]);
+  const { items: documents, setItems: setDocuments, remove: removeDocument } = useCollection('kycDocuments');
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const [activeTab, setActiveTab] = useState('ALL');
   const [searchQuery, setSearchQuery] = useState('');
@@ -79,6 +48,7 @@ export default function AdminKYCDocuments() {
     }
     return true;
   });
+  const table = useTableControls(filteredDocs, { pageSize: 10, resetKey: `${activeTab}|${searchQuery}` });
 
   const handleApprove = (id) => {
     setDocuments((prev) =>
@@ -109,7 +79,7 @@ export default function AdminKYCDocuments() {
 
   const handleExportCSV = () => {
     const headers = ['#', 'DESK', 'EMAIL', 'CLIENT NAME', 'DOCUMENT TYPE', 'STATUS', 'REGISTERED DATE', 'ADMIN REMARK'];
-    const rows = filteredDocs.map((d) => [
+    const rows = table.rows.map((d) => [
       d.id,
       d.email,
       d.email,
@@ -420,6 +390,7 @@ export default function AdminKYCDocuments() {
                             </button>
                           </>
                         )}
+                        <RowActions onDelete={() => setDeleteTarget(doc)} deleteTitle="Delete KYC record" />
                       </div>
                     </td>
                   </tr>
@@ -430,36 +401,19 @@ export default function AdminKYCDocuments() {
         </div>
 
         {/* Table Pager */}
-        <div className="table-pager">
-          <span className="table-pager-info">
-            Showing <strong>1</strong> to <strong>{filteredDocs.length}</strong> of{' '}
-            <strong>{documents.length}</strong> entries
-          </span>
-          <div className="table-pager-controls">
-            <label className="table-pager-size">
-              <span>Rows</span>
-              <select aria-label="Rows per page">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-              </select>
-            </label>
-            <nav aria-label="Pages" className="table-pager-pages">
-              <button aria-label="Previous page" className="table-pager-btn" disabled type="button">
-                <ChevronLeft style={{ width: '13px', height: '13px' }} />
-                <span>Prev</span>
-              </button>
-              <button aria-current="page" className="table-pager-btn table-pager-num" type="button">
-                1
-              </button>
-              <button aria-label="Next page" className="table-pager-btn" disabled type="button">
-                <span>Next</span>
-                <ChevronRight style={{ width: '13px', height: '13px' }} />
-              </button>
-            </nav>
-          </div>
-        </div>
+        <TablePager table={table} />
       </div>
+
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete KYC record?"
+        message={deleteTarget ? `${deleteTarget.clientName}'s KYC submission will be permanently removed.` : ''}
+        onConfirm={() => {
+          removeDocument(deleteTarget.id);
+          setDeleteTarget(null);
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
 
       {/* Review Modal */}
       {previewDoc && (

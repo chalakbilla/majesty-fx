@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "client": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "server": "#800103",
+    "amount": "+$3,500.00",
+    "method": "bank wire",
+    "txId": "SWIFT-…0184",
+    "date": "17 Nov 2026 13:12",
+    "status": "Pending",
+    "proof": "—"
+  },
+  {
+    "id": 2,
+    "client": "David Miller",
+    "email": "david.miller@demo.example.com",
+    "server": "#800105",
+    "amount": "+$2,500.00",
+    "method": "credit card",
+    "txId": "STRIPE…7429",
+    "date": "17 Nov 2026 10:12",
+    "status": "Pending",
+    "proof": "—"
+  }
+]

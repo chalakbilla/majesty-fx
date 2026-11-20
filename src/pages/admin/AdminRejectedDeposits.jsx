@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   ChevronRight,
@@ -13,22 +14,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_rejected_deposits';
 
-const DEFAULT_REJECTED_DEPOSITS = [
-  {
-    id: 'dep_demo_05',
-    requestId: 'dep_demo_05',
-    dateTime: '11/7/2026, 3:12:55 PM',
-    email: 'elena.rostova@demo.example.com',
-    tradeId: '800105',
-    amount: 'USD 1,200.00',
-    amountNum: 1200.0,
-    paymentMethod: 'crypto_usdt',
-    status: 'rejected',
-    proof: '0xbad0000000000000000000000000000000000000',
-    proofUrl: '',
-    adminComment: 'Transaction hash could not be found on explorer',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_REJECTED_DEPOSITS)
 
 function exportToCSV(filename, headers, rows) {
   const sanitize = (val) => {
@@ -52,7 +38,7 @@ function exportToCSV(filename, headers, rows) {
 }
 
 export default function AdminRejectedDeposits() {
-  const [deposits, setDeposits] = useState([]);
+  const { items: deposits } = useCollection('rejectedDeposits');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -61,59 +47,9 @@ export default function AdminRejectedDeposits() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchDeposits = async () => {
-    try {
-      let apiLoaded = false;
-      try {
-        const res = await fetch('/api/admin/rejected-deposits');
-        const data = await res.json();
-        if (res.ok && data.success && Array.isArray(data.deposits)) {
-          setDeposits(
-            data.deposits.map((e) => {
-              const t = Number(e.amount);
-              return {
-                id: e.id,
-                requestId: e.id,
-                dateTime: e.created_at ? new Date(e.created_at).toLocaleString() : '',
-                email: e.client_email || '',
-                tradeId: e.account_login != null ? String(e.account_login) : '',
-                amount: Number.isFinite(t)
-                  ? `${e.currency || 'USD'} ${t.toLocaleString('en-US', { minimumFractionDigits: 2 })}`
-                  : '',
-                amountNum: Number.isFinite(t) ? t : 0,
-                paymentMethod: e.payment_method || '',
-                status: e.status || 'rejected',
-                proof: e.tx_hash || e.receipt_url || e.proof_url || 'No proof recorded',
-                proofUrl: e.receipt_url || e.proof_url || '',
-                adminComment: e.admin_comment || e.remarks || 'No rejection reason recorded',
-              };
-            })
-          );
-          setErrorMessage('');
-          apiLoaded = true;
-        }
-      } catch {}
-
-      if (!apiLoaded) {
-        try {
-          const saved = localStorage.getItem(STORAGE_KEY);
-          if (saved) {
-            setDeposits(JSON.parse(saved));
-          } else {
-            setDeposits(DEFAULT_REJECTED_DEPOSITS);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(DEFAULT_REJECTED_DEPOSITS));
-          }
-        } catch {
-          setDeposits(DEFAULT_REJECTED_DEPOSITS);
-        }
-        setErrorMessage('');
-      }
-    } catch (err) {
-      setErrorMessage(err.message || 'Unable to load rejected deposits.');
-    } finally {
-      setLoading(false);
-      setIsRefreshing(false);
-    }
+    const fetchDeposits = () => {
+    setLoading(false);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {

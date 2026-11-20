@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   AlertCircle,
   Check,
@@ -16,73 +17,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_ib_withdrawals';
 
-const initialMockWithdrawals = [
-  {
-    id: 1,
-    rawId: 'ibw_1001',
-    reqId: 'IBW-1001',
-    ibName: 'Alexander Wright',
-    email: 'alex.wright@demo.example.com',
-    amount: '$1,250.00',
-    numericAmount: 1250,
-    method: 'USDT (TRC20)',
-    details: 'TYD2v7wM59H8GjU1284xLqZaB93Nkd11',
-    status: 'PENDING',
-    requestedDate: 'Nov 18, 2026, 14:20',
-    processedDate: '-',
-  },
-  {
-    id: 2,
-    rawId: 'ibw_1002',
-    reqId: 'IBW-1002',
-    ibName: 'Marcus Chen',
-    email: 'marcus.chen@demo.example.com',
-    amount: '$3,800.00',
-    numericAmount: 3800,
-    method: 'Bank Wire Transfer',
-    details: 'Barclays UK • Acc: ****8921 • Sort: 20-00-15',
-    status: 'COMPLETED',
-    requestedDate: 'Nov 16, 2026, 11:05',
-    processedDate: 'Nov 16, 2026, 15:40',
-  },
-  {
-    id: 3,
-    rawId: 'ibw_1003',
-    reqId: 'IBW-1003',
-    ibName: 'Sophia Al-Mansoor',
-    email: 'sophia.m@majestyfx.partner.com',
-    amount: '$850.00',
-    numericAmount: 850,
-    method: 'USDT (TRC20)',
-    details: 'TPLq3v892JnmZ47x9W81KdX0183Yua77',
-    status: 'COMPLETED',
-    requestedDate: 'Nov 15, 2026, 09:12',
-    processedDate: 'Nov 15, 2026, 10:30',
-  },
-  {
-    id: 4,
-    rawId: 'ibw_1004',
-    reqId: 'IBW-1004',
-    ibName: 'Elena Rostova',
-    email: 'elena.rostova@demo.example.com',
-    amount: '$500.00',
-    numericAmount: 500,
-    method: 'Bank Wire Transfer',
-    details: 'Deutsche Bank • IBAN: DE89 **** **** 4812',
-    status: 'REJECTED',
-    requestedDate: 'Nov 14, 2026, 16:45',
-    processedDate: 'Nov 15, 2026, 08:20',
-  },
-];
+// seed data lives in src/data/json (initialMockWithdrawals)
 
 export default function AdminIBCommissionWithdrawalHistory() {
-  const [withdrawals, setWithdrawals] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {}
-    return initialMockWithdrawals;
-  });
+  const { items: withdrawals, setItems: setWithdrawals } = useCollection('ibWithdrawals');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
@@ -90,79 +28,10 @@ export default function AdminIBCommissionWithdrawalHistory() {
   const [actionInProgress, setActionInProgress] = useState(null);
   const [alertNotice, setAlertNotice] = useState(null);
 
-  // Save to localStorage whenever withdrawals change
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(withdrawals));
-    } catch {}
-  }, [withdrawals]);
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
+  const loadData = useCallback(() => {
+    setIsLoading(false);
     setAlertNotice(null);
-    try {
-      let desk = 'all';
-      try {
-        const auth = localStorage.getItem('majesty_admin_auth');
-        if (auth) {
-          const parsed = JSON.parse(auth);
-          if (parsed.desk) desk = parsed.desk;
-        }
-      } catch {}
-
-      const res = await fetch(`/api/ib/withdrawals${desk && desk !== 'all' ? `?desk=${desk}` : ''}`, {
-        headers: { 'x-portal-scope': 'admin', 'x-admin-desk': desk },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.withdrawals) && res.withdrawals.length > 0) {
-        const formatted = res.withdrawals.map((item, idx) => ({
-          id: idx + 1,
-          rawId: item.id,
-          reqId: item.id && item.id.startsWith('ibw_') ? `IBW-${item.id.slice(-5)}` : item.id || `WDR-${idx + 1}`,
-          ibName: item.ibName || 'IB Partner',
-          email: item.ibEmail || '-',
-          amount: `$${(parseFloat(item.amount) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-          numericAmount: parseFloat(item.amount) || 0,
-          method: item.paymentMethod
-            ? item.paymentMethod.toUpperCase() === 'USDT' || item.paymentMethod.toLowerCase().includes('trc')
-              ? 'USDT (TRC20)'
-              : item.paymentMethod.toUpperCase() === 'BANK'
-              ? 'Bank Wire Transfer'
-              : item.paymentMethod
-            : 'Bank Wire Transfer',
-          details: item.walletAddress || item.bankDetails || item.details || item.notes || '-',
-          status: (item.status || 'pending').toUpperCase(),
-          requestedDate: item.createdAt
-            ? new Date(item.createdAt).toLocaleString('en-US', {
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              })
-            : '-',
-          processedDate:
-            item.status === 'completed' || item.status === 'rejected'
-              ? item.updatedAt
-                ? new Date(item.updatedAt).toLocaleString('en-US', {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                : 'Processed'
-              : '-',
-        }));
-        setWithdrawals(formatted);
-      }
-    } catch (e) {
-      console.warn('Failed to fetch live IB withdrawals:', e);
-    } finally {
-      setIsLoading(false);
-    }
   }, []);
 
   const handleRefresh = () => {
@@ -179,11 +48,6 @@ export default function AdminIBCommissionWithdrawalHistory() {
       setActionInProgress(item.rawId);
       setAlertNotice(null);
       try {
-        await fetch('/api/ib/withdrawals', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: item.rawId, status: 'completed' }),
-        }).catch(() => null);
 
         // Update local state
         const now = new Date().toLocaleString('en-US', {
@@ -226,15 +90,6 @@ export default function AdminIBCommissionWithdrawalHistory() {
       setActionInProgress(item.rawId);
       setAlertNotice(null);
       try {
-        await fetch('/api/ib/withdrawals', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            id: item.rawId,
-            status: 'rejected',
-            reason: reason.trim() || 'Request declined by administrator',
-          }),
-        }).catch(() => null);
 
         const now = new Date().toLocaleString('en-US', {
           month: 'short',

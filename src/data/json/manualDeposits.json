@@ -1,0 +1,16 @@
+[
+  {
+    "id": "MAN_DEP_01",
+    "createdAt": "2026-11-20T07:01:32.067Z",
+    "accountLogin": "800106",
+    "clientName": "Demo Trader",
+    "clientEmail": "democlient@majestyfx.com",
+    "amount": 10000,
+    "currency": "USD",
+    "paymentMethod": "USDT TRC20",
+    "txHash": "TRX7xK9921bF43aD90cE124567890abcdef12345678",
+    "adminComment": "Initial Sandbox Liquidity Provision",
+    "remarks": "Initial Sandbox Liquidity Provision",
+    "status": "Completed"
+  }
+]

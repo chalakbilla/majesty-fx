@@ -1,0 +1,16 @@
+[
+  {
+    "id": "dep_demo_05",
+    "requestId": "dep_demo_05",
+    "dateTime": "11/7/2026, 3:12:55 PM",
+    "email": "elena.rostova@demo.example.com",
+    "tradeId": "800105",
+    "amount": "USD 1,200.00",
+    "amountNum": 1200,
+    "paymentMethod": "crypto_usdt",
+    "status": "rejected",
+    "proof": "0xbad0000000000000000000000000000000000000",
+    "proofUrl": "",
+    "adminComment": "Transaction hash could not be found on explorer"
+  }
+]

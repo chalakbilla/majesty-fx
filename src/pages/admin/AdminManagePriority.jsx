@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   AlertCircle,
   Check,
@@ -15,56 +16,7 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_support_tickets';
 
-const initialMockTickets = [
-  {
-    id: 1,
-    ticketId: '9901',
-    email: 'alex.wright@demo.example.com',
-    subject: 'Inquiry about MT5 Expert Advisor setup',
-    department: 'technical',
-    priority: 'Medium',
-    message: 'Hello Support, I need assistance setting up my custom EA on the institutional MT5 terminal.',
-    status: 'Open',
-    date: '11/17/2026, 11:12:59 AM',
-    adminRemark: '',
-  },
-  {
-    id: 2,
-    ticketId: '9902',
-    email: 'marcus.chen@demo.example.com',
-    subject: 'PAMM Investor allocation reporting question',
-    department: 'pamm',
-    priority: 'Medium',
-    message: 'Can you provide the detailed performance and drawdown logs for PAMM Pool 1001 for last month?',
-    status: 'Resolved',
-    date: '11/15/2026, 3:12:59 PM',
-    adminRemark: 'Detailed reporting statement sent to client via secure ledger email.',
-  },
-  {
-    id: 3,
-    ticketId: '9903',
-    email: 'sophia.m@majestyfx.partner.com',
-    subject: 'Multi-tier sub-IB rebate calculation query',
-    department: 'billing',
-    priority: 'High',
-    message: 'Requesting verification of Tier 3 rebate accrual rates for direct downline trading volume.',
-    status: 'In-Progress',
-    date: '11/18/2026, 09:45:20 AM',
-    adminRemark: 'Auditing rebate transaction hashes.',
-  },
-  {
-    id: 4,
-    ticketId: '9904',
-    email: 'elena.rostova@demo.example.com',
-    subject: 'KYC Document verification status',
-    department: 'compliance',
-    priority: 'Low',
-    message: 'Uploaded proof of address document yesterday, please confirm if approved.',
-    status: 'Closed',
-    date: '11/14/2026, 02:15:30 PM',
-    adminRemark: 'Account verified successfully.',
-  },
-];
+// seed data lives in src/data/json (initialMockTickets)
 
 function transformRawTicket(e) {
   const messages = Array.isArray(e.messages) ? e.messages : [];
@@ -95,13 +47,7 @@ function transformRawTicket(e) {
 }
 
 export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets' }) {
-  const [tickets, setTickets] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {}
-    return initialMockTickets;
-  });
+  const { items: tickets, setItems: setTickets } = useCollection('ticketsManage');
 
   const [statusFilter, setStatusFilter] = useState(defaultStatusFilter);
   const [searchQuery, setSearchQuery] = useState('');
@@ -121,30 +67,10 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
     }
   }, [defaultStatusFilter]);
 
-  // Sync to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(tickets));
-    } catch {}
-  }, [tickets]);
 
-  // Fetch live tickets if endpoint exists
-  const loadTickets = useCallback(async () => {
-    setIsLoading(true);
+  const loadTickets = useCallback(() => {
+    setIsLoading(false);
     setErrorMessage('');
-    try {
-      const res = await fetch('/api/support/tickets')
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.tickets) && res.tickets.length > 0) {
-        setTickets(res.tickets.map(transformRawTicket));
-      }
-    } catch (e) {
-      console.warn('Failed to fetch live tickets:', e);
-    } finally {
-      setIsLoading(false);
-    }
   }, []);
 
   const handleRefresh = () => {
@@ -158,11 +84,6 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
   const handleStatusChange = async (ticket, newStatus) => {
     setErrorMessage('');
     try {
-      await fetch('/api/support/tickets', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId: ticket.id, status: newStatus.toLowerCase() }),
-      }).catch(() => null);
 
       setTickets((prev) =>
         prev.map((t) => (t.id === ticket.id ? { ...t, status: newStatus } : t))
@@ -179,11 +100,6 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
   const handlePriorityChange = async (ticket, newPriority) => {
     setErrorMessage('');
     try {
-      await fetch('/api/support/tickets', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId: ticket.id, priority: newPriority }),
-      }).catch(() => null);
 
       setTickets((prev) =>
         prev.map((t) => (t.id === ticket.id ? { ...t, priority: newPriority } : t))
@@ -204,11 +120,6 @@ export default function AdminManagePriority({ defaultStatusFilter = 'All Tickets
     setIsSending(true);
     setErrorMessage('');
     try {
-      await fetch('/api/support/tickets', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ticketId: selectedTicket.id, message: adminReply.trim() }),
-      }).catch(() => null);
 
       setTickets((prev) =>
         prev.map((t) =>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   FileSpreadsheet,
@@ -16,49 +17,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_export_jobs';
 
-const DEFAULT_JOBS = [
-  {
-    id: 'EXP-1092',
-    name: 'Client_Registry_All_Time',
-    dataset: 'Client Registry',
-    format: 'CSV',
-    records: 12480,
-    requestedBy: 'admin@majestyfx.com',
-    createdAt: 'Nov 19, 06:30 PM',
-    status: 'Completed',
-  },
-  {
-    id: 'EXP-1091',
-    name: 'Treasury_Finance_Last_30_Days',
-    dataset: 'Treasury & Finance',
-    format: 'CSV',
-    records: 4890,
-    requestedBy: 'admin@majestyfx.com',
-    createdAt: 'Nov 18, 02:15 PM',
-    status: 'Completed',
-  },
-  {
-    id: 'EXP-1090',
-    name: 'Dealing_Desk_MT5_Trades_This_Quarter',
-    dataset: 'Dealing Desk',
-    format: 'CSV',
-    records: 163080,
-    requestedBy: 'admin@majestyfx.com',
-    createdAt: 'Nov 15, 11:40 AM',
-    status: 'Completed',
-  },
-];
+// seed data lives in src/data/json (DEFAULT_JOBS)
 
 export default function AdminDataExport() {
-  const [jobs, setJobs] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return DEFAULT_JOBS;
-  });
+  const { items: jobs, setItems: setJobs } = useCollection('exportJobs');
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedDataset, setSelectedDataset] = useState('Client Registry');
@@ -66,14 +28,6 @@ export default function AdminDataExport() {
   const [selectedDateRange, setSelectedDateRange] = useState('All Time');
   const [successBanner, setSuccessBanner] = useState(null);
 
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(jobs));
-    } catch {
-      // ignore
-    }
-  }, [jobs]);
 
   const triggerDownload = (fileName, format, content) => {
     const mimeType = format === 'JSON' ? 'application/json' : 'text/csv;charset=utf-8;';

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   CheckCircle2,
@@ -15,33 +16,18 @@ import {
   Check,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'majesty_admin_approved_masters';
-
 export default function AdminApprovedAccounts() {
-  const [masters, setMasters] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return [];
-  });
+  const { items: allMasters, update } = useCollection('masters');
+  const masters = useMemo(
+    () => allMasters.filter((m) => m.status === 'approved' || m.status === 'paused'),
+    [allMasters]
+  );
 
   const [subscriptionsCount, setSubscriptionsCount] = useState(3);
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
   const [actionLoadingId, setActionLoadingId] = useState(null);
   const [toastMsg, setToastMsg] = useState(null);
-
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(masters));
-    } catch {
-      // ignore
-    }
-  }, [masters]);
 
   const handleRefresh = () => {
     setLoading(true);
@@ -57,9 +43,7 @@ export default function AdminApprovedAccounts() {
     const newStatus = currentStatus === 'paused' ? 'approved' : 'paused';
 
     setTimeout(() => {
-      setMasters((prev) =>
-        prev.map((m) => (m.id === masterId ? { ...m, status: newStatus } : m))
-      );
+      update(masterId, { status: newStatus });
       setActionLoadingId(null);
       setToastMsg(`Master account ${newStatus === 'paused' ? 'suspended' : 'reinstated'} successfully.`);
       setTimeout(() => setToastMsg(null), 3000);

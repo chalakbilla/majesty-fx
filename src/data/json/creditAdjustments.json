@@ -1,0 +1,32 @@
+[
+  {
+    "id": "CR-101",
+    "accountName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "tradeId": "800101",
+    "amount": 500,
+    "type": "Credit In",
+    "comment": "Welcome promotional margin credit bonus",
+    "date": "11/18/2026, 03:30 PM"
+  },
+  {
+    "id": "CR-102",
+    "accountName": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "tradeId": "800103",
+    "amount": 250,
+    "type": "Credit In",
+    "comment": "VIP volume tier loyalty incentive credit",
+    "date": "11/17/2026, 11:15 AM"
+  },
+  {
+    "id": "CR-103",
+    "accountName": "David Miller",
+    "email": "david.miller@demo.example.com",
+    "tradeId": "800105",
+    "amount": 100,
+    "type": "Credit Out",
+    "comment": "Expired promotion credit deduction",
+    "date": "11/15/2026, 09:45 AM"
+  }
+]

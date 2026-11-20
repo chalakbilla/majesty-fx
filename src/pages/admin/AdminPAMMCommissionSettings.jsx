@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   CheckCircle2,
   ChevronLeft,
@@ -9,45 +10,12 @@ import {
   Trash2,
 } from 'lucide-react';
 
-const INITIAL_TIERS = [
-  {
-    id: 1,
-    name: 'Tier 1 - Master Fund Manager',
-    type: 'Percentage',
-    value: '20.0%',
-    minVolume: '$100,000',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    name: 'Tier 2 - Senior Quantitative Co-Manager',
-    type: 'Percentage',
-    value: '15.0%',
-    minVolume: '$50,000',
-    status: 'Active',
-  },
-  {
-    id: 3,
-    name: 'Tier 3 - Sub-Manager & Introducing Pool',
-    type: 'Percentage',
-    value: '5.0%',
-    minVolume: '$10,000',
-    status: 'Active',
-  },
-  {
-    id: 4,
-    name: 'Tier 4 - High-Watermark Alpha Bonus',
-    type: 'Percentage',
-    value: '$1,000',
-    minVolume: '$500,000',
-    status: 'Active',
-  },
-];
+// seed data lives in src/data/json (INITIAL_TIERS)
 
 const STORAGE_KEY = 'majesty_pamm_commission_settings';
 
 export default function AdminPAMMCommissionSettings() {
-  const [tiers, setTiers] = useState(INITIAL_TIERS);
+  const { items: tiers, setItems: setTiers } = useCollection('pammCommissionTiers');
   const [payoutFrequency, setPayoutFrequency] = useState('Monthly');
   const [minPayout, setMinPayout] = useState('100');
   const [commissionCap, setCommissionCap] = useState('50,000');
@@ -63,7 +31,7 @@ export default function AdminPAMMCommissionSettings() {
   const [errorMessage, setErrorMessage] = useState('');
 
   // Load settings from storage or API
-  const loadSettings = useCallback(async () => {
+  const loadSettings = useCallback(() => {
     setIsLoading(true);
     setErrorMessage('');
     try {
@@ -79,31 +47,8 @@ export default function AdminPAMMCommissionSettings() {
         if (parsed.bonusAmount) setBonusAmount(parsed.bonusAmount);
         if (parsed.bonusType) setBonusType(parsed.bonusType);
         if (parsed.maxBonus) setMaxBonus(parsed.maxBonus);
-        if (Array.isArray(parsed.tiers) && parsed.tiers.length > 0) {
-          setTiers(parsed.tiers);
-        }
       } else {
-        // Attempt fetch from API if available
-        const res = await fetch('/api/pamm/commission-settings', {
-          headers: { 'x-requested-with': 'XMLHttpRequest' },
-        })
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null);
-
-        if (res?.success && res.settings) {
-          const s = res.settings;
-          setPayoutFrequency(s.payoutFrequency || 'Monthly');
-          setMinPayout(s.minPayout || '100');
-          setCommissionCap(s.commissionCap || '50,000');
-          setAutoPayment(typeof s.autoPayment === 'boolean' ? s.autoPayment : true);
-          setBonusTrigger(s.bonusTrigger || '500,000');
-          setBonusAmount(s.bonusAmount || '1000');
-          setBonusType(s.bonusType || 'Fixed');
-          setMaxBonus(s.maxBonus || '5,000');
-          if (Array.isArray(s.tiers) && s.tiers.length > 0) {
-            setTiers(s.tiers);
-          }
-        }
+        // nothing saved yet -> keep defaults
       }
     } catch (err) {
       console.error('Failed to load PAMM settings:', err);
@@ -116,7 +61,7 @@ export default function AdminPAMMCommissionSettings() {
     loadSettings();
   }, [loadSettings]);
 
-  const handleSave = async (e) => {
+  const handleSave = (e) => {
     if (e) e.preventDefault();
     setIsSaving(true);
     setErrorMessage('');
@@ -130,18 +75,11 @@ export default function AdminPAMMCommissionSettings() {
       bonusAmount,
       bonusType,
       maxBonus,
-      tiers,
     };
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 
-      // Also trigger optional server save
-      await fetch('/api/pamm/commission-settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      }).catch(() => null);
 
       setIsSaved(true);
       setTimeout(() => setIsSaved(false), 3000);

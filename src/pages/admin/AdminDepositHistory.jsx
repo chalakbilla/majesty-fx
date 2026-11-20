@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   ShieldCheck,
   PlusCircle,
@@ -22,98 +23,7 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
-const INITIAL_DEPOSITS = [
-  {
-    id: 1,
-    requestId: 'DEP_DEMO_06',
-    date: '17 Nov 2026',
-    time: '15:51',
-    clientName: 'Demo Trader',
-    email: 'democlient@majestyfx.com',
-    tradeId: '#800106',
-    amount: '+$10,000.00',
-    amountValue: 10000,
-    paymentMethod: 'crypto usdt',
-    status: 'Approved',
-    proof: 'TRX7xK9921bF43aD90cE124567890abcdef12345678',
-    adminComment: 'Initial Demo Balance Funding',
-  },
-  {
-    id: 2,
-    requestId: 'DEP_DEMO_02',
-    date: '17 Nov 2026',
-    time: '13:12',
-    clientName: 'Sofia Al-Mansoor',
-    email: 'sofia.mansoor@demo.example.com',
-    tradeId: '#800103',
-    amount: '+$3,500.00',
-    amountValue: 3500,
-    paymentMethod: 'bank wire',
-    status: 'Pending',
-    proof: 'SWIFT-WIRE-TRANSFER-REF-902184-BANK',
-    adminComment: 'Bank Wire Transfer Deposit',
-  },
-  {
-    id: 3,
-    requestId: 'DEP_DEMO_04',
-    date: '17 Nov 2026',
-    time: '10:12',
-    clientName: 'David Miller',
-    email: 'david.miller@demo.example.com',
-    tradeId: '#800105',
-    amount: '+$2,500.00',
-    amountValue: 2500,
-    paymentMethod: 'credit card',
-    status: 'Pending',
-    proof: 'STRIPE-PAY-CHARGE-CC-74291048',
-    adminComment: 'Visa Direct Funding',
-  },
-  {
-    id: 4,
-    requestId: 'DEP_DEMO_05',
-    date: '07 Nov 2026',
-    time: '15:12',
-    clientName: 'Elena Rostova',
-    email: 'elena.rostova@demo.example.com',
-    tradeId: '#800105',
-    amount: '+$1,200.00',
-    amountValue: 1200,
-    paymentMethod: 'crypto usdt',
-    status: 'Rejected',
-    proof: 'INVALID-HASH-0x000000000000000000000',
-    adminComment: 'Invalid TXID hash',
-  },
-  {
-    id: 5,
-    requestId: 'DEP_DEMO_01',
-    date: '20 Oct 2026',
-    time: '15:12',
-    clientName: 'Alexander Wright',
-    email: 'alex.wright@demo.example.com',
-    tradeId: '#800101',
-    amount: '+$5,000.00',
-    amountValue: 5000,
-    paymentMethod: 'crypto usdt',
-    status: 'Approved',
-    proof: 'TRX-TXID-991204857102948571029348',
-    adminComment: 'Crypto Deposit (USDT TRC20)',
-  },
-  {
-    id: 6,
-    requestId: 'DEP_DEMO_03',
-    date: '08 Oct 2026',
-    time: '15:12',
-    clientName: 'Marcus Chen',
-    email: 'marcus.chen@demo.example.com',
-    tradeId: '#800104',
-    amount: '+$10,000.00',
-    amountValue: 10000,
-    paymentMethod: 'crypto btc',
-    status: 'Approved',
-    proof: 'BTC-BLOCKCHAIN-TX-49201948571029',
-    adminComment: 'BTC Institutional Liquidity',
-  },
-];
+// seed data lives in src/data/json (INITIAL_DEPOSITS)
 
 const AVAILABLE_ACCOUNTS = [
   { login: '800106', clientName: 'Demo Trader', clientEmail: 'democlient@majestyfx.com', desk: 'referral', accountType: 'Standard Account', balance: 10000 },
@@ -124,7 +34,7 @@ const AVAILABLE_ACCOUNTS = [
 ];
 
 export default function AdminDepositHistory() {
-  const [deposits, setDeposits] = useState(INITIAL_DEPOSITS);
+  const { items: deposits, setItems: setDeposits } = useCollection('deposits');
   const [activeTab, setActiveTab] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);

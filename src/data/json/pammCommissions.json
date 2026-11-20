@@ -1,0 +1,46 @@
+[
+  {
+    "id": "pcr-1",
+    "period": "Oct 2026",
+    "pammAccount": "PM-1001",
+    "fundManager": "Marcus Chen",
+    "totalProfit": 18400,
+    "managerPercent": 20,
+    "managerShare": 3680,
+    "investorPayout": 14720,
+    "status": "Settled"
+  },
+  {
+    "id": "pcr-2",
+    "period": "Oct 2026",
+    "pammAccount": "PM-1002",
+    "fundManager": "Elena Petrova",
+    "totalProfit": 22100,
+    "managerPercent": 25,
+    "managerShare": 5525,
+    "investorPayout": 16575,
+    "status": "Settled"
+  },
+  {
+    "id": "pcr-3",
+    "period": "Nov 2026",
+    "pammAccount": "PM-1001",
+    "fundManager": "Marcus Chen",
+    "totalProfit": 9650,
+    "managerPercent": 20,
+    "managerShare": 1930,
+    "investorPayout": 7720,
+    "status": "Pending"
+  },
+  {
+    "id": "pcr-4",
+    "period": "Nov 2026",
+    "pammAccount": "PM-1003",
+    "fundManager": "Rahul Verma",
+    "totalProfit": 2100,
+    "managerPercent": 15,
+    "managerShare": 315,
+    "investorPayout": 1785,
+    "status": "Pending"
+  }
+]

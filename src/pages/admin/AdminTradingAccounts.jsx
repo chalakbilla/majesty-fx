@@ -1,4 +1,9 @@
 import { useState } from 'react';
+import ConfirmDialog from '../../components/admin/ConfirmDialog.jsx';
+import RowActions from '../../components/admin/RowActions.jsx';
+import useTableControls from '../../hooks/useTableControls.js';
+import TablePager from '../../components/admin/TablePager.jsx';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Activity,
   Check,
@@ -17,10 +22,10 @@ import {
   Users,
   X,
 } from 'lucide-react';
-import { initialTradingAccounts } from '../../data/adminData.js';
 
 export default function AdminTradingAccounts() {
-  const [accounts, setAccounts] = useState(initialTradingAccounts);
+  const { items: accounts, setItems: setAccounts, remove: removeAccount } = useCollection('tradingAccounts');
+  const [deleteTarget, setDeleteTarget] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [leverageFilter, setLeverageFilter] = useState('');
   const [syncingId, setSyncingId] = useState(null);
@@ -49,6 +54,7 @@ export default function AdminTradingAccounts() {
 
     return matchesSearch && matchesLeverage;
   });
+  const table = useTableControls(filteredAccounts, { pageSize: 10, resetKey: `${searchQuery}|${leverageFilter}` });
 
   const totalAccounts = accounts.length;
   const activeAccounts = accounts.filter((a) => a.status === 'ACTIVE').length;
@@ -106,7 +112,7 @@ export default function AdminTradingAccounts() {
 
   const handleExportCSV = () => {
     const headers = ['ACCOUNT NO', 'CLIENT NAME', 'EMAIL', 'SERVER', 'LEVERAGE', 'BALANCE', 'EQUITY', 'FLOATING P/L', 'STATUS'];
-    const rows = filteredAccounts.map((a) => [
+    const rows = table.rows.map((a) => [
       a.accountNo,
       `"${a.clientName}"`,
       a.email,
@@ -426,6 +432,7 @@ export default function AdminTradingAccounts() {
                         >
                           <Sliders style={{ width: '14px', height: '14px' }} />
                         </button>
+                        <RowActions onDelete={() => setDeleteTarget(acc)} deleteTitle="Delete trading account" />
                       </div>
                     </td>
                   </tr>
@@ -436,36 +443,7 @@ export default function AdminTradingAccounts() {
         </div>
 
         {/* Table Pager - Exactly matching scratch_main_exact.html */}
-        <div className="table-pager">
-          <span className="table-pager-info">
-            Showing <strong>1</strong> to <strong>{filteredAccounts.length}</strong> of{' '}
-            <strong>{accounts.length}</strong> entries
-          </span>
-          <div className="table-pager-controls">
-            <label className="table-pager-size">
-              <span>Rows</span>
-              <select aria-label="Rows per page">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-              </select>
-            </label>
-            <nav aria-label="Pages" className="table-pager-pages">
-              <button aria-label="Previous page" className="table-pager-btn" disabled type="button">
-                <ChevronLeft style={{ width: '13px', height: '13px' }} />
-                <span>Prev</span>
-              </button>
-              <button aria-current="page" className="table-pager-btn table-pager-num" type="button">
-                1
-              </button>
-              <button aria-label="Next page" className="table-pager-btn" disabled type="button">
-                <span>Next</span>
-                <ChevronRight style={{ width: '13px', height: '13px' }} />
-              </button>
-            </nav>
-          </div>
-        </div>
+        <TablePager table={table} />
       </div>
 
       {/* Manage Trading Account Modal - Exactly matching Next.js modal in zip */}
@@ -757,6 +735,16 @@ export default function AdminTradingAccounts() {
           </div>
         </div>
       )}
+      <ConfirmDialog
+        open={!!deleteTarget}
+        title="Delete trading account?"
+        message={deleteTarget ? `${deleteTarget.accountNo+' ('+deleteTarget.clientName+')'} will be removed permanently.` : ''}
+        onConfirm={() => {
+          removeAccount(deleteTarget.id);
+          setDeleteTarget(null);
+        }}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </div>
   );
 }

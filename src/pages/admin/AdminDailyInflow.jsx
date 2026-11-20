@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   FileSpreadsheet,
@@ -16,70 +17,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_daily_inflow';
 
-const INITIAL_DAILY_INFLOW = [
-  {
-    id: 'DIF-1',
-    date: '2026-11-17',
-    totalDeposit: 10000,
-    totalWithdrawal: 0,
-    netInflow: 10000,
-    depositCount: 1,
-    withdrawalCount: 0,
-    topMethod: 'crypto_usdt',
-  },
-  {
-    id: 'DIF-2',
-    date: '2026-11-10',
-    totalDeposit: 0,
-    totalWithdrawal: 750,
-    netInflow: -750,
-    depositCount: 0,
-    withdrawalCount: 1,
-    topMethod: 'crypto_usdt',
-  },
-  {
-    id: 'DIF-3',
-    date: '2026-11-05',
-    totalDeposit: 0,
-    totalWithdrawal: 2975,
-    netInflow: -2975,
-    depositCount: 0,
-    withdrawalCount: 1,
-    topMethod: 'bank_wire',
-  },
-  {
-    id: 'DIF-4',
-    date: '2026-10-20',
-    totalDeposit: 5000,
-    totalWithdrawal: 0,
-    netInflow: 5000,
-    depositCount: 1,
-    withdrawalCount: 0,
-    topMethod: 'crypto_usdt',
-  },
-  {
-    id: 'DIF-5',
-    date: '2026-10-08',
-    totalDeposit: 10000,
-    totalWithdrawal: 0,
-    netInflow: 10000,
-    depositCount: 1,
-    withdrawalCount: 0,
-    topMethod: 'crypto_btc',
-  },
-];
+// seed data lives in src/data/json (INITIAL_DAILY_INFLOW)
 
 export default function AdminDailyInflow() {
-  const [records, setRecords] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {}
-    return INITIAL_DAILY_INFLOW;
-  });
+  const { items: records, setItems: setRecords } = useCollection('dailyInflow');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [fromDate, setFromDate] = useState('');
@@ -89,42 +30,10 @@ export default function AdminDailyInflow() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    } catch {}
-  }, [records]);
 
-  const handleRefresh = async () => {
+    const handleRefresh = () => {
     setIsRefreshing(true);
-    try {
-      let desk = 'all';
-      try {
-        const auth = localStorage.getItem('majesty_admin_auth');
-        if (auth) {
-          const parsed = JSON.parse(auth);
-          if (parsed.desk) desk = parsed.desk;
-        }
-      } catch {}
-
-      const res = await fetch('/api/admin/daily-inflow', {
-        headers: {
-          'x-portal-scope': 'admin',
-          ...(desk ? { 'x-admin-desk': desk } : {}),
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.success && Array.isArray(data.records) && data.records.length > 0) {
-          setRecords(data.records);
-        }
-      }
-    } catch {
-      // Retain existing records gracefully
-    } finally {
-      setTimeout(() => setIsRefreshing(false), 400);
-    }
+    setTimeout(() => setIsRefreshing(false), 400);
   };
 
   const filtered = useMemo(() => {

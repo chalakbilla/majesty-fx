@@ -1,0 +1,218 @@
+[
+  {
+    "title": "Total Deposits",
+    "to": "/admin/demo",
+    "icon": "Wallet",
+    "gradient": "from-emerald-400 to-emerald-600",
+    "shadow": "rgba(5, 150, 105, 0.22) 0px 3px 8px",
+    "metric": "totalDeposits",
+    "format": "money"
+  },
+  {
+    "title": "Total Withdrawals",
+    "to": "/admin/demo",
+    "icon": "ArrowDown",
+    "gradient": "from-rose-400 to-rose-600",
+    "shadow": "rgba(225, 29, 72, 0.22) 0px 3px 8px",
+    "metric": "totalWithdrawals",
+    "format": "money"
+  },
+  {
+    "title": "Net Deposit",
+    "to": "/admin/demo",
+    "icon": "TrendingUp",
+    "gradient": "from-sky-400 to-sky-600",
+    "shadow": "rgba(2, 132, 199, 0.22) 0px 3px 8px",
+    "metric": "netDeposit",
+    "format": "money"
+  },
+  {
+    "title": "Total Equity",
+    "to": "/admin/trading-accounts",
+    "icon": "Gem",
+    "gradient": "from-purple-400 to-purple-600",
+    "shadow": "rgba(124, 58, 237, 0.22) 0px 3px 8px",
+    "metric": "totalEquity",
+    "format": "money"
+  },
+  {
+    "title": "Total Credit",
+    "to": "/admin/demo",
+    "icon": "Landmark",
+    "gradient": "from-blue-400 to-blue-600",
+    "shadow": "rgba(37, 99, 235, 0.22) 0px 3px 8px",
+    "metric": "totalCredit",
+    "format": "money"
+  },
+  {
+    "title": "Credit Used",
+    "to": "/admin/demo",
+    "icon": "BarChart3",
+    "gradient": "from-amber-400 to-amber-600",
+    "shadow": "rgba(217, 119, 6, 0.22) 0px 3px 8px",
+    "metric": "creditUsed",
+    "format": "money"
+  },
+  {
+    "title": "Withdrawable Equity",
+    "to": "/admin/demo",
+    "icon": "CreditCard",
+    "gradient": "from-emerald-400 to-emerald-600",
+    "shadow": "rgba(5, 150, 105, 0.22) 0px 3px 8px",
+    "metric": "withdrawableEquity",
+    "format": "money"
+  },
+  {
+    "title": "Total Clients",
+    "to": "/admin/clients",
+    "icon": "Users",
+    "gradient": "from-sky-400 to-sky-600",
+    "shadow": "rgba(2, 132, 199, 0.22) 0px 3px 8px",
+    "metric": "totalClients",
+    "format": "count"
+  },
+  {
+    "title": "Trading Accounts",
+    "to": "/admin/trading-accounts",
+    "icon": "UserCheck",
+    "gradient": "from-blue-400 to-blue-600",
+    "shadow": "rgba(37, 99, 235, 0.22) 0px 3px 8px",
+    "metric": "tradingAccounts",
+    "format": "count"
+  },
+  {
+    "title": "Total Users",
+    "to": "/admin/clients",
+    "icon": "Users",
+    "gradient": "from-purple-400 to-purple-600",
+    "shadow": "rgba(124, 58, 237, 0.22) 0px 3px 8px",
+    "metric": "totalUsers",
+    "format": "count"
+  },
+  {
+    "title": "Active Visitors",
+    "to": "/admin/clients",
+    "icon": "Users",
+    "gradient": "from-amber-400 to-amber-600",
+    "shadow": "rgba(217, 119, 6, 0.22) 0px 3px 8px",
+    "metric": "activeVisitors",
+    "format": "count"
+  },
+  {
+    "title": "New Users (24H)",
+    "to": "/admin/clients",
+    "icon": "UserPlus",
+    "gradient": "from-emerald-400 to-emerald-600",
+    "shadow": "rgba(5, 150, 105, 0.22) 0px 3px 8px",
+    "metric": "newUsers24h",
+    "format": "count"
+  },
+  {
+    "title": "KYC Verified Clients",
+    "to": "/admin/kyc-documents",
+    "icon": "ShieldCheck",
+    "gradient": "from-emerald-400 to-emerald-600",
+    "shadow": "rgba(5, 150, 105, 0.22) 0px 3px 8px",
+    "metric": "kycVerified",
+    "format": "count"
+  },
+  {
+    "title": "PAMM Accounts",
+    "to": "/admin/pamm-clients",
+    "icon": "Layers",
+    "gradient": "from-purple-400 to-purple-600",
+    "shadow": "rgba(124, 58, 237, 0.22) 0px 3px 8px",
+    "metric": "pammAccounts",
+    "format": "count"
+  },
+  {
+    "title": "Affiliates",
+    "to": "/admin/clients",
+    "icon": "MailCheck",
+    "gradient": "from-amber-400 to-amber-600",
+    "shadow": "rgba(217, 119, 6, 0.22) 0px 3px 8px",
+    "metric": "affiliates",
+    "format": "count"
+  },
+  {
+    "title": "Copy Trading Accounts",
+    "to": "/admin/copy-trading",
+    "icon": "Repeat",
+    "gradient": "from-blue-400 to-blue-600",
+    "shadow": "rgba(37, 99, 235, 0.22) 0px 3px 8px",
+    "metric": "copyTradingAccounts",
+    "format": "count"
+  },
+  {
+    "title": "Total Trading Accounts",
+    "to": "/admin/trading-accounts",
+    "icon": "Layers",
+    "gradient": "from-purple-400 to-purple-600",
+    "shadow": "rgba(124, 58, 237, 0.22) 0px 3px 8px",
+    "metric": "totalTradingAccounts",
+    "format": "count"
+  },
+  {
+    "title": "Total Transactions",
+    "to": "/admin/demo",
+    "icon": "ArrowLeftRight",
+    "gradient": "from-sky-400 to-sky-600",
+    "shadow": "rgba(2, 132, 199, 0.22) 0px 3px 8px",
+    "metric": "totalTransactions",
+    "format": "count"
+  },
+  {
+    "title": "Pending Deposits",
+    "to": "/admin/demo",
+    "icon": "Wallet",
+    "gradient": "from-amber-400 to-amber-600",
+    "shadow": "rgba(217, 119, 6, 0.22) 0px 3px 8px",
+    "metric": "pendingDeposits",
+    "format": "count"
+  },
+  {
+    "title": "Approved Deposits",
+    "to": "/admin/demo",
+    "icon": "TrendingUp",
+    "gradient": "from-emerald-400 to-emerald-600",
+    "shadow": "rgba(5, 150, 105, 0.22) 0px 3px 8px",
+    "metric": "approvedDeposits",
+    "format": "count"
+  },
+  {
+    "title": "Rejected Deposits",
+    "to": "/admin/demo",
+    "icon": "ArrowDown",
+    "gradient": "from-rose-400 to-rose-600",
+    "shadow": "rgba(225, 29, 72, 0.22) 0px 3px 8px",
+    "metric": "rejectedDeposits",
+    "format": "count"
+  },
+  {
+    "title": "Pending Withdrawals",
+    "to": "/admin/demo",
+    "icon": "Gem",
+    "gradient": "from-amber-400 to-amber-600",
+    "shadow": "rgba(217, 119, 6, 0.22) 0px 3px 8px",
+    "metric": "pendingWithdrawals",
+    "format": "count"
+  },
+  {
+    "title": "Approved Withdrawals",
+    "to": "/admin/demo",
+    "icon": "Landmark",
+    "gradient": "from-sky-400 to-sky-600",
+    "shadow": "rgba(2, 132, 199, 0.22) 0px 3px 8px",
+    "metric": "approvedWithdrawals",
+    "format": "count"
+  },
+  {
+    "title": "Rejected Withdrawals",
+    "to": "/admin/demo",
+    "icon": "BarChart3",
+    "gradient": "from-rose-400 to-rose-600",
+    "shadow": "rgba(225, 29, 72, 0.22) 0px 3px 8px",
+    "metric": "rejectedWithdrawals",
+    "format": "count"
+  }
+]

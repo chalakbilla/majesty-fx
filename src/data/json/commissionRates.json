@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "level": "Base Level 1",
+    "forex": "4.00",
+    "metals": "6.00",
+    "indices": "2.50",
+    "crypto": "8.00",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "level": "Level 2 Partner",
+    "forex": "6.00",
+    "metals": "8.00",
+    "indices": "3.50",
+    "crypto": "10.00",
+    "status": "Active"
+  },
+  {
+    "id": 3,
+    "level": "Master Affiliate",
+    "forex": "8.00",
+    "metals": "10.00",
+    "indices": "5.00",
+    "crypto": "12.00",
+    "status": "Active"
+  }
+]

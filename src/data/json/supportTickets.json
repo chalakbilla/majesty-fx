@@ -1,0 +1,110 @@
+[
+  {
+    "id": "9901",
+    "rawId": "tck_demo_9901",
+    "client": "Alexander Wright",
+    "email": "alexander.wright@demo.example.com",
+    "subject": "Inquiry about MT5 Expert Advisor setup",
+    "department": "technical",
+    "priority": "NORMAL",
+    "assignedTo": "Support Desk Lead",
+    "created": "11/17/2026, 11:12:59 AM",
+    "status": "OPEN",
+    "message": "Hello Support, I need assistance setting up my custom EA on the institutional MT5 terminal. Please confirm if DLL imports are supported on the demo and live clusters."
+  },
+  {
+    "id": "9903",
+    "rawId": "tck_demo_9903",
+    "client": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "subject": "Withdrawal pending for more than 24 hours",
+    "department": "finance",
+    "priority": "HIGH",
+    "assignedTo": "Finance Desk",
+    "created": "11/18/2026, 09:20:11 AM",
+    "status": "OPEN",
+    "message": "My USDT withdrawal request has been pending since yesterday. Could you please check its status?"
+  },
+  {
+    "id": "9904",
+    "rawId": "tck_demo_9904",
+    "client": "David Miller",
+    "email": "david.miller@demo.example.com",
+    "subject": "KYC document rejected - need clarification",
+    "department": "kyc",
+    "priority": "NORMAL",
+    "assignedTo": "Compliance Desk",
+    "created": "11/19/2026, 02:45:30 PM",
+    "status": "OPEN",
+    "message": "My passport upload was rejected. What is the accepted file format and size?"
+  },
+  {
+    "id": "9905",
+    "rawId": "tck_demo_9905",
+    "client": "Priya Nair",
+    "email": "priya.nair@demo.example.com",
+    "subject": "Request to change account leverage",
+    "department": "technical",
+    "priority": "LOW",
+    "assignedTo": "Support Desk Lead",
+    "created": "11/19/2026, 05:10:02 PM",
+    "status": "OPEN",
+    "message": "Please change my leverage from 1:100 to 1:200 on my live MT5 account."
+  },
+  {
+    "id": "#9902",
+    "rawId": 2,
+    "client": "Marcus Chen",
+    "email": "marcus.chen@demo.example.com",
+    "subject": "PAMM Investor allocation reporting question",
+    "department": "pamm",
+    "priority": "HIGH",
+    "created": "11/15/2026, 3:12:59 PM",
+    "lastReply": "11/17/2026, 3:13:00 PM",
+    "status": "Resolved",
+    "messages": [
+      {
+        "id": 1,
+        "sender": "client",
+        "senderName": "Marcus Chen",
+        "message": "Can you provide the detailed performance and drawdown logs for PAMM Pool 1001 for last month?",
+        "timestamp": "2026-11-15T15:12:59Z"
+      },
+      {
+        "id": 2,
+        "sender": "admin",
+        "senderName": "Support Desk Lead",
+        "message": "Detailed reporting statement sent to client via secure ledger email. Pool yield verified at +18.4%.",
+        "timestamp": "2026-11-17T15:13:00Z"
+      }
+    ]
+  },
+  {
+    "id": "#9904",
+    "rawId": 4,
+    "client": "Elena Rostova",
+    "email": "elena.rostova@demo.example.com",
+    "subject": "KYC Document verification status",
+    "department": "compliance",
+    "priority": "LOW",
+    "created": "11/14/2026, 02:15:30 PM",
+    "lastReply": "11/15/2026, 11:20:10 AM",
+    "status": "Closed",
+    "messages": [
+      {
+        "id": 1,
+        "sender": "client",
+        "senderName": "Elena Rostova",
+        "message": "Uploaded proof of address document yesterday, please confirm if approved.",
+        "timestamp": "2026-11-14T14:15:30Z"
+      },
+      {
+        "id": 2,
+        "sender": "admin",
+        "senderName": "Compliance Officer",
+        "message": "Account verified successfully. KYC Tier 2 operational limits now unlocked.",
+        "timestamp": "2026-11-15T11:20:10Z"
+      }
+    ]
+  }
+]

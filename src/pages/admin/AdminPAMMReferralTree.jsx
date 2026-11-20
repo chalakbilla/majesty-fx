@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Award,
   ChevronDown,
@@ -12,37 +13,33 @@ import {
 } from 'lucide-react';
 
 export default function AdminPAMMReferralTree() {
-  const [trees, setTrees] = useState([]);
+  const { items: pammAccounts } = useCollection('pammAccounts');
+  const { items: pammClients } = useCollection('pammClients');
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [expandedNodes, setExpandedNodes] = useState({});
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      // Allow live synchronization if endpoints or mock data exist
-      const [resAccounts, resClients] = await Promise.all([
-        fetch('/api/pamm/accounts', { headers: { 'x-requested-with': 'XMLHttpRequest' } })
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null),
-        fetch('/api/pamm/clients', { headers: { 'x-requested-with': 'XMLHttpRequest' } })
-          .then((r) => (r.ok ? r.json() : null))
-          .catch(() => null),
-      ]);
-
-      const accounts = resAccounts?.success && Array.isArray(resAccounts.accounts) ? resAccounts.accounts : [];
-      const clients = resClients?.success && Array.isArray(resClients.clients) ? resClients.clients : [];
-
-      const mappedTrees = accounts.map((acc) => {
-        const accNo = acc.accountNo;
-        const downline = clients
-          .filter(
-            (c) =>
-              c.pammAccount === accNo ||
-              (acc.clientName && c.strategyName?.toLowerCase() === acc.clientName?.toLowerCase())
-          )
+  // The tree is derived from the PAMM accounts + PAMM clients collections,
+  // so edits on those pages are reflected here automatically.
+  const trees = useMemo(
+    () =>
+      pammAccounts.map((acc) => ({
+        id: `master_${acc.id}`,
+        name: acc.fundManager || 'PAMM Master Manager',
+        email: acc.managerEmail || 'manager@majestyfx.com',
+        role: 'Master',
+        programName: acc.strategyPool || 'Alpha Pool',
+        accountNo: acc.accountNo,
+        allocatedCapital: Number(acc.balanceNum ?? acc.aum) || 0,
+        profitEarned: pammClients
+          .filter((c) => c.pammAccount === acc.accountNo)
+          .reduce((sum, c) => sum + (Number(c.totalPl) || 0), 0),
+        status: acc.status || 'Active',
+        joinedAt: acc.startDate,
+        investors: pammClients
+          .filter((c) => c.pammAccount === acc.accountNo)
           .map((c) => ({
-            id: `inv_${c.id}_${c.email}`,
+            id: `inv_${c.id}`,
             name: c.clientName,
             email: c.email,
             role: 'Investor',
@@ -51,44 +48,26 @@ export default function AdminPAMMReferralTree() {
             allocatedCapital: Number(c.investedCapital) || 0,
             profitEarned: Number(c.totalPl) || 0,
             status: c.status || 'Active',
-            joinedAt: c.joinedDate || new Date().toISOString().slice(0, 10),
+            joinedAt: c.joinedDate,
             investors: [],
-          }));
+          })),
+      })),
+    [pammAccounts, pammClients]
+  );
 
-        return {
-          id: `master_${acc.programId || acc.accountNo}`,
-          name: acc.fundManager || 'PAMM Master Manager',
-          email: acc.managerEmail || 'manager@majestyfx.com',
-          role: 'Master',
-          programName: acc.clientName || acc.strategyPool || 'Alpha Pool',
-          accountNo: acc.accountNo,
-          allocatedCapital: Number(acc.balanceNum) || 175000,
-          profitEarned: 21425,
-          status: acc.status || 'Active',
-          joinedAt: acc.startDate || new Date().toISOString().slice(0, 10),
-          investors: downline,
-        };
+  useEffect(() => {
+    setExpandedNodes((prev) => {
+      const next = { ...prev };
+      trees.forEach((t) => {
+        if (next[t.id] === undefined) next[t.id] = true;
       });
-
-      setTrees(mappedTrees);
-      const initExpanded = {};
-      mappedTrees.forEach((t) => {
-        initExpanded[t.id] = true;
-      });
-      setExpandedNodes(initExpanded);
-    } catch (err) {
-      console.error('Failed to load PAMM tree:', err);
-      setTrees([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      return next;
+    });
+  }, [trees]);
 
   const handleRefresh = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      loadData();
-    }, 400);
+    setTimeout(() => setIsLoading(false), 350);
   };
 
   const toggleNode = (nodeId) => {

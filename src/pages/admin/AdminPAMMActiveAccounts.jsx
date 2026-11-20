@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Award,
   DollarSign,
@@ -14,7 +15,7 @@ import {
 } from 'lucide-react';
 
 export default function AdminPAMMActiveAccounts() {
-  const [accounts, setAccounts] = useState([]);
+  const { items: accounts, setItems: setAccounts } = useCollection('pammAccounts');
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -41,7 +42,7 @@ export default function AdminPAMMActiveAccounts() {
 
     const parsedAum = parseFloat(String(newAccount.balance || '').replace(/[^0-9.]/g, '')) || 10000;
     const accountEntry = {
-      id: accounts.length + 1,
+      id: `pamm-${Date.now().toString(36)}`,
       accountNo: newAccount.accountNo,
       strategyPool: newAccount.strategyPool,
       clientName: newAccount.strategyPool,

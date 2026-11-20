@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Users,
   PauseCircle,
@@ -17,75 +18,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_approved_followers';
 
-const INITIAL_FOLLOWERS = [
-  {
-    id: 'sub_1',
-    clientName: 'Ghulam Abbas',
-    clientEmail: 'ghulam.abas6533@gmail.com',
-    clientId: 'cli_ghulam_abbas',
-    masterName: 'Test Trader',
-    copierAccountLogin: '9009095877833',
-    allocatedAmount: 500.0,
-    currentEquity: 500.0,
-    unrealizedPnL: 0.0,
-    realizedPnL: 0.0,
-    copyMode: 'proportional',
-    status: 'active',
-  },
-  {
-    id: 'sub_2',
-    clientName: 'SignalFX',
-    clientEmail: 'tradeworld2475@gmail.com',
-    clientId: 'cli_signalfx',
-    masterName: 'SHAHIL AHMED',
-    copierAccountLogin: '9009095877271',
-    allocatedAmount: 500.0,
-    currentEquity: 338.75,
-    unrealizedPnL: 0.0,
-    realizedPnL: -161.25,
-    copyMode: 'proportional',
-    status: 'paused',
-  },
-  {
-    id: 'sub_3',
-    clientName: 'Valued Follower',
-    clientEmail: 'cli_1792137355291',
-    clientId: 'cli_1792137355291',
-    masterName: 'Test Trader',
-    copierAccountLogin: '9009095877267',
-    allocatedAmount: 500.0,
-    currentEquity: 500.0,
-    unrealizedPnL: 0.0,
-    realizedPnL: 0.0,
-    copyMode: 'proportional',
-    status: 'active',
-  },
-  {
-    id: 'sub_4',
-    clientName: 'Valued Follower',
-    clientEmail: 'cli_1791610855289',
-    clientId: 'cli_1791610855289',
-    masterName: 'Alpha Pro Trader',
-    copierAccountLogin: '9009095877068',
-    allocatedAmount: 500.0,
-    currentEquity: 500.0,
-    unrealizedPnL: 0.0,
-    realizedPnL: 0.0,
-    copyMode: 'proportional',
-    status: 'active',
-  },
-];
+// seed data lives in src/data/json (INITIAL_FOLLOWERS)
 
 export default function AdminApprovedFollowers() {
-  const [followers, setFollowers] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return INITIAL_FOLLOWERS;
-  });
+  const { items: followers, setItems: setFollowers } = useCollection('approvedFollowers');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -94,14 +30,6 @@ export default function AdminApprovedFollowers() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sync to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(followers));
-    } catch {
-      // ignore
-    }
-  }, [followers]);
 
   const handleRefresh = () => {
     setLoading(true);

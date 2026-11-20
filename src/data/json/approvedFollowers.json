@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sub_1",
+    "clientName": "Ghulam Abbas",
+    "clientEmail": "ghulam.abas6533@gmail.com",
+    "clientId": "cli_ghulam_abbas",
+    "masterName": "Test Trader",
+    "copierAccountLogin": "9009095877833",
+    "allocatedAmount": 500,
+    "currentEquity": 500,
+    "unrealizedPnL": 0,
+    "realizedPnL": 0,
+    "copyMode": "proportional",
+    "status": "active"
+  },
+  {
+    "id": "sub_2",
+    "clientName": "SignalFX",
+    "clientEmail": "tradeworld2475@gmail.com",
+    "clientId": "cli_signalfx",
+    "masterName": "SHAHIL AHMED",
+    "copierAccountLogin": "9009095877271",
+    "allocatedAmount": 500,
+    "currentEquity": 338.75,
+    "unrealizedPnL": 0,
+    "realizedPnL": -161.25,
+    "copyMode": "proportional",
+    "status": "paused"
+  },
+  {
+    "id": "sub_3",
+    "clientName": "Valued Follower",
+    "clientEmail": "cli_1792137355291",
+    "clientId": "cli_1792137355291",
+    "masterName": "Test Trader",
+    "copierAccountLogin": "9009095877267",
+    "allocatedAmount": 500,
+    "currentEquity": 500,
+    "unrealizedPnL": 0,
+    "realizedPnL": 0,
+    "copyMode": "proportional",
+    "status": "active"
+  },
+  {
+    "id": "sub_4",
+    "clientName": "Valued Follower",
+    "clientEmail": "cli_1791610855289",
+    "clientId": "cli_1791610855289",
+    "masterName": "Alpha Pro Trader",
+    "copierAccountLogin": "9009095877068",
+    "allocatedAmount": 500,
+    "currentEquity": 500,
+    "unrealizedPnL": 0,
+    "realizedPnL": 0,
+    "copyMode": "proportional",
+    "status": "active"
+  }
+]

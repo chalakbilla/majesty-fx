@@ -1,4 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   Calendar,
   Check,
@@ -12,7 +13,8 @@ import {
 } from 'lucide-react';
 
 export default function AdminPendingAccounts() {
-  const [masters, setMasters] = useState([]);
+  const { items: allMasters, update } = useCollection('masters');
+  const masters = useMemo(() => allMasters.filter((m) => m.status === 'pending'), [allMasters]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [actionLoadingId, setActionLoadingId] = useState(null);
@@ -24,88 +26,35 @@ export default function AdminPendingAccounts() {
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetch('/api/copy-trading/masters?status=pending', {
-        headers: { 'x-requested-with': 'XMLHttpRequest' },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.masters)) {
-        setMasters(res.masters);
-      } else {
-        setMasters([]);
-      }
-    } catch (err) {
-      console.error('Failed to fetch pending master accounts:', err);
-      setMasters([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
   const handleRefresh = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      loadData();
-    }, 400);
+    setTimeout(() => setIsLoading(false), 400);
   };
 
-  const handleApprove = async (id) => {
+  // UPDATE: pending -> approved (shows up on the Approved page)
+  const handleApprove = (id) => {
     setActionLoadingId(id);
     setActionType('approve');
-    try {
-      const res = await fetch('/api/copy-trading/masters', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ masterId: id, status: 'approved' }),
-      })
-        .then((r) => r.json())
-        .catch(() => ({ success: true }));
-
-      if (res.success) {
-        showToast('success', 'Master Approved', 'Account has been approved and published to the marketplace.');
-        setMasters((prev) => prev.filter((m) => m.id !== id));
-      } else {
-        showToast('error', 'Approval Failed', res.error || 'Could not approve account');
-      }
-    } catch (err) {
-      showToast('error', 'Network Error', err.message);
-    } finally {
+    setTimeout(() => {
+      update(id, { status: 'approved', totalCopiers: 0, overallGain: 0, winRate: 0, equity: 0 });
+      showToast('success', 'Master Approved', 'Account has been approved and published to the marketplace.');
       setActionLoadingId(null);
       setActionType(null);
-    }
+    }, 300);
   };
 
-  const handleReject = async (id) => {
+  // UPDATE: pending -> rejected (shows up on the Rejected page)
+  const handleReject = (id) => {
     const reason = window.prompt('Enter rejection reason:');
     if (!reason) return;
-
     setActionLoadingId(id);
     setActionType('reject');
-    try {
-      const res = await fetch('/api/copy-trading/masters', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ masterId: id, status: 'rejected', rejectionReason: reason }),
-      })
-        .then((r) => r.json())
-        .catch(() => ({ success: true }));
-
-      if (res.success) {
-        showToast('info', 'Master Rejected', 'The application has been rejected.');
-        setMasters((prev) => prev.filter((m) => m.id !== id));
-      } else {
-        showToast('error', 'Rejection Failed', res.error || 'Could not reject account');
-      }
-    } catch (err) {
-      showToast('error', 'Network Error', err.message);
-    } finally {
+    setTimeout(() => {
+      update(id, { status: 'rejected', rejectionReason: reason });
+      showToast('info', 'Master Rejected', 'The application has been rejected.');
       setActionLoadingId(null);
       setActionType(null);
-    }
+    }, 300);
   };
 
   const filteredMasters = useMemo(() => {

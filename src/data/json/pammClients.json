@@ -1,0 +1,58 @@
+[
+  {
+    "id": "pc-1",
+    "clientName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "pammAccount": "PM-1001",
+    "strategy": "Pool 1001 \u2013 Balanced",
+    "investedCapital": 25000,
+    "currentEquity": 27350,
+    "totalProfit": 2350,
+    "status": "ACTIVE",
+    "joinedDate": "2026-07-11",
+    "totalPl": 2350,
+    "strategyName": "Pool 1001 \u2013 Balanced"
+  },
+  {
+    "id": "pc-2",
+    "clientName": "Sofia Al-Mansoor",
+    "email": "sofia.mansoor@demo.example.com",
+    "pammAccount": "PM-1002",
+    "strategy": "Pool 1002 \u2013 Aggressive Gold",
+    "investedCapital": 15000,
+    "currentEquity": 18120,
+    "totalProfit": 3120,
+    "status": "ACTIVE",
+    "joinedDate": "2026-08-12",
+    "totalPl": 3120,
+    "strategyName": "Pool 1002 \u2013 Aggressive Gold"
+  },
+  {
+    "id": "pc-3",
+    "clientName": "David Miller",
+    "email": "david.miller@demo.example.com",
+    "pammAccount": "PM-1001",
+    "strategy": "Pool 1001 \u2013 Balanced",
+    "investedCapital": 40000,
+    "currentEquity": 43880,
+    "totalProfit": 3880,
+    "status": "ACTIVE",
+    "joinedDate": "2026-09-13",
+    "totalPl": 3880,
+    "strategyName": "Pool 1001 \u2013 Balanced"
+  },
+  {
+    "id": "pc-4",
+    "clientName": "Priya Nair",
+    "email": "priya.nair@demo.example.com",
+    "pammAccount": "PM-1003",
+    "strategy": "Pool 1003 \u2013 FX Income",
+    "investedCapital": 8000,
+    "currentEquity": 8310,
+    "totalProfit": 310,
+    "status": "INACTIVE",
+    "joinedDate": "2026-07-14",
+    "totalPl": 310,
+    "strategyName": "Pool 1003 \u2013 FX Income"
+  }
+]

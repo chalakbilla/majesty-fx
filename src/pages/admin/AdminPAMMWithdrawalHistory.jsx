@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   CheckCircle,
   Clock,
@@ -16,7 +17,7 @@ export default function AdminPAMMWithdrawalHistory({
   customTitle = 'PAMM Withdrawal History',
   customSubtitle = 'Manage investor profit and capital withdrawal requests across PAMM pools',
 }) {
-  const [withdrawals, setWithdrawals] = useState([]);
+  const { items: withdrawals, update: updateWithdrawal } = useCollection('pammWithdrawals');
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState(initialStatus);
@@ -26,100 +27,29 @@ export default function AdminPAMMWithdrawalHistory({
   const [rejectionReason, setRejectionReason] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const endpoint =
-        statusFilter !== 'ALL'
-          ? `/api/pamm/withdrawals?status=${encodeURIComponent(statusFilter.toLowerCase())}`
-          : '/api/pamm/withdrawals';
-      const res = await fetch(endpoint, {
-        headers: { 'x-requested-with': 'XMLHttpRequest' },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.withdrawals)) {
-        setWithdrawals(res.withdrawals);
-      } else {
-        setWithdrawals([]);
-      }
-    } catch (err) {
-      console.error('Failed to load PAMM withdrawals:', err);
-      setWithdrawals([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [statusFilter]);
-
   const handleRefresh = () => {
     setIsLoading(true);
-    setTimeout(() => {
-      loadData();
-    }, 400);
+    setTimeout(() => setIsLoading(false), 350);
   };
 
-  const handleApprove = async (item) => {
+  // UPDATE: approve -> Completed
+  const handleApprove = (item) => {
     if (window.confirm(`Are you sure you want to approve PAMM withdrawal request ${item.requestId} for ${item.amount}?`)) {
-      setIsUpdating(true);
-      try {
-        await fetch('/api/pamm/withdrawals', {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ requestId: item.requestId, status: 'Completed' }),
-        }).catch(() => null);
-
-        // Update locally
-        setWithdrawals((prev) =>
-          prev.map((w) =>
-            w.requestId === item.requestId
-              ? { ...w, status: 'Completed', processDate: new Date().toISOString().slice(0, 10) }
-              : w
-          )
-        );
-      } catch (err) {
-        alert(err.message || 'Error approving withdrawal');
-      } finally {
-        setIsUpdating(false);
-      }
+      updateWithdrawal(item.id, { status: 'Completed', processDate: new Date().toISOString().slice(0, 10) });
     }
   };
 
-  const handleReject = async (e) => {
+  // UPDATE: reject -> Rejected (+ reason)
+  const handleReject = (e) => {
     if (e) e.preventDefault();
     if (!rejectRequest) return;
-    setIsUpdating(true);
-    try {
-      await fetch('/api/pamm/withdrawals', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          requestId: rejectRequest.requestId,
-          status: 'Rejected',
-          rejectionReason: rejectionReason || 'Rejected by administrator',
-        }),
-      }).catch(() => null);
-
-      // Update locally
-      setWithdrawals((prev) =>
-        prev.map((w) =>
-          w.requestId === rejectRequest.requestId
-            ? {
-                ...w,
-                status: 'Rejected',
-                rejectionReason: rejectionReason || 'Rejected by administrator',
-                processDate: new Date().toISOString().slice(0, 10),
-              }
-            : w
-        )
-      );
-      setRejectRequest(null);
-      setRejectionReason('');
-    } catch (err) {
-      alert(err.message || 'Error rejecting withdrawal');
-    } finally {
-      setIsUpdating(false);
-    }
+    updateWithdrawal(rejectRequest.id, {
+      status: 'Rejected',
+      rejectionReason: rejectionReason || 'Rejected by administrator',
+      processDate: new Date().toISOString().slice(0, 10),
+    });
+    setRejectRequest(null);
+    setRejectionReason('');
   };
 
   const filteredWithdrawals = useMemo(() => {

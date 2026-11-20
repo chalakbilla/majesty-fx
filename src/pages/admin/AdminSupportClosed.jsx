@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useCallback } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   CheckCircle2,
   ChevronLeft,
@@ -10,116 +11,15 @@ import {
   X,
 } from 'lucide-react';
 
-const STORAGE_KEY = 'majesty_admin_support_tickets';
 
-const initialClosedTickets = [
-  {
-    id: '#9902',
-    rawId: 2,
-    client: 'Marcus Chen',
-    email: 'marcus.chen@demo.example.com',
-    subject: 'PAMM Investor allocation reporting question',
-    department: 'pamm',
-    priority: 'HIGH',
-    created: '11/15/2026, 3:12:59 PM',
-    lastReply: '11/17/2026, 3:13:00 PM',
-    status: 'Resolved',
-    messages: [
-      {
-        id: 1,
-        sender: 'client',
-        senderName: 'Marcus Chen',
-        message: 'Can you provide the detailed performance and drawdown logs for PAMM Pool 1001 for last month?',
-        timestamp: '2026-11-15T15:12:59Z',
-      },
-      {
-        id: 2,
-        sender: 'admin',
-        senderName: 'Support Desk Lead',
-        message: 'Detailed reporting statement sent to client via secure ledger email. Pool yield verified at +18.4%.',
-        timestamp: '2026-11-17T15:13:00Z',
-      },
-    ],
-  },
-  {
-    id: '#9904',
-    rawId: 4,
-    client: 'Elena Rostova',
-    email: 'elena.rostova@demo.example.com',
-    subject: 'KYC Document verification status',
-    department: 'compliance',
-    priority: 'LOW',
-    created: '11/14/2026, 02:15:30 PM',
-    lastReply: '11/15/2026, 11:20:10 AM',
-    status: 'Closed',
-    messages: [
-      {
-        id: 1,
-        sender: 'client',
-        senderName: 'Elena Rostova',
-        message: 'Uploaded proof of address document yesterday, please confirm if approved.',
-        timestamp: '2026-11-14T14:15:30Z',
-      },
-      {
-        id: 2,
-        sender: 'admin',
-        senderName: 'Compliance Officer',
-        message: 'Account verified successfully. KYC Tier 2 operational limits now unlocked.',
-        timestamp: '2026-11-15T11:20:10Z',
-      },
-    ],
-  },
-];
+// seed data lives in src/data/json (initialClosedTickets)
 
 export default function AdminSupportClosed() {
-  const [tickets, setTickets] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          const closed = parsed
-            .filter((t) => t.status === 'Closed' || t.status === 'Resolved')
-            .map((t) => ({
-              id: `#${t.ticketId || t.id}`,
-              rawId: t.id,
-              client: t.client || t.email?.split('@')[0] || 'Trader',
-              email: t.email || '',
-              subject: t.subject || 'Support Request',
-              department: t.department || 'general',
-              priority: (t.priority || 'MEDIUM').toUpperCase(),
-              created: t.date || new Date().toLocaleString(),
-              lastReply: t.date || 'Recent',
-              status: t.status,
-              messages: Array.isArray(t.messages)
-                ? t.messages
-                : [
-                    {
-                      id: 1,
-                      sender: 'client',
-                      senderName: t.email?.split('@')[0] || 'Client',
-                      message: t.message || 'Support inquiry',
-                      timestamp: new Date().toISOString(),
-                    },
-                    ...(t.adminRemark
-                      ? [
-                          {
-                            id: 2,
-                            sender: 'admin',
-                            senderName: 'Support Desk Lead',
-                            message: t.adminRemark,
-                            timestamp: new Date().toISOString(),
-                          },
-                        ]
-                      : []),
-                  ],
-            }));
-          if (closed.length > 0) return closed;
-        }
-      }
-    } catch {}
-    return initialClosedTickets;
-  });
+  const { items: allTickets, update: updateTicket } = useCollection('supportTickets');
+  const tickets = useMemo(
+    () => allTickets.filter((t) => ['RESOLVED', 'CLOSED'].includes(String(t.status).toUpperCase())),
+    [allTickets]
+  );
 
   const [search, setSearch] = useState('');
   const [selectedTicket, setSelectedTicket] = useState(null);
@@ -180,35 +80,19 @@ export default function AdminSupportClosed() {
     document.body.removeChild(link);
   };
 
+  // UPDATE: reopening moves the ticket back to the Open Tickets page
   const handleReopenTicket = (rawId) => {
     setReopening(true);
-    try {
-      // Update global tickets in localStorage
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const allTickets = JSON.parse(saved);
-        const updated = allTickets.map((t) =>
-          t.id === rawId
-            ? {
-                ...t,
-                status: 'Open',
-                adminRemark: 'Ticket reopened by administrator.',
-              }
-            : t
-        );
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      }
-
-      setSuccessMsg('Ticket reopened successfully and moved to Open queue!');
-      setTimeout(() => {
-        setTickets((prev) => prev.filter((t) => t.rawId !== rawId));
-        setSelectedTicket(null);
-        setSuccessMsg('');
-        setReopening(false);
-      }, 1200);
-    } catch {
-      setReopening(false);
+    const target = tickets.find((t) => t.rawId === rawId);
+    if (target) {
+      updateTicket(target.id, { status: 'OPEN', adminRemark: 'Ticket reopened by administrator.' });
     }
+    setSuccessMsg('Ticket reopened successfully and moved to Open queue!');
+    setTimeout(() => {
+      setSelectedTicket(null);
+      setSuccessMsg('');
+      setReopening(false);
+    }, 1200);
   };
 
   return (

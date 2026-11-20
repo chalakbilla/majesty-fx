@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   StopCircle,
   TrendingUp,
@@ -15,32 +16,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_rejected_followers';
 
-const INITIAL_REJECTED_FOLLOWERS = [
-  {
-    id: 'sub_stopped_1',
-    clientName: 'Mohammad Hamid',
-    clientEmail: 'maharshdoshi42@gmail.com',
-    clientId: 'cli_mohammad_hamid',
-    masterName: 'SHAHIL AHMED',
-    copierAccountLogin: '9009095877279',
-    allocatedAmount: 1000.0,
-    realizedPnL: -321.21,
-    copyMode: 'equal',
-    startDate: '2026-10-28',
-    status: 'stopped',
-  },
-];
+// seed data lives in src/data/json (INITIAL_REJECTED_FOLLOWERS)
 
 export default function AdminRejectedFollowers() {
-  const [followers, setFollowers] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {
-      // ignore
-    }
-    return INITIAL_REJECTED_FOLLOWERS;
-  });
+  const { items: followers, setItems: setFollowers } = useCollection('rejectedFollowers');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [loading, setLoading] = useState(false);
@@ -48,14 +27,6 @@ export default function AdminRejectedFollowers() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(followers));
-    } catch {
-      // ignore
-    }
-  }, [followers]);
 
   const showToast = (text, type = 'success') => {
     setToastMsg({ text, type });

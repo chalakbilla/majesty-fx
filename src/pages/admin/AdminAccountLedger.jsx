@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   FileSpreadsheet,
@@ -13,140 +14,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_account_ledger';
 
-const INITIAL_TRANSACTIONS = [
-  {
-    id: 'TX-1000',
-    dateTime: '11/17/2026, 3:51:34 PM',
-    client: 'Demo Trader',
-    tradingAccount: '800106',
-    notes: 'Deposit via crypto_usdt to #800106',
-    deposit: 10000,
-    withdraw: 0,
-    paymentMethod: 'crypto_usdt',
-    status: 'Completed',
-    transactionProof: '0x92763370a24f8d91c',
-  },
-  {
-    id: 'TX-1001',
-    dateTime: '11/17/2026, 2:12:56 PM',
-    client: 'Alexander Wright',
-    tradingAccount: '800101',
-    notes: 'Withdrawal via crypto_usdt from #800101',
-    deposit: 0,
-    withdraw: 1500,
-    paymentMethod: 'crypto_usdt',
-    status: 'Pending',
-    transactionProof: '0xa8c2fec1b972e412d',
-  },
-  {
-    id: 'TX-1002',
-    dateTime: '11/17/2026, 1:12:55 PM',
-    client: 'Sofia Al-Mansoor',
-    tradingAccount: '800103',
-    notes: 'Deposit via bank_wire to #800103',
-    deposit: 3500,
-    withdraw: 0,
-    paymentMethod: 'bank_wire',
-    status: 'Pending',
-    transactionProof: '0x626a44b1c834a903e',
-  },
-  {
-    id: 'TX-1003',
-    dateTime: '11/17/2026, 11:12:56 AM',
-    client: 'David Miller',
-    tradingAccount: '800105',
-    notes: 'Withdrawal via bank_wire from #800105',
-    deposit: 0,
-    withdraw: 1000,
-    paymentMethod: 'bank_wire',
-    status: 'Pending',
-    transactionProof: '0x2a04fdc1e792c314f',
-  },
-  {
-    id: 'TX-1004',
-    dateTime: '11/17/2026, 10:12:55 AM',
-    client: 'David Miller',
-    tradingAccount: '800105',
-    notes: 'Deposit via credit_card to #800105',
-    deposit: 2500,
-    withdraw: 0,
-    paymentMethod: 'credit_card',
-    status: 'Pending',
-    transactionProof: '0xd16d6732f418b725a',
-  },
-  {
-    id: 'TX-1005',
-    dateTime: '11/10/2026, 3:12:56 PM',
-    client: 'Elena Rostova',
-    tradingAccount: '800105',
-    notes: 'Withdrawal via crypto_usdt from #800105',
-    deposit: 0,
-    withdraw: 750,
-    paymentMethod: 'crypto_usdt',
-    status: 'Completed',
-    transactionProof: '0x0e10cfea8371d936b',
-  },
-  {
-    id: 'TX-1006',
-    dateTime: '11/7/2026, 3:12:55 PM',
-    client: 'Elena Rostova',
-    tradingAccount: '800105',
-    notes: 'Deposit via crypto_usdt to #800105',
-    deposit: 1200,
-    withdraw: 0,
-    paymentMethod: 'crypto_usdt',
-    status: 'Rejected',
-    transactionProof: '0x524b551a3784e147c',
-  },
-  {
-    id: 'TX-1007',
-    dateTime: '11/5/2026, 3:12:56 PM',
-    client: 'Marcus Chen',
-    tradingAccount: '800104',
-    notes: 'Withdrawal via bank_wire from #800104',
-    deposit: 0,
-    withdraw: 3000,
-    paymentMethod: 'bank_wire',
-    status: 'Completed',
-    transactionProof: '0x209316f9a562b858d',
-  },
-  {
-    id: 'TX-1008',
-    dateTime: '10/20/2026, 3:12:55 PM',
-    client: 'Alexander Wright',
-    tradingAccount: '800101',
-    notes: 'Deposit via crypto_usdt to #800101',
-    deposit: 5000,
-    withdraw: 0,
-    paymentMethod: 'crypto_usdt',
-    status: 'Completed',
-    transactionProof: '0x85d389ee7629c469e',
-  },
-  {
-    id: 'TX-1009',
-    dateTime: '10/8/2026, 3:12:55 PM',
-    client: 'Marcus Chen',
-    tradingAccount: '800104',
-    notes: 'Deposit via crypto_btc to #800104',
-    deposit: 10000,
-    withdraw: 0,
-    paymentMethod: 'crypto_btc',
-    status: 'Completed',
-    transactionProof: '0x8ea0c857b295e870f',
-  },
-];
+// seed data lives in src/data/json (INITIAL_TRANSACTIONS)
 
 export default function AdminAccountLedger() {
-  const [transactions, setTransactions] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {}
-    return INITIAL_TRANSACTIONS;
-  });
+  const { items: transactions, setItems: setTransactions } = useCollection('accountLedger');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -154,59 +25,10 @@ export default function AdminAccountLedger() {
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Sync with localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(transactions));
-    } catch {}
-  }, [transactions]);
 
-  const handleRefresh = async () => {
+    const handleRefresh = () => {
     setIsRefreshing(true);
-    try {
-      let desk = 'all';
-      try {
-        const auth = localStorage.getItem('majesty_admin_auth');
-        if (auth) {
-          const parsed = JSON.parse(auth);
-          if (parsed.desk) desk = parsed.desk;
-        }
-      } catch {}
-
-      const res = await fetch(`/api/transactions?clientId=all&desk=${encodeURIComponent(desk)}`, {
-        headers: {
-          'x-portal-scope': 'admin',
-          'x-admin-desk': desk,
-        },
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.success && Array.isArray(data.transactions) && data.transactions.length > 0) {
-          const mapped = data.transactions.map((tx) => {
-            const t = (tx.type || '').toLowerCase();
-            const amount = Number(tx.amount) || 0;
-            return {
-              id: tx.id || `TX-${Math.random().toString(16).slice(2, 6)}`,
-              dateTime: tx.createdAt ? new Date(tx.createdAt).toLocaleString() : new Date().toLocaleString(),
-              client: tx.clientName || tx.clientEmail || 'Client',
-              tradingAccount: tx.accountLogin || '800101',
-              notes: tx.description || t,
-              deposit: t.includes('deposit') || t === 'credit' ? amount : 0,
-              withdraw: t.includes('withdraw') || t === 'debit' ? amount : 0,
-              paymentMethod: tx.method || 'crypto_usdt',
-              status: (tx.status || 'Completed').replace(/^./, (c) => c.toUpperCase()),
-              transactionProof: tx.referenceId || tx.id || '0x' + Math.random().toString(16).slice(2, 10),
-            };
-          });
-          setTransactions(mapped);
-        }
-      }
-    } catch {
-      // Keep existing transactions on error
-    } finally {
-      setTimeout(() => setIsRefreshing(false), 400);
-    }
+    setTimeout(() => setIsRefreshing(false), 400);
   };
 
   // Filtered transactions

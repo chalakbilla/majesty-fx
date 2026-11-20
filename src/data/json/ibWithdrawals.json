@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "rawId": "ibw_1001",
+    "reqId": "IBW-1001",
+    "ibName": "Alexander Wright",
+    "email": "alex.wright@demo.example.com",
+    "amount": "$1,250.00",
+    "numericAmount": 1250,
+    "method": "USDT (TRC20)",
+    "details": "TYD2v7wM59H8GjU1284xLqZaB93Nkd11",
+    "status": "PENDING",
+    "requestedDate": "Nov 18, 2026, 14:20",
+    "processedDate": "-"
+  },
+  {
+    "id": 2,
+    "rawId": "ibw_1002",
+    "reqId": "IBW-1002",
+    "ibName": "Marcus Chen",
+    "email": "marcus.chen@demo.example.com",
+    "amount": "$3,800.00",
+    "numericAmount": 3800,
+    "method": "Bank Wire Transfer",
+    "details": "Barclays UK • Acc: ****8921 • Sort: 20-00-15",
+    "status": "COMPLETED",
+    "requestedDate": "Nov 16, 2026, 11:05",
+    "processedDate": "Nov 16, 2026, 15:40"
+  },
+  {
+    "id": 3,
+    "rawId": "ibw_1003",
+    "reqId": "IBW-1003",
+    "ibName": "Sophia Al-Mansoor",
+    "email": "sophia.m@majestyfx.partner.com",
+    "amount": "$850.00",
+    "numericAmount": 850,
+    "method": "USDT (TRC20)",
+    "details": "TPLq3v892JnmZ47x9W81KdX0183Yua77",
+    "status": "COMPLETED",
+    "requestedDate": "Nov 15, 2026, 09:12",
+    "processedDate": "Nov 15, 2026, 10:30"
+  },
+  {
+    "id": 4,
+    "rawId": "ibw_1004",
+    "reqId": "IBW-1004",
+    "ibName": "Elena Rostova",
+    "email": "elena.rostova@demo.example.com",
+    "amount": "$500.00",
+    "numericAmount": 500,
+    "method": "Bank Wire Transfer",
+    "details": "Deutsche Bank • IBAN: DE89 **** **** 4812",
+    "status": "REJECTED",
+    "requestedDate": "Nov 14, 2026, 16:45",
+    "processedDate": "Nov 15, 2026, 08:20"
+  }
+]

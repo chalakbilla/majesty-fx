@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import { Link } from 'react-router-dom';
 import {
   Download,
@@ -20,135 +21,10 @@ import {
 
 const STORAGE_KEY = 'majesty_admin_payment_ledger';
 
-const INITIAL_WALLETS = [
-  {
-    id: 'd4bf4605',
-    walletName: 'BTC (Bitcoin) - Referral Vault',
-    description:
-      'Bitcoin (BTC) mainnet only. Send only BTC to this address; sending other assets or using another network will result in permanent loss.',
-    paymentType: 'Crypto (BTC)',
-    qrCodeUrl: '/documents/qr_btc_referral_1793380767633.png',
-    address: 'bc1qu9fuu65ppjp6mea8ev0n5x9v2rv0tzzjtec5y0',
-    transactionTime: '10 - 30 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: '18975538',
-    walletName: 'Institutional Bank Wire',
-    description: 'Direct institutional Tier-1 settlement bank transfer details.',
-    paymentType: 'Bank Wire',
-    qrCodeUrl: '',
-    address:
-      'Beneficiary: NA\nBank: NA\nIBAN: NA\nSWIFT/BIC: NA\nSort Code: NA\nAddress: NA\nInstructions: NA',
-    transactionTime: 'Same-day MT103',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: '0bfd39f6',
-    walletName: 'BTC',
-    description: 'Standard Bitcoin deposit vault for trading accounts.',
-    paymentType: 'Crypto (BTC)',
-    qrCodeUrl: '/documents/1792144996347_gdduk7.jpg',
-    address: 'bc1qtwmpllw26lj20jnsqz7n7sn9u0ykhdee4epe7c',
-    transactionTime: '15 - 45 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: 'e1d12711',
-    walletName: 'USDT ERC20',
-    description: 'Ethereum Network (ERC20) treasury deposit wallet.',
-    paymentType: 'Crypto (ERC20)',
-    qrCodeUrl: '/documents/1792144743653_i3llq4.jpg',
-    address: '0x160F9B8809b859b79f48F97b6F67e0053dC20468',
-    transactionTime: '5 - 15 mins',
-    withdrawFees: 'Network gas only',
-    enabled: true,
-  },
-  {
-    id: '5104f76f',
-    walletName: 'Bank Wire - IB2 Institutional Custody',
-    description: 'Same-day SWIFT clearance for IB2 institutional accounts.',
-    paymentType: 'Bank Wire',
-    qrCodeUrl: '',
-    address:
-      'Beneficiary: KF Markets Segregated Client Account\nBank: Standard Chartered Bank Singapore\nIBAN: SG99 SCBL 0001 8421 9902 44\nSWIFT: SCBLSG22\nAddress: 8 Marina Boulevard, Singapore',
-    transactionTime: '2 - 4 Banking Hours',
-    withdrawFees: 'Zero fee over $500',
-    enabled: true,
-  },
-  {
-    id: '02834123',
-    walletName: 'USDT (TRC20) - IB2 Hot Wallet',
-    description: 'Segregated IB2 partner network vault for KF Markets accounts. Fast settlement.',
-    paymentType: 'Crypto (TRC20)',
-    qrCodeUrl: '/documents/qr_usdt_trc20_1791971822496.png',
-    address: 'TTSLU7pSt3ry9m2AYYJWJRnXoiRug1stCc',
-    transactionTime: '1 - 3 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: '68acf712',
-    walletName: 'USDT BEP20',
-    description: 'Binance Smart Chain (BEP20) hot wallet address.',
-    paymentType: 'Crypto (BEP20)',
-    qrCodeUrl: '/documents/1792144634816_2iv71n.jpg',
-    address: '0x160F9B8809b859b79f48F97b6F67e0053dC20468',
-    transactionTime: '1 - 2 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: '07fe37a5',
-    walletName: 'USDT TRC20',
-    description: 'TRON network USDT wallet for retail deposit inflows.',
-    paymentType: 'Crypto (TRC20)',
-    qrCodeUrl: '/documents/1792144483793_tcd3xh.jpg',
-    address: 'TW9LSKcppmDEtvChqM71nigYJEHnTYFAQk',
-    transactionTime: '1 - 3 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-  {
-    id: '469b8297',
-    walletName: 'USDT (BEP20) - Referral Vault',
-    description: 'BNB Smart Chain (BEP-20) network. Instant credit on 15 block confirmations.',
-    paymentType: 'Crypto (BEP20)',
-    qrCodeUrl: '/images/v1_create-qr-code.png',
-    address: '0xb0a5CEbb9341F8dA1C157F5A7434288d8aAC0fC3',
-    transactionTime: '1 - 2 mins',
-    withdrawFees: 'Zero fee',
-    enabled: false,
-  },
-  {
-    id: '75e0d7cc',
-    walletName: 'USDT (TRC20) - REFERRAL Hot Wallet',
-    description: 'Segregated Direct & Referral Trader vault. Only transfer USDT on TRON (TRC20) network.',
-    paymentType: 'Crypto (TRC20)',
-    qrCodeUrl: '/images/qr_usdt_trc20_1791971822496.png',
-    address: 'TTSLU7pSt3ry9m2AYYJWJRnXoiRug1stCc',
-    transactionTime: '1 - 3 mins',
-    withdrawFees: 'Zero fee',
-    enabled: true,
-  },
-];
+// seed data lives in src/data/json (INITIAL_WALLETS)
 
 export default function AdminPaymentLedger() {
-  const [wallets, setWallets] = useState(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-      }
-    } catch {
-      // ignore
-    }
-    return INITIAL_WALLETS;
-  });
+  const { items: wallets, setItems: setWallets } = useCollection('paymentLedger');
 
   const [searchTerm, setSearchTerm] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
@@ -172,14 +48,6 @@ export default function AdminPaymentLedger() {
   const [formWithdrawFees, setFormWithdrawFees] = useState('');
   const [copiedId, setCopiedId] = useState(null);
 
-  // Persist to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(wallets));
-    } catch {
-      // ignore
-    }
-  }, [wallets]);
 
   // Flash notification timeouts
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
+import useCollection from '../../hooks/useCollection.js';
 import {
   AlertCircle,
   Award,
@@ -18,90 +19,16 @@ import {
 const REWARDS_STORAGE_KEY = 'majesty_admin_ib_rewards';
 const TIERS_STORAGE_KEY = 'majesty_admin_ib_reward_tiers';
 
-const defaultTiers = [
-  { tier: 1, lotsRequired: 50, rewardAmount: 25, active: true },
-  { tier: 2, lotsRequired: 150, rewardAmount: 60, active: true },
-  { tier: 3, lotsRequired: 400, rewardAmount: 120, active: true },
-  { tier: 4, lotsRequired: 800, rewardAmount: 250, active: true },
-  { tier: 5, lotsRequired: 1500, rewardAmount: 400, active: true },
-  { tier: 6, lotsRequired: 3000, rewardAmount: 650, active: true },
-  { tier: 7, lotsRequired: 5000, rewardAmount: 1500, active: true },
-  { tier: 8, lotsRequired: 7500, rewardAmount: 2000, active: true },
-  { tier: 9, lotsRequired: 10000, rewardAmount: 3000, active: true },
-  { tier: 10, lotsRequired: 13000, rewardAmount: 3500, active: true },
-  { tier: 11, lotsRequired: 17000, rewardAmount: 5000, active: true },
-  { tier: 12, lotsRequired: 20000, rewardAmount: 7500, active: true },
-];
+// seed data lives in src/data/json (defaultTiers)
 
-const initialRewardRecords = [
-  {
-    id: 1,
-    rawId: 'rw-101',
-    userEmail: 'alex.wright@demo.example.com',
-    partnerName: 'Alexander Wright',
-    tradeId: 'TRD-998241',
-    lotsDone: '52.40',
-    numericLots: 52.4,
-    rewardAmount: '$25.00',
-    numericAmount: 25,
-    createdAt: 'Nov 18, 2026, 16:30',
-  },
-  {
-    id: 2,
-    rawId: 'rw-102',
-    userEmail: 'marcus.chen@demo.example.com',
-    partnerName: 'Marcus Chen',
-    tradeId: 'TRD-884120',
-    lotsDone: '154.20',
-    numericLots: 154.2,
-    rewardAmount: '$60.00',
-    numericAmount: 60,
-    createdAt: 'Nov 17, 2026, 12:15',
-  },
-  {
-    id: 3,
-    rawId: 'rw-103',
-    userEmail: 'sophia.m@majestyfx.partner.com',
-    partnerName: 'Sophia Al-Mansoor',
-    tradeId: 'TRD-771923',
-    lotsDone: '410.80',
-    numericLots: 410.8,
-    rewardAmount: '$120.00',
-    numericAmount: 120,
-    createdAt: 'Nov 15, 2026, 18:40',
-  },
-  {
-    id: 4,
-    rawId: 'rw-104',
-    userEmail: 'marcus.chen@demo.example.com',
-    partnerName: 'Marcus Chen',
-    tradeId: 'TRD-665129',
-    lotsDone: '820.00',
-    numericLots: 820,
-    rewardAmount: '$250.00',
-    numericAmount: 250,
-    createdAt: 'Nov 12, 2026, 10:20',
-  },
-];
+// seed data lives in src/data/json (initialRewardRecords)
 
 export default function AdminIBRewards() {
   const [activeTab, setActiveTab] = useState('history'); // 'history' | 'settings'
 
-  const [records, setRecords] = useState(() => {
-    try {
-      const saved = localStorage.getItem(REWARDS_STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {}
-    return initialRewardRecords;
-  });
+  const { items: records, setItems: setRecords } = useCollection('ibRewards');
 
-  const [tiers, setTiers] = useState(() => {
-    try {
-      const saved = localStorage.getItem(TIERS_STORAGE_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch {}
-    return defaultTiers;
-  });
+  const { items: tiers, setItems: setTiers } = useCollection('ibRewardTiers');
 
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -109,90 +36,18 @@ export default function AdminIBRewards() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
 
-  // Sync tiers to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(TIERS_STORAGE_KEY, JSON.stringify(tiers));
-    } catch {}
-  }, [tiers]);
 
-  // Sync records to localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(REWARDS_STORAGE_KEY, JSON.stringify(records));
-    } catch {}
-  }, [records]);
 
   // Fetch live rewards data if API is available
-  const loadRewards = useCallback(async () => {
+    const loadRewards = useCallback(() => {
     setIsLoading(true);
     setErrorMessage(null);
-    try {
-      let desk = 'all';
-      try {
-        const auth = localStorage.getItem('majesty_admin_auth');
-        if (auth) {
-          const parsed = JSON.parse(auth);
-          if (parsed.desk) desk = parsed.desk;
-        }
-      } catch {}
-
-      const res = await fetch(`/api/ib/rewards?desk=${desk}`, {
-        headers: { 'x-portal-scope': 'admin', 'x-admin-desk': desk },
-      })
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.rewards) && res.rewards.length > 0) {
-        const mapped = res.rewards.map((item, idx) => {
-          const lots = parseFloat(String(item.lotsDone || 0));
-          const amt = parseFloat(String(item.rewardAmount || 0));
-          return {
-            id: idx + 1,
-            rawId: item.id || `rw-${idx + 1}`,
-            userEmail: item.userEmail || '-',
-            partnerName: item.userName || '',
-            tradeId: item.tradeId || '-',
-            lotsDone: lots.toFixed(2),
-            numericLots: lots,
-            rewardAmount: `$${amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-            numericAmount: amt,
-            createdAt: item.createdAt
-              ? new Date(item.createdAt).toLocaleString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric',
-                  hour: '2-digit',
-                  minute: '2-digit',
-                })
-              : '-',
-          };
-        });
-        setRecords(mapped);
-      }
-    } catch (e) {
-      console.warn('Failed to fetch live IB rewards:', e);
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(() => setIsLoading(false), 350);
   }, []);
 
-  // Fetch live tier settings if API is available
-  const loadTiers = useCallback(async () => {
+  const loadTiers = useCallback(() => {
     setIsLoading(true);
-    try {
-      const res = await fetch('/api/ib/rewards/settings')
-        .then((r) => (r.ok ? r.json() : null))
-        .catch(() => null);
-
-      if (res?.success && Array.isArray(res.tiers) && res.tiers.length > 0) {
-        setTiers(res.tiers);
-      }
-    } catch (e) {
-      console.warn('Failed to load reward tier settings:', e);
-    } finally {
-      setIsLoading(false);
-    }
+    setTimeout(() => setIsLoading(false), 350);
   }, []);
 
   const handleRefresh = () => {
@@ -203,29 +58,16 @@ export default function AdminIBRewards() {
     }
   };
 
-  // Save Settings Action
-  const handleSaveSettings = async () => {
+  // Tier edits are written to the store as you type; "Save" confirms to the admin.
+  const handleSaveSettings = () => {
     setIsSaving(true);
     setErrorMessage(null);
     setSuccessMessage(null);
-    try {
-      await fetch('/api/ib/rewards/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tiers }),
-      }).catch(() => null);
-
-      try {
-        localStorage.setItem(TIERS_STORAGE_KEY, JSON.stringify(tiers));
-      } catch {}
-
+    setTimeout(() => {
       setSuccessMessage('Reward program milestone settings saved & published successfully.');
       setTimeout(() => setSuccessMessage(null), 4000);
-    } catch (err) {
-      setErrorMessage(err.message || 'Error saving reward tiers');
-    } finally {
       setIsSaving(false);
-    }
+    }, 300);
   };
 
   const handleTierChange = (index, field, value) => {

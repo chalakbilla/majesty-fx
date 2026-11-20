@@ -1,0 +1,47 @@
+[
+  {
+    "login": "800106",
+    "clientName": "Demo Trader",
+    "clientEmail": "democlient@majestyfx.com",
+    "desk": "demo",
+    "accountType": "Standard Account",
+    "balance": 10000,
+    "currency": "USD"
+  },
+  {
+    "login": "800103",
+    "clientName": "Sofia Al-Mansoor",
+    "clientEmail": "sofia.mansoor@demo.example.com",
+    "desk": "referral",
+    "accountType": "Raw Spread Account",
+    "balance": 3500,
+    "currency": "USD"
+  },
+  {
+    "login": "800105",
+    "clientName": "David Miller",
+    "clientEmail": "david.miller@demo.example.com",
+    "desk": "referral",
+    "accountType": "Standard Account",
+    "balance": 2500,
+    "currency": "USD"
+  },
+  {
+    "login": "800101",
+    "clientName": "Alexander Wright",
+    "clientEmail": "alex.wright@demo.example.com",
+    "desk": "ib1",
+    "accountType": "ECN Account",
+    "balance": 5000,
+    "currency": "USD"
+  },
+  {
+    "login": "800104",
+    "clientName": "Marcus Chen",
+    "clientEmail": "marcus.chen@demo.example.com",
+    "desk": "ib2",
+    "accountType": "Pro Account",
+    "balance": 10000,
+    "currency": "USD"
+  }
+]
