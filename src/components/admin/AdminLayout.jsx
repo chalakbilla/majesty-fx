@@ -128,6 +128,76 @@ export default function AdminLayout() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Close mobile sidebar on route navigation
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [location.pathname]);
+
+  // Automatic Responsive Tables Engine: attaches data-cards, data-label, and data-actions to all tables on mobile
+  useEffect(() => {
+    let frameId = 0;
+    const processTables = () => {
+      frameId = 0;
+      const tables = document.querySelectorAll(
+        '.dashboard-portal table, .admin-portal table, table[data-cards], table.data-table-grid'
+      );
+      tables.forEach((table) => {
+        const thead = table.tHead;
+        const headRow = thead?.rows[thead.rows.length - 1];
+        if (!headRow || headRow.cells.length < 2) return;
+
+        const colLabels = Array.from(headRow.cells).map((cell) =>
+          (cell.textContent || '').replace(/\s+/g, ' ').trim()
+        );
+
+        if (!table.hasAttribute('data-cards')) {
+          table.setAttribute('data-cards', '');
+        }
+
+        Array.from(table.tBodies).forEach((tbody) => {
+          Array.from(tbody.rows).forEach((row) => {
+            if (row.cells.length === 1 && (row.cells[0].colSpan > 1 || row.cells[0].classList.contains('data-table-empty'))) {
+              return;
+            }
+
+            let colIdx = 0;
+            Array.from(row.cells).forEach((cell) => {
+              const label = colLabels[colIdx] || '';
+              if (label && cell.getAttribute('data-label') !== label) {
+                cell.setAttribute('data-label', label);
+              }
+              const isAction =
+                /^actions?$/i.test(label) ||
+                label === '' ||
+                cell.querySelector('.admin-action-group, .admin-action-btn') !== null;
+              if (isAction && !cell.hasAttribute('data-actions')) {
+                cell.setAttribute('data-actions', '');
+              }
+              colIdx += cell.colSpan || 1;
+            });
+          });
+        });
+      });
+    };
+
+    const scheduleProcess = () => {
+      if (!frameId) {
+        frameId = requestAnimationFrame(processTables);
+      }
+    };
+
+    scheduleProcess();
+    const observer = new MutationObserver(scheduleProcess);
+    observer.observe(document.body, { childList: true, subtree: true });
+    window.addEventListener('resize', scheduleProcess);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', scheduleProcess);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [location.pathname]);
+
   const currentPath = location.pathname;
 
   const isLinkActive = (path) => currentPath === path;
@@ -672,6 +742,14 @@ export default function AdminLayout() {
 
       {/* Main Container: Fixed Sidebar + Scrollable Main Area */}
       <div style={{ display: 'flex', height: 'calc(-70px + 100vh)', paddingTop: '70px' }}>
+        {/* Mobile Sidebar Backdrop Overlay */}
+        {mobileMenuOpen && (
+          <div
+            className="dashboard-sidebar-backdrop lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+        )}
+
         {/* Sidebar - Matching scratch_aside_exact.html */}
         <aside
           className={`dashboard-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}
@@ -1669,9 +1747,9 @@ export default function AdminLayout() {
         {/* Main Content Area */}
         <main
           className="admin-main-area text-slate-900"
-          style={{ overscrollBehavior: 'contain', marginLeft: '16rem', flex: 1, height: 'calc(-70px + 100vh)', overflowY: 'auto' }}
+          style={{ overscrollBehavior: 'contain', flex: 1, height: 'calc(-70px + 100vh)', overflowY: 'auto' }}
         >
-          <div className="relative min-h-full bg-[#f8fafc] border-l border-slate-200/60 p-4 sm:p-6 lg:p-8 pb-16">
+          <div className="relative min-h-full bg-[#f8fafc] p-2.5 sm:p-6 lg:p-8 pb-16">
             <div className="relative max-w-[1700px] mx-auto">
               <Outlet />
             </div>

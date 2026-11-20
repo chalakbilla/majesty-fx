@@ -1369,28 +1369,28 @@ export default function AdminDemo({ desk: propDesk }) {
                   ) : (
                     pendingDeposits.items.map((item) => (
                       <tr key={item.id}>
-                        <td>
+                        <td data-label="CLIENTS">
                           <ClientCell name={item.clientName || item.client} email={item.clientEmail || item.email} />
                         </td>
-                        <td>
+                        <td data-label="SERVER">
                           <AccountChip login={item.accountLogin || item.server} />
                         </td>
-                        <td>
+                        <td data-label="AMOUNT">
                           <Money amount={item.amount} direction="in" />
                         </td>
-                        <td>
+                        <td data-label="METHOD">
                           <MethodPill method={item.paymentMethod || item.method || 'Deposit'} />
                         </td>
-                        <td>
+                        <td data-label="TX ID">
                           <AddressCell value={item.txHash || item.txId || ''} />
                         </td>
-                        <td>
+                        <td data-label="DATE">
                           <DateCell value={item.createdAt || item.date} />
                         </td>
-                        <td>
+                        <td data-label="STATUS">
                           <StatusPill status={item.status || 'pending'} />
                         </td>
-                        <td>
+                        <td data-label="PROOF">
                           {item.proofUrl || item.proof ? (
                             <a
                               href={item.proofUrl || item.proof}
@@ -1404,7 +1404,7 @@ export default function AdminDemo({ desk: propDesk }) {
                             <span className="text-slate-400">—</span>
                           )}
                         </td>
-                        <td style={{ textAlign: 'right' }}>
+                        <td data-actions="" style={{ textAlign: 'right' }}>
                           <div className="admin-action-group" style={{ display: 'inline-flex' }}>
                             <button
                               type="button"
@@ -1480,38 +1480,39 @@ export default function AdminDemo({ desk: propDesk }) {
                   ) : (
                     pendingWithdrawals.items.map((item) => (
                       <tr key={item.id}>
-                        <td>
+                        <td data-label="CLIENTS">
                           <ClientCell name={item.clientName || item.client} email={item.clientEmail || item.email} />
                         </td>
-                        <td>
+                        <td data-label="SERVER">
                           <AccountChip login={item.accountLogin || item.server} />
                         </td>
-                        <td>
+                        <td data-label="AMOUNT">
                           <Money
                             amount={item.requestedAmount || item.amount}
                             direction="out"
                             currency={item.currency || 'USD'}
                           />
                         </td>
-                        <td>
+                        <td data-label="METHOD">
                           <MethodPill method={item.paymentMethod || item.method || 'Crypto'} />
                         </td>
-                        <td>
+                        <td data-label="PAY TO">
                           <AddressCell value={item.destinationAddress || item.payTo || ''} />
                         </td>
                         <td
+                          data-label="COMMENT"
                           className="max-w-[180px] truncate text-xs text-slate-500"
                           title={item.remarks || item.comment || ''}
                         >
                           {item.remarks || item.comment || '—'}
                         </td>
-                        <td>
+                        <td data-label="DATE">
                           <DateCell value={item.createdAt || item.date} />
                         </td>
-                        <td>
+                        <td data-label="STATUS">
                           <StatusPill status={item.status || 'pending'} />
                         </td>
-                        <td style={{ textAlign: 'right' }}>
+                        <td data-actions="" style={{ textAlign: 'right' }}>
                           <div className="admin-action-group" style={{ display: 'inline-flex' }}>
                             <button
                               type="button"
